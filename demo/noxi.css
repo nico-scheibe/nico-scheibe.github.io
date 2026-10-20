@@ -178,6 +178,15 @@ select.input { appearance: none; cursor: pointer; padding-right: 32px; backgroun
 .del { opacity: 0; border: 0; background: none; color: var(--text-3); padding: 4px; border-radius: 8px; }
 .task:hover .del { opacity: 1; }
 .del:hover { color: var(--rose); background: rgba(251, 113, 133, .1); }
+.chip .cnt { min-width: 20px; height: 18px; padding: 0 6px; border-radius: 99px; display: grid; place-items: center; font-size: 11px; font-weight: 800; background: rgba(255, 255, 255, .08); color: var(--text-2); }
+.chip.on .cnt { background: var(--teal); color: #04110f; }
+.done-h { display: flex; align-items: center; gap: 7px; padding: 14px 4px 6px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); border-bottom: 1px solid var(--line); }
+.empty-t { padding: 22px 0; text-align: center; }
+.tasklist.swap { animation: rise .25s ease; }
+.task.fresh { animation: flash 1.4s ease; border-radius: 12px; }
+@keyframes flash { 0% { background: rgba(45, 212, 191, .22); } 100% { background: transparent; } }
+.input.shake { animation: shake .35s; border-color: var(--rose); }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .dotc { width: 8px; height: 8px; border-radius: 50%; background: var(--c); display: inline-block; }
 
 /* ---------- Kalender ---------- */

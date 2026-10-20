@@ -187,7 +187,7 @@
   };
 
   function taskRow(t) {
-    return '<div class="task ' + (t.done ? "done" : "") + '"><button class="tick ' + (t.done ? "on" : "") + '" data-act="toggleTask" data-id="' + t.id + '" aria-label="Erledigt">' + ic("check") + '</button><div class="grow"><div class="t">' + esc(t.t) + '</div><div class="m"><span class="dotc" style="--c:' + LISTS[t.list] + '"></span>' + esc(t.list) + " · " + esc(t.due) + "</div></div>" + (t.prio ? '<span class="flag" title="Wichtig">!</span>' : "") + '<button class="del" data-act="delTask" data-id="' + t.id + '" aria-label="Löschen">' + ic("trash", "sm") + "</button></div>";
+    return '<div class="task ' + (t.done ? "done" : "") + (t.fresh ? " fresh" : "") + '"><button class="tick ' + (t.done ? "on" : "") + '" data-act="toggleTask" data-id="' + t.id + '" aria-label="Erledigt">' + ic("check") + '</button><div class="grow"><div class="t">' + esc(t.t) + '</div><div class="m"><span class="dotc" style="--c:' + LISTS[t.list] + '"></span>' + esc(t.list) + " · " + esc(t.due) + "</div></div>" + (t.prio ? '<span class="flag" title="Wichtig">!</span>' : "") + '<button class="del" data-act="delTask" data-id="' + t.id + '" aria-label="Löschen">' + ic("trash", "sm") + "</button></div>";
   }
 
   V.calendar = function () {
@@ -231,21 +231,38 @@
     return html;
   };
 
+  // Filter: welche Aufgaben gehören zu welchem Filter?
+  var FILTERS = ["Alle", "Heute", "Lernen", "Projekte", "Persönlich", "Erledigt"];
+  function inFilter(t, f) {
+    if (f === "Alle" || f === "Erledigt") return true;
+    if (f === "Heute") return t.due === "Heute";
+    return t.list === f;
+  }
+  function byPrio(a, b) { return (b.fresh ? 1 : 0) - (a.fresh ? 1 : 0) || (b.prio - a.prio); }
   V.tasks = function () {
-    var filters = ["Alle", "Heute", "Lernen", "Projekte", "Persönlich", "Erledigt"];
-    var list = S.tasks.filter(function (t) {
-      if (S.filter === "Erledigt") return t.done;
-      if (S.filter === "Alle") return true;
-      if (S.filter === "Heute") return t.due === "Heute";
-      return t.list === S.filter;
-    });
-    if (S.filter !== "Erledigt") list = list.slice().sort(function (a, b) { return (a.done - b.done) || (b.prio - a.prio); });
-    var done = S.tasks.filter(function (t) { return t.done; }).length;
-    var html = '<div class="head"><div><div class="eyebrow">Aufgaben</div><h1>To-dos</h1><p>' + done + " von " + S.tasks.length + ' erledigt</p></div><div style="min-width:160px"><div class="bar"><span style="width:' + Math.round(done / S.tasks.length * 100) + '%"></span></div></div></div>';
-    html += '<form class="card" data-form="task" style="margin-bottom:16px;padding:12px"><div class="row" style="flex-wrap:wrap"><input class="input grow" name="t" placeholder="Neue Aufgabe … z. B. „Vokabeln lernen“" autocomplete="off" style="min-width:180px"><select class="input" name="list" style="width:auto">' + Object.keys(LISTS).map(function (l) { return "<option>" + l + "</option>"; }).join("") + '</select><select class="input" name="due" style="width:auto"><option>Heute</option><option>Morgen</option><option>Diese Woche</option></select><label class="chip" style="cursor:pointer"><input type="checkbox" name="prio" style="accent-color:var(--teal)"> Wichtig</label><button class="btn pri round" aria-label="Hinzufügen">' + ic("plus") + "</button></div></form>";
-    html += '<div class="chips" style="margin-bottom:12px">' + filters.map(function (f) { return '<button class="chip ' + (S.filter === f ? "on" : "") + '" data-act="filter" data-v="' + f + '">' + f + "</button>"; }).join("") + "</div>";
-    html += '<div class="card" style="padding:6px 16px">' + (list.length ? list.map(taskRow).join("") : '<p class="muted" style="padding:20px 0;text-align:center">Hier ist gerade nichts zu tun.</p>') + "</div>";
-    return html;
+    var f = S.filter;
+    var matching = S.tasks.filter(function (t) { return inFilter(t, f); });
+    var open = matching.filter(function (t) { return !t.done; }).sort(byPrio);
+    var done = matching.filter(function (t) { return t.done; });
+    var total = matching.length;
+    var pct = total ? Math.round(done.length / total * 100) : 0;
+    var label = f === "Alle" ? "Alle Listen" : f === "Erledigt" ? "Erledigt" : f;
+    var sub = f === "Erledigt" ? done.length + " erledigte Aufgaben" : open.length + " offen · " + done.length + " erledigt";
+    var html = '<div class="head"><div><div class="eyebrow">Aufgaben · ' + esc(label) + '</div><h1>To-dos</h1><p>' + sub + '</p></div><div style="min-width:160px"><div class="row small" style="margin-bottom:6px"><span class="grow dim">Fortschritt</span><b>' + pct + ' %</b></div><div class="bar"><span style="width:' + pct + '%"></span></div></div></div>';
+    var defList = LISTS[f] ? f : "Persönlich";
+    html += '<form class="card" data-form="task" style="margin-bottom:16px;padding:12px"><div class="row" style="flex-wrap:wrap"><input class="input grow" name="t" placeholder="Neue Aufgabe … z. B. „Vokabeln lernen“" autocomplete="off" style="min-width:180px"><select class="input" name="list" style="width:auto">' + Object.keys(LISTS).map(function (l) { return "<option" + (l === defList ? " selected" : "") + ">" + l + "</option>"; }).join("") + '</select><select class="input" name="due" style="width:auto"><option>Heute</option><option>Morgen</option><option>Diese Woche</option></select><label class="chip" style="cursor:pointer"><input type="checkbox" name="prio" style="accent-color:var(--teal)"> Wichtig</label><button class="btn pri round" aria-label="Hinzufügen">' + ic("plus") + "</button></div></form>";
+    html += '<div class="chips" style="margin-bottom:12px" role="tablist" aria-label="Filter">' + FILTERS.map(function (x) {
+      var n = x === "Erledigt" ? S.tasks.filter(function (t) { return t.done; }).length : S.tasks.filter(function (t) { return !t.done && inFilter(t, x); }).length;
+      return '<button class="chip ' + (f === x ? "on" : "") + '" role="tab" aria-selected="' + (f === x) + '" data-act="filter" data-v="' + x + '">' + (LISTS[x] ? '<span class="dotc" style="--c:' + LISTS[x] + '"></span>' : "") + x + '<span class="cnt">' + n + "</span></button>";
+    }).join("") + "</div>";
+    html += '<div class="card tasklist" style="padding:6px 16px">';
+    if (f === "Erledigt") {
+      html += done.length ? done.map(taskRow).join("") : '<p class="muted empty-t">Noch nichts erledigt – leg los!</p>';
+    } else {
+      html += open.length ? open.map(taskRow).join("") : '<p class="muted empty-t">Alles erledigt in „' + esc(label) + '“ – stark!</p>';
+      if (done.length) html += '<div class="done-h">' + ic("check", "sm") + "Erledigt · " + done.length + "</div>" + done.map(taskRow).join("");
+    }
+    return html + "</div>";
   };
 
   function deckDue(d) { return Math.max(0, d.cards.length - d.learned); }
@@ -390,7 +407,10 @@
       rerender();
     },
     delTask: function (el) { S.tasks = S.tasks.filter(function (t) { return t.id !== el.dataset.id; }); toast("Aufgabe gelöscht", "trash"); rerender(); },
-    filter: function (el) { S.filter = el.dataset.v; rerender(); },
+    filter: function (el) {
+      S.filter = el.dataset.v; rerender();
+      var l = $(".tasklist"); if (l) { l.classList.remove("swap"); void l.offsetWidth; l.classList.add("swap"); }
+    },
     pickDay: function (el) { S.day = +el.dataset.i; rerender(); },
     newEvent: function () {
       sheet("Neuer Termin", '<form data-form="event"><div class="sheet-b"><div class="field"><label for="et">Titel</label><input class="input" id="et" name="t" placeholder="z. B. Lernen für die Prüfung" required autofocus></div><div class="row"><div class="field grow"><label for="es">Beginn</label><input class="input" id="es" type="time" name="s" value="17:00" required></div><div class="field grow"><label for="ee">Ende</label><input class="input" id="ee" type="time" name="e" value="18:00" required></div></div><div class="field"><label for="ed">Tag</label><select class="input" id="ed" name="d">' + DAYNAMES.map(function (n, i) { return '<option value="' + i + '"' + (i === S.day ? " selected" : "") + ">" + esc(longDate(i)) + "</option>"; }).join("") + '</select></div><div class="field"><label>Art</label><div class="chips">' + Object.keys(TYPES).map(function (k, i) { return '<label class="chip" style="cursor:pointer"><input type="radio" name="type" value="' + k + '"' + (i === 1 ? " checked" : "") + ' style="accent-color:var(--teal)"><span class="dotc" style="--c:' + TYPES[k].c + '"></span>' + TYPES[k].label + "</label>"; }).join("") + '</div></div></div><div class="sheet-f"><button type="button" class="btn" data-act="close">Abbrechen</button><button class="btn pri">' + ic("plus") + "Hinzufügen</button></div></form>");
@@ -432,10 +452,16 @@
 
   var FORMS = {
     task: function (f, d) {
-      var t = (d.get("t") || "").trim(); if (!t) return;
-      S.tasks.unshift({ id: uid(), t: t, list: d.get("list"), due: d.get("due"), prio: !!d.get("prio"), done: false });
-      toast("Aufgabe hinzugefügt", "checks"); rerender();
-      var i = $('[data-form="task"] .input'); if (i) i.focus();
+      var t = (d.get("t") || "").trim();
+      if (!t) { var inp = f.querySelector('[name="t"]'); if (inp) { inp.focus(); inp.classList.add("shake"); setTimeout(function () { inp.classList.remove("shake"); }, 400); } return; }
+      var task = { id: uid(), t: t, list: d.get("list"), due: d.get("due"), prio: !!d.get("prio"), done: false, fresh: true };
+      S.tasks.unshift(task);
+      // Neue Aufgabe muss sichtbar sein: passt sie nicht zum Filter, auf „Alle“ wechseln
+      if (S.filter === "Erledigt" || !inFilter(task, S.filter)) S.filter = "Alle";
+      toast("Aufgabe hinzugefügt: " + t, "checks"); rerender();
+      task.fresh = false;
+      var row = $(".task.fresh"); if (row) row.scrollIntoView({ block: "nearest" });
+      var i = $('[data-form="task"] [name="t"]'); if (i) i.focus();
     },
     event: function (f, d) {
       var s = d.get("s"), e = d.get("e");
