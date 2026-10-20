@@ -547,27 +547,62 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
   display: grid; gap: 0; overflow: hidden;
   background: var(--surface); border: 1px solid var(--border); border-radius: 22px; box-shadow: var(--shadow);
 }
-.flow__rail { display: flex; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--border); background: var(--bg-2); }
-.flow__rail::-webkit-scrollbar { display: none; }
+.flow__rail {
+  --p: 0;
+  position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr));
+  padding: 22px 12px 18px; border-bottom: 1px solid var(--border); background: var(--bg-2);
+}
+/* Verbindungslinie hinter den Symbolen, füllt sich bis zum aktiven Schritt */
+.flow__rail::before, .flow__rail::after {
+  content: ""; position: absolute; top: 42.5px; left: calc(12px + (100% - 24px) / 12); height: 3px; border-radius: 3px;
+}
+.flow__rail::before { right: calc(12px + (100% - 24px) / 12); background: var(--border); }
+.flow__rail::after {
+  width: calc((100% - 24px) / 6 * 5 * var(--p)); background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width .5s cubic-bezier(.3, .7, .2, 1); box-shadow: 0 0 12px var(--accent-soft);
+}
 .flow__step {
-  position: relative; flex: 1 0 auto; display: flex; align-items: center; gap: 10px; padding: 14px 16px;
-  border: 0; background: none; color: var(--text-3); cursor: pointer; text-align: left; font: inherit;
-  transition: color .2s, background-color .2s;
+  position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0;
+  padding: 0 4px; border: 0; background: none; color: var(--text-3); cursor: pointer; text-align: center; font: inherit;
+  transition: color .2s;
 }
 .flow__step:hover { color: var(--text); }
-.flow__step.on { color: var(--text); background: var(--surface); }
-.flow__num { font: 500 .7rem var(--font-mono); opacity: .7; }
-.flow__icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; background: var(--surface-2); flex-shrink: 0; transition: background-color .25s, color .25s; }
-.flow__step.on .flow__icon { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--on-accent); }
-.flow__icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.flow__label { display: none; flex-direction: column; line-height: 1.25; }
-.flow__label b { font-size: .88rem; }
-.flow__label span { font-size: .74rem; color: var(--text-3); }
-.flow__step.on .flow__label { display: flex; }
-.flow__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--accent-soft); transform-origin: left; transform: scaleX(0); }
-.flow__step.on .flow__bar { transform: scaleX(1); background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
-.flow.is-playing .flow__step.on .flow__bar { animation: flowbar var(--flow-ms, 5200ms) linear forwards; }
-@keyframes flowbar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.flow__step:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 12px; }
+.flow__num { order: 2; font: 500 .66rem var(--font-mono); letter-spacing: .06em; opacity: .8; }
+.flow__icon {
+  order: 1; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px;
+  background: var(--surface); border: 1px solid var(--border); flex-shrink: 0;
+  transition: background-color .3s, color .3s, transform .3s cubic-bezier(.3, 1.6, .5, 1), box-shadow .3s, border-color .3s;
+}
+.flow__icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.flow__step:hover .flow__icon { transform: translateY(-2px); border-color: var(--text-3); }
+.flow__step.done { color: var(--text-2); }
+.flow__step.done .flow__icon { background: color-mix(in srgb, var(--accent) 16%, var(--surface)); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); color: var(--accent); }
+.flow__step.on { color: var(--text); }
+.flow__step.on .flow__icon {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--on-accent); border-color: transparent;
+  transform: scale(1.12); box-shadow: 0 0 0 6px var(--accent-soft), 0 12px 26px -10px var(--accent);
+}
+.flow__label { order: 3; display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.flow__label b { font-size: .8rem; font-weight: 600; overflow-wrap: anywhere; hyphens: auto; }
+.flow__label span { display: none; font-size: .72rem; color: var(--text-3); margin-top: 2px; }
+.flow__bar { position: absolute; left: 50%; bottom: -18px; width: 0; height: 3px; margin-left: 0; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transform: translateX(-50%); transition: width .3s; }
+.flow__step.on .flow__bar { width: 46px; }
+.flow.is-playing .flow__step.on .flow__bar { animation: flowbar var(--flow-ms, 5200ms) linear forwards; transform-origin: left; }
+@keyframes flowbar { from { width: 0; } to { width: 46px; } }
+@media (max-width: 559px) {
+  .flow__rail { padding: 18px 6px 16px; }
+  .flow__rail::before, .flow__rail::after { top: 34.5px; left: calc(6px + (100% - 12px) / 12); }
+  .flow__rail::before { right: calc(6px + (100% - 12px) / 12); }
+  .flow__rail::after { width: calc((100% - 12px) / 6 * 5 * var(--p)); }
+  .flow__icon { width: 36px; height: 36px; border-radius: 11px; }
+  .flow__icon svg { width: 17px; height: 17px; }
+  .flow__label { display: none; }
+  .flow__bar { bottom: -16px; }
+  .flow__step.on .flow__bar { width: 28px; }
+  @keyframes flowbar { from { width: 0; } to { width: 28px; } }
+}
+@media (min-width: 1000px) { .flow__label span { display: block; } .flow__label b { font-size: .86rem; } }
 .flow__stage { position: relative; padding: 28px 24px 30px; min-height: 420px; }
 .flow__panel { display: none; }
 .flow__panel.on { display: block; animation: flowIn .45s cubic-bezier(.2, .7, .2, 1); }
@@ -576,7 +611,6 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .flow__panel h3 { font-size: clamp(1.35rem, 3.5vw, 1.8rem); margin-bottom: 8px; max-width: 24ch; }
 .flow__panel > p { color: var(--text-2); max-width: 56ch; margin-bottom: 22px; }
 @media (min-width: 900px) {
-  .flow__label { display: flex; }
   .flow__stage { padding: 36px 40px 40px; }
 }
 

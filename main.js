@@ -290,19 +290,19 @@
     var current = 0, timer = null, stopped = false;
     var DURATION = 5200;
     root.style.setProperty("--flow-ms", DURATION + "ms");
+    show(0);
 
     function show(i) {
       current = (i + steps.length) % steps.length;
+      root.querySelector(".flow__rail").style.setProperty("--p", (current / (steps.length - 1)).toFixed(3));
       steps.forEach(function (s, n) {
         var on = n === current;
         s.classList.toggle("on", on);
+        s.classList.toggle("done", n < current);
         s.setAttribute("aria-selected", String(on));
         if (on) { var bar = s.querySelector(".flow__bar"); if (bar) { bar.style.animation = "none"; void bar.offsetWidth; bar.style.animation = ""; } }
       });
       panels.forEach(function (p, n) { p.classList.toggle("on", n === current); });
-      var active = steps[current];
-      var rail = root.querySelector(".flow__rail");
-      if (rail && active) rail.scrollTo({ left: active.offsetLeft - 16, behavior: "smooth" });
     }
     function play() {
       if (stopped || timer) return;
