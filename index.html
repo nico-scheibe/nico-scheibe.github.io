@@ -22,6 +22,7 @@
   <meta property="og:locale:alternate" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
 
+  <link rel="canonical" href="https://nico-scheibe.github.io/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/fonts/fonts.css">
   <link rel="stylesheet" href="style.css">
@@ -33,6 +34,55 @@
       try { theme = localStorage.getItem("theme") || "dark"; } catch (e) {}
       root.setAttribute("data-theme", theme);
     })();
+  </script>
+  <script type="application/ld+json">
+[
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Nico Scheibe",
+      "url": "https://nico-scheibe.github.io/",
+      "image": "https://nico-scheibe.github.io/assets/og-image.jpg",
+      "description": "Ich baue mit KI aus Ideen funktionierende Apps. Ab Dezember 2027 auf der Suche nach einem Einstieg in die KI-Entwicklung, Prototyping und Automatisierung.",
+      "jobTitle": "Angehender KI-Entwickler",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Regensburg",
+        "addressCountry": "DE"
+      },
+      "sameAs": [
+        "https://github.com/nico-scheibe"
+      ],
+      "knowsAbout": [
+        "Künstliche Intelligenz",
+        "Claude Code",
+        "Cursor",
+        "Prompting",
+        "LLM-APIs",
+        "Swift",
+        "Qt",
+        "Python",
+        "Prototyping",
+        "Automatisierung",
+        "IT-Support",
+        "Netzwerktechnik"
+      ],
+      "knowsLanguage": [
+        "de",
+        "en"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Nico Scheibe – Portfolio",
+      "url": "https://nico-scheibe.github.io/",
+      "inLanguage": [
+        "de",
+        "en"
+      ]
+    }
+  ]
   </script>
 </head>
 <body>
@@ -149,6 +199,36 @@
             </dl>
           </aside>
         </div>
+
+        <div class="hobbies">
+          <h3 class="hobbies__title reveal"><span class="section__num">//</span> Wenn ich gerade nicht code</h3>
+          <ul class="hobbies__grid">
+            <li class="hobby hobby--cook reveal">
+              <span class="hobby__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h13v3a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M17 12h3M8 8c0-1.5 1-1.5 1-3M11.5 8c0-1.5 1-1.5 1-3"/></svg></span>
+              <span class="hobby__text"><b>Kochen</b><span>Neue Rezepte ausprobieren – am liebsten für andere.</span></span>
+            </li>
+            <li class="hobby hobby--gym reveal">
+              <span class="hobby__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8v8M18 8v8M3 10v4M21 10v4M6 12h12"/></svg></span>
+              <span class="hobby__text"><b>Gym</b><span>Disziplin und Ausgleich zum Bildschirm.</span></span>
+            </li>
+            <li class="hobby hobby--apps reveal">
+              <span class="hobby__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="m10 9-2 2 2 2M14 9l2 2-2 2"/></svg></span>
+              <span class="hobby__text"><b>Apps entwickeln</b><span>Mein Hobby, das ich zum Beruf machen will.</span></span>
+            </li>
+            <li class="hobby hobby--run reveal">
+              <span class="hobby__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 4.5a1.5 1.5 0 1 0 3 0 1.5 1.5 0 1 0-3 0"/><path d="m5 21 3-5 3 2 2-5-4-2-3 3M13 13l3 2 3-1M10 8l3-1 2 3"/></svg></span>
+              <span class="hobby__text"><b>Joggen</b><span>Den Kopf freibekommen – oft kommen dabei die besten Ideen.</span></span>
+            </li>
+            <li class="hobby hobby--snow reveal">
+              <span class="hobby__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 20 6-9 4 5 3-4 5 8z"/><path d="M14 7h.01M17 4h.01M19 8h.01"/></svg></span>
+              <span class="hobby__text"><b>Snowboarden</b><span>Berge, Schnee und ein bisschen Adrenalin.</span></span>
+            </li>
+            <li class="hobby hobby--friends reveal">
+              <span class="hobby__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-8.5-8.8C2.5 8 4.5 5 7.5 5c2 0 3.5 1.2 4.5 2.8C13 6.2 14.5 5 16.5 5c3 0 5 3 4 6.2C19 15.6 12 20 12 20z"/></svg></span>
+              <span class="hobby__text"><b>Zeit mit Freunden & Freundin</b><span>Gemeinsam unterwegs sein, Neues erleben, abschalten.</span></span>
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -253,11 +333,165 @@
       </div>
     </section>
 
+    <!-- ============ WIE ICH MIT KI ARBEITE ============ -->
+    <section class="section" id="ki-arbeit">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__num">05</span>
+          <h2>Wie ich mit KI arbeite</h2>
+          <p class="section__sub">Am Beispiel dieser Website: Die KI schreibt schnell – ich denke, entscheide und prüfe.</p>
+        </div>
+
+        <div class="flow reveal" data-flow-root>
+          <div class="flow__rail" role="tablist" aria-label="Arbeitsschritte">
+            <button class="flow__step on" type="button" role="tab" aria-selected="true" aria-controls="flow-idea" data-flow="0">
+              <span class="flow__num">01</span>
+              <span class="flow__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg></span>
+              <span class="flow__label"><b>Idee</b><span>Was soll entstehen?</span></span>
+              <span class="flow__bar" aria-hidden="true"></span>
+            </button>
+            <button class="flow__step" type="button" role="tab" aria-selected="false" aria-controls="flow-prompt" data-flow="1">
+              <span class="flow__num">02</span>
+              <span class="flow__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span>
+              <span class="flow__label"><b>Anweisung</b><span>Ziel genau beschreiben</span></span>
+              <span class="flow__bar" aria-hidden="true"></span>
+            </button>
+            <button class="flow__step" type="button" role="tab" aria-selected="false" aria-controls="flow-build" data-flow="2">
+              <span class="flow__num">03</span>
+              <span class="flow__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/></svg></span>
+              <span class="flow__label"><b>KI baut</b><span>Code in Minuten</span></span>
+              <span class="flow__bar" aria-hidden="true"></span>
+            </button>
+            <button class="flow__step" type="button" role="tab" aria-selected="false" aria-controls="flow-test" data-flow="3">
+              <span class="flow__num">04</span>
+              <span class="flow__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg></span>
+              <span class="flow__label"><b>Prüfen & testen</b><span>Ich suche die Fehler</span></span>
+              <span class="flow__bar" aria-hidden="true"></span>
+            </button>
+            <button class="flow__step" type="button" role="tab" aria-selected="false" aria-controls="flow-fix" data-flow="4">
+              <span class="flow__num">05</span>
+              <span class="flow__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span>
+              <span class="flow__label"><b>Verbessern</b><span>Fehler gezielt beheben</span></span>
+              <span class="flow__bar" aria-hidden="true"></span>
+            </button>
+            <button class="flow__step" type="button" role="tab" aria-selected="false" aria-controls="flow-live" data-flow="5">
+              <span class="flow__num">06</span>
+              <span class="flow__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2M9 15l-3-3c1-4 4.5-8.5 12-9-.5 7.5-5 11-9 12z"/><circle cx="14.5" cy="9.5" r="1.5"/></svg></span>
+              <span class="flow__label"><b>Live</b><span>Veröffentlichen & weiter lernen</span></span>
+              <span class="flow__bar" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="flow__stage">
+            <div class="flow__panel on" id="flow-idea" role="tabpanel">
+              <p class="flow__kicker">Schritt 1 · Idee</p>
+              <h3>Erst denken, dann bauen.</h3>
+              <p>Bevor die KI eine Zeile schreibt, kläre ich: Was soll entstehen, für wen – und woran merke ich, dass es gut ist?</p>
+              <div class="note">
+                <span class="note__pin" aria-hidden="true"></span>
+                <b>Ziel dieser Website</b>
+                <ul>
+                  <li>Ein Portfolio, das meinen Lebenslauf ersetzt</li>
+                  <li>Echte, klickbare Demos meiner Apps</li>
+                  <li>Modern, schnell, auf Deutsch und Englisch</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flow__panel" id="flow-prompt" role="tabpanel">
+              <p class="flow__kicker">Schritt 2 · Anweisung</p>
+              <h3>Je genauer die Anweisung, desto besser das Ergebnis.</h3>
+              <p>Ich beschreibe Ziel, Inhalte, Design und Technik – so, wie ich es einem Kollegen erklären würde.</p>
+              <div class="chatmock">
+                <div class="chatmock__msg chatmock__msg--me"><span class="chatmock__who">Ich</span>Bau mir eine moderne, persönliche Portfolio-Website auf Deutsch, mit der ich mich bei Firmen im Bereich KI-Entwicklung bewerben kann. Mobile-first, heller und dunkler Modus, kostenlos über GitHub Pages hostbar …</div>
+                <div class="chatmock__msg"><span class="chatmock__who">KI</span>Verstanden. Bevor ich anfange: Welche Design-Richtung gefällt dir, und welche E-Mail soll in den Kontaktbereich?</div>
+              </div>
+            </div>
+            <div class="flow__panel" id="flow-build" role="tabpanel">
+              <p class="flow__kicker">Schritt 3 · KI baut</p>
+              <h3>Aus der Anweisung wird in Minuten Code.</h3>
+              <p>Die KI schreibt den Großteil des Codes. Ich verfolge, was entsteht, und lenke nach.</p>
+              <div class="termmock" aria-hidden="true">
+                <div class="termmock__bar"><i></i><i></i><i></i><span>terminal</span></div>
+                <div class="termmock__body">
+                  <span><em>›</em> index.html, style.css, main.js erstellt</span>
+                  <span><em>›</em> Projekte aus projects.js eingebunden</span>
+                  <span><em>›</em> Hell/Dunkel-Modus &amp; Animationen</span>
+                  <span><em>›</em> Interaktive Demos für Noxi &amp; Xyntal</span>
+                  <span class="ok">✓ Fertig – bereit zum Testen</span>
+                </div>
+              </div>
+            </div>
+            <div class="flow__panel" id="flow-test" role="tabpanel">
+              <p class="flow__kicker">Schritt 4 · Prüfen &amp; testen</p>
+              <h3>Hier zeigt sich, wer wirklich versteht, was gebaut wurde.</h3>
+              <p>Ich klicke alles selbst durch – auf dem Handy, am Laptop, hell und dunkel. Dabei habe ich echte Fehler gefunden:</p>
+              <ul class="checks">
+                <li class="ok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Läuft auf Handy &amp; Laptop</li>
+                <li class="ok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Hell- &amp; Dunkelmodus</li>
+                <li class="ok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Deutsch &amp; Englisch</li>
+                <li class="bad"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Kalender: kurze Termine abgeschnitten</li>
+                <li class="bad"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Neue Aufgaben im aktiven Filter unsichtbar</li>
+              </ul>
+            </div>
+            <div class="flow__panel" id="flow-fix" role="tabpanel">
+              <p class="flow__kicker">Schritt 5 · Verbessern</p>
+              <h3>Fehler genau beschreiben, Lösung prüfen.</h3>
+              <p>Ich erkläre der KI, was falsch läuft. Sie schlägt eine Lösung vor – ich teste erneut, bis es passt.</p>
+              <div class="diff" aria-label="Beispiel einer Code-Änderung">
+                <div class="diff__bar"><span>noxi.js</span><span class="diff__tag">2 Fehler behoben</span></div>
+                <pre><code><span class="del">- height = Math.max(26, dauer - 4);</span>
+<span class="add">+ var short = height &lt; 44; // kurz = einzeilig</span>
+<span class="ctx">  …</span>
+<span class="del">- S.tasks.unshift(task);</span>
+<span class="add">+ S.tasks.unshift(task);</span>
+<span class="add">+ if (!inFilter(task, S.filter)) S.filter = "Alle";</span></code></pre>
+              </div>
+            </div>
+            <div class="flow__panel" id="flow-live" role="tabpanel">
+              <p class="flow__kicker">Schritt 6 · Live</p>
+              <h3>Online – und das Lernen geht weiter.</h3>
+              <p>Die fertige Seite geht über GitHub online. Jede Verbesserung ist nach einer Minute live.</p>
+              <div class="browsermock">
+                <div class="browsermock__bar"><i></i><i></i><i></i><span class="browsermock__url">🔒 nico-scheibe.github.io</span></div>
+                <div class="browsermock__stats">
+                  <div><b>6</b><span>Seiten</span></div>
+                  <div><b>2</b><span>klickbare Demos</span></div>
+                  <div><b>2</b><span>Sprachen</span></div>
+                  <div><b>0</b><span>Cookies</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="split-roles">
+          <div class="split-roles__card split-roles__card--me reveal">
+            <h3>Meine Rolle</h3>
+            <ul>
+              <li>Ziel und Qualität festlegen</li>
+              <li>Entscheiden, was gebaut wird</li>
+              <li>Ergebnisse prüfen und testen</li>
+              <li>Fehler finden und genau beschreiben</li>
+            </ul>
+          </div>
+          <div class="split-roles__plus" aria-hidden="true">+</div>
+          <div class="split-roles__card split-roles__card--ai reveal">
+            <h3>Rolle der KI</h3>
+            <ul>
+              <li>Code schnell schreiben</li>
+              <li>Lösungen vorschlagen</li>
+              <li>Ideen in Minuten umsetzen</li>
+              <li>Routinearbeit abnehmen</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ WAS ICH SUCHE ============ -->
     <section class="section" id="suche">
       <div class="container">
         <div class="section__head reveal">
-          <span class="section__num">05</span>
+          <span class="section__num">06</span>
           <h2>Was ich suche</h2>
           <p class="section__sub">Ab Dezember 2027 möchte ich in einem Team arbeiten, in dem KI zum Alltag gehört.</p>
         </div>
@@ -356,6 +590,7 @@
           <a href="#projects">Projekte</a>
           <a href="#skills">Skills &amp; Tools</a>
           <a href="#timeline">Werdegang</a>
+          <a href="#ki-arbeit">Wie ich mit KI arbeite</a>
           <a href="#suche">Was ich suche</a>
         </nav>
         <nav class="footer__col" aria-label="Projekte">

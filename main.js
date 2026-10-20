@@ -269,6 +269,55 @@
     });
   }
 
+  // ---------- „Wie ich mit KI arbeite“: Schritte durchschalten ----------
+  function initFlow() {
+    var root = document.querySelector("[data-flow-root]");
+    if (!root) return;
+    var steps = root.querySelectorAll(".flow__step");
+    var panels = root.querySelectorAll(".flow__panel");
+    var current = 0, timer = null, stopped = false;
+    var DURATION = 5200;
+    root.style.setProperty("--flow-ms", DURATION + "ms");
+
+    function show(i) {
+      current = (i + steps.length) % steps.length;
+      steps.forEach(function (s, n) {
+        var on = n === current;
+        s.classList.toggle("on", on);
+        s.setAttribute("aria-selected", String(on));
+        if (on) { var bar = s.querySelector(".flow__bar"); if (bar) { bar.style.animation = "none"; void bar.offsetWidth; bar.style.animation = ""; } }
+      });
+      panels.forEach(function (p, n) { p.classList.toggle("on", n === current); });
+      var active = steps[current];
+      var rail = root.querySelector(".flow__rail");
+      if (rail && active) rail.scrollTo({ left: active.offsetLeft - 16, behavior: "smooth" });
+    }
+    function play() {
+      if (stopped || timer) return;
+      root.classList.add("is-playing");
+      timer = setInterval(function () { show(current + 1); }, DURATION);
+    }
+    function pause() { clearInterval(timer); timer = null; root.classList.remove("is-playing"); }
+
+    steps.forEach(function (s, n) {
+      s.addEventListener("click", function () { stopped = true; pause(); show(n); });
+    });
+    root.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { stopped = true; pause(); show(current + 1); steps[current].focus(); }
+      if (e.key === "ArrowLeft") { stopped = true; pause(); show(current - 1); steps[current].focus(); }
+    });
+    root.addEventListener("mouseenter", pause);
+    root.addEventListener("mouseleave", play);
+
+    // Automatisch abspielen, sobald der Bereich sichtbar ist (nicht bei „Bewegung reduzieren“)
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!still && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) play(); else pause(); });
+      }, { threshold: 0.35 }).observe(root);
+    }
+  }
+
   // ---------- Scroll-Animationen ----------
   function initReveal() {
     var items = document.querySelectorAll(".reveal");
@@ -298,6 +347,7 @@
   initTheme();
   initContact();
   initDemo();
+  initFlow();
   initReveal();
   var year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
