@@ -82,7 +82,7 @@
   "Verfügbar ab": "Available from",
   "Fokus": "Focus",
   "KI-Entwicklung, Prototyping, Automatisierung": "AI development, prototyping, automation",
-  "Eigene Apps, die ich mit KI-Tools konzipiert und gebaut habe.": "My own apps, designed and built with AI tools.",
+  "Eigene Apps, die ich mit KI-Tools und viel Kreativität konzipiert und gebaut habe.": "My own apps, designed and built with AI tools and lots of creativity.",
   "Bitte JavaScript aktivieren, um die Projekte zu sehen.": "Please enable JavaScript to see the projects.",
   "Im Alltag im Einsatz": "In daily use",
   "In Entwicklung": "In development",
