@@ -706,6 +706,19 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
   .roles__group:nth-child(4) .roles__tip { left: auto; right: 0; }
   .roles__group:nth-child(4) .roles__tip::after { left: auto; right: 22px; }
 }
+.roles__group li.fav {
+  padding: 14px 14px; font-weight: 700; font-size: 1rem;
+  border: 1px solid transparent;
+  background: linear-gradient(var(--bg), var(--bg)) padding-box, linear-gradient(135deg, var(--accent), var(--accent-2), #f5b454) border-box;
+  box-shadow: 0 0 0 4px var(--accent-soft), 0 14px 34px -14px var(--accent);
+  animation: favGlow 3.2s ease-in-out infinite;
+}
+.roles__group li.fav:hover, .roles__group li.fav:focus-visible, .roles__group li.fav.tip-open {
+  background: linear-gradient(color-mix(in srgb, var(--accent) 9%, var(--bg)), color-mix(in srgb, var(--accent) 9%, var(--bg))) padding-box, linear-gradient(135deg, var(--accent), var(--accent-2), #f5b454) border-box;
+}
+@keyframes favGlow { 50% { box-shadow: 0 0 0 6px var(--accent-soft), 0 18px 40px -12px var(--accent); } }
+.roles__badge--fav { background: linear-gradient(135deg, #f5b454, #f97316) !important; color: #1a1205 !important; font-size: .7rem !important; padding: 3px 9px !important; }
+.roles__fav-note { color: var(--text); background: linear-gradient(transparent 62%, color-mix(in srgb, var(--accent) 35%, transparent) 0); padding: 0 2px; }
 .roles__badge { margin-left: auto; font: 600 .66rem var(--font-mono); padding: 2px 8px; border-radius: 99px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--on-accent); white-space: nowrap; }
 @media (min-width: 720px) { .roles__grid { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1100px) { .roles__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
@@ -1154,5 +1167,6 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
   .js .reveal { opacity: 1; transform: none; }
   .js .codecard .tx { clip-path: none; }
   .flow__panel.on .termmock__body span { opacity: 1; }
+  .roles__group li.fav { animation: none; }
   .js .codecard .codecard__status { opacity: 1; }
 }
