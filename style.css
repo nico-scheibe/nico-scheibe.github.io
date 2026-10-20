@@ -741,6 +741,9 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .footer .container { position: relative; }
 .footer__top { display: grid; gap: 36px; }
 .footer__brand p { margin: 16px 0 18px; max-width: 34ch; color: var(--text-2); }
+.footer__mail { margin: 0 0 16px !important; font-size: .92rem; color: var(--text-2); }
+.footer__mail a { color: var(--text); text-decoration: none; border-bottom: 2px solid var(--accent); padding-bottom: 1px; transition: color .2s; }
+.footer__mail a:hover { color: var(--accent); }
 .footer__status {
   display: inline-flex; align-items: center; gap: 9px; padding: 6px 13px; border-radius: 99px;
   background: var(--surface); border: 1px solid var(--border); font-size: .8rem; color: var(--text-2);

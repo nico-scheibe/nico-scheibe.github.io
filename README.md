@@ -170,6 +170,8 @@ cmake --build build-wasm
 
 ### Windows-Version zum Download (GitHub Releases)
 
+Der Download-Bereich auf der Xyntal-Seite ist aktuell ausgeblendet, bis es eine erste Version gibt. Wenn es so weit ist, sag Bescheid oder baue unter dem Demo-Fenster wieder einen Download-Button ein.
+
 1. Windows-Build erstellen, z. B. mit `windeployqt` alle nötigen Qt-Dateien zusammensammeln und als `.zip` packen oder einen Installer bauen.
 2. Auf GitHub in deinem Repository: **Releases → „Draft a new release“** → Version eintragen (z. B. `v0.3`) → Datei hochladen → **Publish**.
 3. In `xyntal.html` beim Download-Button den Link in `[...]` ersetzen, z. B.
