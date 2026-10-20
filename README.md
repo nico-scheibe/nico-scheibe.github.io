@@ -206,7 +206,7 @@ Hinweis: Nicht signierte `.exe`-Dateien lösen eine Windows-SmartScreen-Warnung 
 ### Vorschaubild beim Teilen
 
 - `assets/og-image.jpg` erscheint, wenn du den Link per WhatsApp, LinkedIn, E-Mail usw. teilst.
-- Die Adresse der Seite (`https://nicoscheibe18-jpg.github.io/`) steht oben in `index.html`, `xyntal.html` und `noxi.html` (bei `og:url` und `og:image`). Wenn du später eine eigene Domain nutzt, ersetze sie dort.
+- Die Adresse der Seite (`https://nico-scheibe.github.io/`) steht oben in `index.html`, `xyntal.html` und `noxi.html` (bei `og:url` und `og:image`). Wenn du später eine eigene Domain nutzt, ersetze sie dort.
 - Testen kannst du die Vorschau danach z. B. mit dem LinkedIn Post Inspector.
 
 ### Schriften
@@ -271,7 +271,7 @@ Ja, das geht – und ist eine gute Wahl. Es gibt zwei Wege:
 
    Bei allen Einträgen **Proxy-Status auf „DNS only“ (graue Wolke)** stellen, damit GitHub das HTTPS-Zertifikat ausstellen kann.
 4. Ein paar Minuten bis Stunden warten. Danach in GitHub unter Pages **„Enforce HTTPS“** anhaken.
-5. In den drei Seiten `nicoscheibe18-jpg.github.io` durch deine neue Domain ersetzen (siehe „Vorschaubild beim Teilen“).
+5. In den drei Seiten `nico-scheibe.github.io` durch deine neue Domain ersetzen (siehe „Vorschaubild beim Teilen“).
 
 **Weg B: Alles bei Cloudflare (Cloudflare Pages)**
 
