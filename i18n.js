@@ -348,8 +348,8 @@
   "Was soll entstehen?": "What should it be?",
   "Anweisung": "Instruction",
   "Ziel genau beschreiben": "Describe the goal precisely",
-  "KI baut": "AI builds",
-  "Code in Minuten": "Code in minutes",
+  "Mit KI umsetzen": "Build with AI",
+  "Anleiten & prüfen": "Guide & review",
   "Prüfen & testen": "Review & test",
   "Ich suche die Fehler": "I hunt for the bugs",
   "Verbessern": "Improve",
@@ -369,9 +369,9 @@
   "KI": "AI",
   "Bau mir eine moderne, persönliche Portfolio-Website auf Deutsch, mit der ich mich bei Firmen im Bereich KI-Entwicklung bewerben kann. Mobile-first, heller und dunkler Modus, kostenlos über GitHub Pages hostbar …": "Build me a modern, personal portfolio website in German that I can use to apply to companies in AI development. Mobile-first, light and dark mode, free to host on GitHub Pages …",
   "Verstanden. Bevor ich anfange: Welche Design-Richtung gefällt dir, und welche E-Mail soll in den Kontaktbereich?": "Got it. Before I start: which design direction do you like, and which email should go in the contact section?",
-  "Schritt 3 · KI baut": "Step 3 · AI builds",
-  "Aus der Anweisung wird in Minuten Code.": "The instruction turns into code within minutes.",
-  "Die KI schreibt den Großteil des Codes. Ich verfolge, was entsteht, und lenke nach.": "The AI writes most of the code. I follow what's being built and steer as needed.",
+  "Schritt 3 · Mit KI umsetzen": "Step 3 · Build with AI",
+  "Ich steuere die Umsetzung, die KI schreibt Code.": "I guide the implementation; AI writes code.",
+  "Die KI schreibt den Großteil des Codes. Ich lege die Funktionen fest, prüfe das Verhalten und beschreibe nötige Anpassungen. Ob das Ergebnis im Alltag passt, teste ich selbst.": "AI writes most of the code. I define the features, review the behavior and describe necessary changes. I test whether the result works for everyday use myself.",
   "index.html, style.css, main.js erstellt": "created index.html, style.css, main.js",
   "Projekte aus projects.js eingebunden": "loaded projects from projects.js",
   "Hell/Dunkel-Modus & Animationen": "light/dark mode & animations",
@@ -405,7 +405,7 @@
   "Rolle der KI": "The AI's role",
   "Code schnell schreiben": "Write code fast",
   "Lösungen vorschlagen": "Suggest solutions",
-  "Ideen in Minuten umsetzen": "Turn ideas into reality in minutes",
+  "Umsetzungsentwürfe liefern": "Provide implementation drafts",
   "Routinearbeit abnehmen": "Take over routine work",
   "Entwickelt Anwendungen mit KI-Funktionen – vom Prototyp bis zur fertigen Software, im Team mit erfahrenen Entwicklern.": "Builds applications with AI features – from prototype to finished software, together with experienced developers.",
   "Bindet Sprachmodelle wie Claude oder ChatGPT in Apps und Websites ein, z. B. für Suche, Texte oder Assistenten.": "Integrates language models like Claude or ChatGPT into apps and websites, e.g. for search, text or assistants.",
@@ -428,7 +428,12 @@
   "Vielleicht hat sich ein Tippfehler eingeschlichen oder die Seite ist umgezogen. Kein Problem – hier geht es weiter:": "Maybe there's a typo or the page has moved. No problem – here's where to go next:",
   "\"diese-seite\"": "\"this-page\"",
   "✗ Fehler 404: Seite nicht gefunden": "✗ Error 404: page not found",
-  "\"startseite\"": "\"home\""
+  "\"startseite\"": "\"home\"",
+  "Meine Entscheidung: den Alltag zusammenbringen": "My decision: bring everyday workflows together",
+  "Ich habe Kalender, Aufgaben und Lernkarten bewusst in Noxi gebündelt: Ich möchte meinen Tag planen und lernen, ohne ständig zwischen Apps zu wechseln. Durch die tägliche Nutzung prüfe ich, was mir dabei hilft und wo ich nachbessern muss.": "I deliberately combined my calendar, tasks and flashcards in Noxi: I want to plan my day and study without constantly switching apps. Daily use helps me check what works for me and what needs improvement.",
+  "Konkretes Beispiel aus der Browser-Demo": "A concrete example from the browser demo",
+  "Beim Testen der Noxi-Demo habe ich zwei Probleme gefunden: Kurze Termine wurden abgeschnitten, und neue Aufgaben blieben unter bestimmten Filtern unsichtbar. Meine Anforderung: Auch kurze Termine müssen lesbar sein, und nach dem Anlegen einer Aufgabe muss sie sichtbar sein.": "While testing the Noxi demo, I found two problems: short events were cut off, and new tasks remained invisible under certain filters. My requirement: even short events must be readable, and a newly created task must be visible.",
+  "Ich habe die Fehler beschrieben und mit KI korrigiert: Kurze Termine erscheinen kompakt in einer Zeile. Würde der aktive Filter eine neue Aufgabe ausblenden, wechselt die Demo auf „Alle“. Anschließend habe ich die betroffenen Abläufe erneut durchgeklickt. Diese Beispiele betreffen die Browser-Demo, nicht die native Swift-App.": "I described the bugs and fixed them with AI: short events appear compactly on one line. If the active filter would hide a new task, the demo switches to “All”. I then clicked through the affected workflows again. These examples concern the browser demo, not the native Swift app."
 };
 
   var ATTRS = ["aria-label", "placeholder", "title", "alt"];
