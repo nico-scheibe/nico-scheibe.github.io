@@ -200,13 +200,13 @@ Hinweis: Nicht signierte `.exe`-Dateien lösen eine Windows-SmartScreen-Warnung 
 ### Impressum & Datenschutz
 
 - In `impressum.html` und `datenschutz.html` noch **[Straße und Hausnummer]** und **[PLZ]** eintragen.
-- In `datenschutz.html` den Abschnitt **„3. Cloudflare“ löschen**, falls du Cloudflare nicht nutzt.
+- Wenn du später Cloudflare nutzt, in `datenschutz.html` einen Abschnitt zu Cloudflare ergänzen (Anbieter, verarbeitete Daten, Rechtsgrundlage).
 - Die Texte sind eine solide Vorlage für eine private Bewerbungsseite, aber keine Rechtsberatung. Wenn du ganz sicher gehen willst, lass sie kurz prüfen (z. B. mit einem Generator wie e-recht24 vergleichen).
 
 ### Vorschaubild beim Teilen
 
 - `assets/og-image.jpg` erscheint, wenn du den Link per WhatsApp, LinkedIn, E-Mail usw. teilst.
-- **Wichtig:** In `index.html`, `xyntal.html` und `noxi.html` steht oben `[deine-domain.de]`. Ersetze das durch deine echte Adresse (z. B. `nicoscheibe.de` oder `dein-name.github.io`), sonst finden WhatsApp & Co. das Bild nicht.
+- Die Adresse der Seite (`https://nicoscheibe18-jpg.github.io/`) steht oben in `index.html`, `xyntal.html` und `noxi.html` (bei `og:url` und `og:image`). Wenn du später eine eigene Domain nutzt, ersetze sie dort.
 - Testen kannst du die Vorschau danach z. B. mit dem LinkedIn Post Inspector.
 
 ### Schriften
@@ -271,7 +271,7 @@ Ja, das geht – und ist eine gute Wahl. Es gibt zwei Wege:
 
    Bei allen Einträgen **Proxy-Status auf „DNS only“ (graue Wolke)** stellen, damit GitHub das HTTPS-Zertifikat ausstellen kann.
 4. Ein paar Minuten bis Stunden warten. Danach in GitHub unter Pages **„Enforce HTTPS“** anhaken.
-5. In den drei Seiten `[deine-domain.de]` durch deine Domain ersetzen (siehe „Vorschaubild beim Teilen“).
+5. In den drei Seiten `nicoscheibe18-jpg.github.io` durch deine neue Domain ersetzen (siehe „Vorschaubild beim Teilen“).
 
 **Weg B: Alles bei Cloudflare (Cloudflare Pages)**
 
@@ -279,7 +279,7 @@ Ja, das geht – und ist eine gute Wahl. Es gibt zwei Wege:
 2. Framework: **Keins**, Build-Befehl: **leer lassen**, Ausgabeverzeichnis: **`/`** → **Speichern und bereitstellen**.
 3. Unter **Benutzerdefinierte Domains** deine Domain hinzufügen – Cloudflare richtet alles automatisch ein.
 4. Jeder `git push` aktualisiert die Seite automatisch.
-5. In `datenschutz.html` den GitHub-Abschnitt entfernen und den Cloudflare-Abschnitt behalten.
+5. In `datenschutz.html` den GitHub-Abschnitt durch einen Abschnitt zu Cloudflare ersetzen.
 
 **Hinweis zur 404-Seite:** `404.html` nutzt Pfade, die mit `/` beginnen. Sie funktioniert deshalb, wenn die Seite direkt unter einer Domain oder `dein-name.github.io` liegt (nicht in einem Unterordner wie `dein-name.github.io/portfolio`).
 
@@ -299,7 +299,7 @@ Nach jedem Hochladen dauert es ca. 1 Minute, bis die Änderung online ist. Wenn 
 
 ## Checkliste vor dem Bewerben
 
-- [ ] Alle `[eckigen Klammern]` ersetzt (Suche nach `[`) – vor allem Adresse im Impressum/Datenschutz und `[deine-domain.de]`
+- [ ] Alle `[eckigen Klammern]` ersetzt (Suche nach `[`) 
 - [ ] Auf dem Handy getestet (hell & dunkel, Deutsch & Englisch)
 - [ ] Vorschaubild beim Teilen getestet (z. B. Link an dich selbst per WhatsApp)
 - [ ] Keine dienstinternen Details (Einheiten, Standorte, Systemnamen) auf der Seite
