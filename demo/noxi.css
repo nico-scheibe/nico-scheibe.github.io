@@ -78,7 +78,7 @@ h1, h2, h3, h4, p { margin: 0; }
 .main { position: relative; min-width: 0; min-height: 0; display: flex; flex-direction: column; }
 .statusbar { display: none; }
 .view { flex: 1; overflow: auto; padding: 30px 34px 60px; }
-.view > * { animation: rise .3s ease; }
+.view.enter > * { animation: rise .3s ease; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
 .tabbar { display: none; }
 
@@ -199,16 +199,20 @@ select.input { appearance: none; cursor: pointer; padding-right: 32px; backgroun
 .hour { height: 56px; position: relative; border-top: 1px solid var(--line); }
 .hour span { position: absolute; left: -54px; top: -9px; font-size: 11.5px; font-weight: 700; color: var(--text-3); width: 42px; text-align: right; }
 .ev {
-  position: absolute; left: 62px; right: 6px; border-radius: 12px; padding: 7px 11px; overflow: hidden; border: 0; text-align: left;
-  display: flex; flex-direction: column; justify-content: flex-start;
-  background: color-mix(in srgb, var(--c) 18%, transparent); border-left: 3px solid var(--c); color: var(--text); transition: transform .15s, background-color .15s;
+  position: absolute; left: 62px; right: 6px; z-index: 2; border-radius: 12px; padding: 7px 11px; overflow: hidden; border: 0; text-align: left;
+  display: flex; flex-direction: column; justify-content: flex-start; min-width: 0;
+  background: color-mix(in srgb, var(--c) 20%, #0d1514); border-left: 3px solid var(--c); color: var(--text); transition: background-color .15s;
 }
-.ev:hover { transform: translateX(2px); background: color-mix(in srgb, var(--c) 26%, transparent); }
-.ev b { display: block; font-size: 13px; font-weight: 800; }
+.ev:hover { background: color-mix(in srgb, var(--c) 28%, #0d1514); z-index: 3; }
+.ev b { display: block; font-size: 13px; font-weight: 800; line-height: 1.3; }
+.ev.short { flex-direction: row; align-items: center; gap: 8px; padding: 0 11px; border-radius: 9px; }
+.ev.short b { flex: 0 1 auto; }
+.ev.short span { flex-shrink: 0; font-size: 11px; }
 .ev span { font-size: 11.5px; color: var(--text-2); }
 .ev.new { animation: pop .4s ease; }
-.nowline { position: absolute; left: 58px; right: 0; height: 2px; background: var(--rose); z-index: 2; }
-.nowline::before { content: ""; position: absolute; left: -5px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--rose); }
+.nowline { position: absolute; left: 58px; right: 0; height: 2px; background: var(--rose); z-index: 1; pointer-events: none; }
+.nowline::after { content: ""; position: absolute; inset: -1px 0; background: inherit; opacity: .35; filter: blur(3px); }
+.nowline::before { content: ""; position: absolute; left: -5px; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--rose); z-index: 3; }
 .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--text-2); }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
 

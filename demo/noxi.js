@@ -200,10 +200,30 @@
     var start = 7, end = 23, H = 56;
     html += '<div class="card" style="padding:12px 14px 12px 4px"><div class="cal">';
     for (var h = start; h < end; h++) html += '<div class="hour"><span>' + (h < 10 ? "0" : "") + h + ":00</span></div>";
+    // Überlappende Termine nebeneinander statt übereinander anordnen
+    var cols = [], group = [], groupEnd = -1;
+    function closeGroup() { group.forEach(function (g) { g.n = group.reduce(function (m, x) { return Math.max(m, x.col + 1); }, 1); }); group = []; }
     evs.forEach(function (e) {
-      var top = (mins(e.s) - start * 60) / 60 * H + 8, height = Math.max(26, (mins(e.e) - mins(e.s)) / 60 * H - 4);
-      html += '<button class="ev ' + (e.fresh ? "new" : "") + '" style="top:' + top + "px;height:" + height + "px;--c:" + TYPES[e.type].c + '" data-act="openEvent" data-id="' + e.id + '"><b class="ell">' + esc(e.t) + "</b>" + (height > 40 ? "<span>" + e.s + " – " + e.e + "</span>" : "") + "</button>";
+      var s0 = mins(e.s), e0 = mins(e.e);
+      if (s0 >= groupEnd) { closeGroup(); cols = []; }
+      var col = 0;
+      while (cols[col] !== undefined && cols[col] > s0) col++;
+      cols[col] = e0;
+      var item = { e: e, col: col };
+      group.push(item);
+      groupEnd = Math.max(groupEnd, e0);
+      e._layout = item;
+    });
+    closeGroup();
+    evs.forEach(function (e) {
+      var L = e._layout;
+      var top = (mins(e.s) - start * 60) / 60 * H + 8;
+      var height = Math.max(24, (mins(e.e) - mins(e.s)) / 60 * H - 4);
+      var short = height < 44;
+      var pos = "left:calc(62px + (100% - 68px) * " + L.col + " / " + L.n + ");width:calc((100% - 68px) / " + L.n + " - 4px);";
+      html += '<button class="ev ' + (short ? "short " : "") + (e.fresh ? "new" : "") + '" style="top:' + top + "px;height:" + height + "px;" + pos + "--c:" + TYPES[e.type].c + '" data-act="openEvent" data-id="' + e.id + '" title="' + esc(e.t) + " · " + e.s + " – " + e.e + '"><b class="ell">' + esc(e.t) + "</b><span" + (short ? ' class="ell"' : "") + ">" + e.s + (short ? "" : " – " + e.e) + "</span></button>";
       e.fresh = false;
+      delete e._layout;
     });
     if (S.day === TODAY) html += '<div class="nowline" style="top:' + ((NOW - start * 60) / 60 * H + 8) + 'px" aria-label="Jetzt"></div>';
     html += "</div></div>";
@@ -297,7 +317,13 @@
     var m = $("#msgs");
     if (m) m.scrollTop = m.scrollHeight;
   }
-  function go(r) { S.route = r; closeLayer(); render(); $("#view").scrollTop = 0; }
+  // Nur beim Wechsel des Bereichs einblenden – nicht bei jedem Klick (verhindert Flackern)
+  function go(r) {
+    S.route = r; closeLayer(); render();
+    var v = $("#view");
+    v.scrollTop = 0;
+    v.classList.remove("enter"); void v.offsetWidth; v.classList.add("enter");
+  }
   function rerender() { var v = $("#view"), y = v.scrollTop; render(); v.scrollTop = y; }
   function toast(msg, icon) {
     var t = document.createElement("div");
