@@ -513,6 +513,51 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .contact__meta li { display: inline-flex; align-items: center; gap: 8px; }
 @media (min-width: 820px) { .contact__inner { padding: 80px 48px 56px; } }
 
+/* ---------- Was ich suche ---------- */
+.wishes { display: grid; gap: 14px; }
+.wish {
+  position: relative; overflow: hidden; padding: 24px 22px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  transition: transform .25s ease, border-color .25s ease;
+}
+.wish:hover { transform: translateY(-3px); border-color: var(--accent); }
+.wish::after { content: ""; position: absolute; right: -40px; bottom: -40px; width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(closest-side, var(--accent-soft), transparent); }
+.wish__icon { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px; margin-bottom: 16px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--on-accent); }
+.wish__icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.wish h3 { font-size: 1.15rem; margin-bottom: 8px; }
+.wish p { color: var(--text-2); margin: 0; font-size: .95rem; }
+@media (min-width: 640px) { .wishes { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1000px) { .wishes { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.roles {
+  margin-top: 18px; padding: 26px 24px;
+  background: linear-gradient(160deg, var(--accent-soft), transparent 55%), var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+}
+.roles__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px; margin-bottom: 20px; }
+.roles__head h3 { font-size: 1.35rem; }
+.roles__head p { margin: 0; color: var(--text-2); font-size: .92rem; }
+.roles__grid { display: grid; gap: 22px; }
+.roles__group h4 { margin: 0 0 10px; font: 500 .74rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--accent); }
+.roles__group ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.roles__group li {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 10px 12px;
+  border-radius: 12px; background: var(--bg); border: 1px solid var(--border); font-weight: 500; font-size: .93rem;
+}
+.roles__group li.top { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+.roles__badge { margin-left: auto; font: 600 .66rem var(--font-mono); padding: 2px 8px; border-radius: 99px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--on-accent); white-space: nowrap; }
+@media (min-width: 720px) { .roles__grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1100px) { .roles__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+.facts-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 18px 0 0;
+  background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+}
+.facts-row > div { background: var(--surface); padding: 14px 16px; }
+.facts-row dt { font-family: var(--font-mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+.facts-row dd { margin: 3px 0 0; font-weight: 600; }
+@media (min-width: 820px) { .facts-row { grid-template-columns: repeat(4, 1fr); } }
+
 /* ---------- Footer ---------- */
 .footer { position: relative; overflow: hidden; border-top: 1px solid var(--border); padding: 64px 0 28px; background: var(--bg-2); color: var(--text-2); font-size: .92rem; }
 .footer__glow {
@@ -552,7 +597,7 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .footer__up:hover { border-color: var(--accent); color: var(--accent); }
 .footer__up:hover span { transform: translateY(-2px); }
 @media (min-width: 640px) { .footer__top { grid-template-columns: 1fr 1fr; } }
-@media (min-width: 980px) { .footer__top { grid-template-columns: 1.6fr 1fr 1fr 1.3fr; gap: 40px; } }
+@media (min-width: 980px) { .footer__top { grid-template-columns: 2fr 1fr 1fr; gap: 40px; } }
 
 /* =========================================================
    Projekt-Detailseiten (z. B. xyntal.html)
