@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seite nicht gefunden – Nico Scheibe</title>
+  <meta name="description" content="Diese Seite gibt es nicht.">
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#17181b">
+
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/fonts/fonts.css">
+  <link rel="stylesheet" href="/style.css">
+  <script>
+    // Standard: dunkel. Die Wahl des Besuchers wird im Browser gespeichert.
+    (function () {
+      var root = document.documentElement, theme = "dark";
+      root.classList.add("js");
+      try { theme = localStorage.getItem("theme") || "dark"; } catch (e) {}
+      root.setAttribute("data-theme", theme);
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="/index.html" class="nav__logo" aria-label="Zur Startseite">
+        <span class="nav__logo-mark">N</span><span class="nav__logo-text">nico<span class="accent">.</span>scheibe</span>
+      </a>
+      <nav class="nav__menu" id="navMenu" aria-label="Hauptnavigation">
+        <a href="/index.html#about">Über mich</a>
+        <a href="/index.html#projects">Projekte</a>
+        <a href="/index.html#skills">Skills</a>
+        <a href="/index.html#timeline">Werdegang</a>
+        <a href="/index.html#contact" class="nav__cta">Kontakt</a>
+      </nav>
+      <div class="nav__actions">
+        <button class="lang-toggle" type="button" aria-pressed="false" aria-label="Auf Englisch umschalten"><span data-l="de" class="on">DE</span><span data-l="en">EN</span></button>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Zum hellen Modus wechseln">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+        </button>
+        <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Menü öffnen">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero notfound" id="top">
+      <div class="hero__grid" aria-hidden="true"></div>
+      <div class="container notfound__inner">
+        <p class="notfound__code reveal" aria-hidden="true">404</p>
+        <h1 class="notfound__title reveal">Diese Seite gibt es nicht.</h1>
+        <p class="notfound__text reveal">Vielleicht hat sich ein Tippfehler eingeschlichen oder die Seite ist umgezogen. Kein Problem – hier geht es weiter:</p>
+        <div class="notfound__actions reveal">
+          <a href="/index.html" class="btn btn--primary">Zur Startseite <span aria-hidden="true">→</span></a>
+          <a href="/index.html#projects" class="btn btn--ghost">Projekte ansehen</a>
+        </div>
+        <div class="codecard notfound__term reveal" aria-hidden="true">
+          <div class="term__bar"><i></i><i></i><i></i><span>terminal</span></div>
+          <div class="term__body term__body--code"><code>
+              <span class="ln"><span class="tx" style="--i:0"><span class="tk-p">$</span> open <span class="tk-str">"diese-seite"</span></span></span>
+              <span class="ln"><span class="tx" style="--i:1"><span class="tk-err">✗ Fehler 404: Seite nicht gefunden</span></span></span>
+              <span class="ln"><span class="tx" style="--i:2"><span class="tk-p">$</span> open <span class="tk-str">"startseite"</span><span class="cursor">▌</span></span></span>
+          </code></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="/index.html#top" class="nav__logo" aria-label="Zum Seitenanfang">
+            <span class="nav__logo-mark">N</span><span class="nav__logo-text">nico<span class="accent">.</span>scheibe</span>
+          </a>
+          <p>Ich baue mit KI aus Ideen funktionierende Apps. Ab Dezember 2027 in der KI-Entwicklung.</p>
+          <span class="footer__status"><span class="dot" aria-hidden="true"></span>Verfügbar ab Dezember 2027 · Regensburg</span>
+        </div>
+        <nav class="footer__col" aria-label="Seiten">
+          <h4>Seiten</h4>
+          <a href="/index.html#about">Über mich</a>
+          <a href="/index.html#projects">Projekte</a>
+          <a href="/index.html#skills">Skills &amp; Tools</a>
+          <a href="/index.html#timeline">Werdegang</a>
+        </nav>
+        <nav class="footer__col" aria-label="Projekte">
+          <h4>Projekte</h4>
+          <a href="/noxi.html">Noxi</a>
+          <a href="/noxi.html#demo">Noxi-Demo</a>
+          <a href="/xyntal.html">Xyntal</a>
+          <a href="/xyntal.html#demo">Xyntal-Demo</a>
+        </nav>
+        <div class="footer__col">
+          <h4>Kontakt</h4>
+          <a href="mailto:nico.scheibe18@gmail.com">nico.scheibe18@gmail.com</a>
+          <a href="/index.html#contact" class="footer__cta">Lass uns sprechen <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="footer__word" aria-hidden="true">nico<span>.</span>scheibe</div>
+      <div class="footer__bottom">
+        <p>© <span id="year">2026</span> Nico Scheibe · Regensburg</p>
+        <nav class="footer__legal" aria-label="Rechtliches">
+          <a href="/impressum.html">Impressum</a>
+          <a href="/datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="#top" class="footer__up">Nach oben <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/i18n.js"></script>
+  <script src="/main.js"></script>
+</body>
+</html>

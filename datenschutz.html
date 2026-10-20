@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Datenschutz – Nico Scheibe</title>
+  <meta name="description" content="Datenschutzerklärung der Portfolio-Website von Nico Scheibe.">
+  <meta name="robots" content="noindex">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#17181b">
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Standard: dunkel. Die Wahl des Besuchers wird im Browser gespeichert.
+    (function () {
+      var root = document.documentElement, theme = "dark";
+      root.classList.add("js");
+      try { theme = localStorage.getItem("theme") || "dark"; } catch (e) {}
+      root.setAttribute("data-theme", theme);
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="Zur Startseite">
+        <span class="nav__logo-mark">N</span><span class="nav__logo-text">nico<span class="accent">.</span>scheibe</span>
+      </a>
+      <nav class="nav__menu" id="navMenu" aria-label="Hauptnavigation">
+        <a href="index.html#about">Über mich</a>
+        <a href="index.html#projects">Projekte</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#timeline">Werdegang</a>
+        <a href="index.html#contact" class="nav__cta">Kontakt</a>
+      </nav>
+      <div class="nav__actions">
+        <button class="lang-toggle" type="button" aria-pressed="false" aria-label="Auf Englisch umschalten"><span data-l="de" class="on">DE</span><span data-l="en">EN</span></button>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Zum hellen Modus wechseln">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+        </button>
+        <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Menü öffnen">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section legal-page">
+      <div class="container legal">
+        <a href="index.html" class="back-link"><span aria-hidden="true">←</span> Zur Startseite</a>
+        <h1>Datenschutzerklärung</h1>
+        <p class="legal__lang-note">This page is only available in German.</p>
+        <p class="legal__lead">Kurz gesagt: Diese Seite setzt keine Cookies, nutzt kein Tracking und lädt keine Inhalte von Google oder anderen Drittanbietern.</p>
+
+        <h2>1. Verantwortlicher</h2>
+        <p>
+          Nico Scheibe<br>
+          Regensburg<br>
+          E-Mail: <a href="mailto:nico.scheibe18@gmail.com">nico.scheibe18@gmail.com</a>
+        </p>
+
+        <h2>2. Hosting über GitHub Pages</h2>
+        <p>
+          Diese Website wird über GitHub Pages bereitgestellt. Anbieter ist GitHub Inc., 88 Colin P. Kelly Jr.
+          Street, San Francisco, CA 94107, USA. Beim Aufruf der Seite verarbeitet GitHub technisch notwendige
+          Daten, insbesondere die IP-Adresse, Datum und Uhrzeit des Zugriffs, die aufgerufene Seite und
+          Informationen zum verwendeten Browser (Server-Logfiles). Das ist nötig, um die Seite sicher und
+          stabil auszuliefern.
+        </p>
+        <p>
+          Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO. Mein berechtigtes Interesse liegt in einer
+          zuverlässigen Bereitstellung dieser Seite. Dabei können Daten in die USA übermittelt werden.
+          Die Übermittlung erfolgt auf Grundlage des EU-US Data Privacy Framework bzw. von
+          Standardvertragsklauseln der EU-Kommission. Weitere Informationen:
+          <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">Datenschutzerklärung von GitHub</a>.
+        </p>
+
+        <h2>3. Cloudflare</h2>
+        <p>[Diesen Abschnitt löschen, wenn du Cloudflare nicht nutzt.]</p>
+        <p>
+          Für die Domain und die Auslieferung dieser Seite nutze ich Dienste der Cloudflare, Inc.,
+          101 Townsend St., San Francisco, CA 94107, USA. Cloudflare verarbeitet dabei technisch notwendige
+          Verbindungsdaten wie die IP-Adresse, um die Seite schnell und geschützt auszuliefern. Rechtsgrundlage
+          ist Art. 6 Abs. 1 lit. f DSGVO. Die Übermittlung in die USA erfolgt auf Grundlage des EU-US Data
+          Privacy Framework bzw. von Standardvertragsklauseln. Weitere Informationen:
+          <a href="https://www.cloudflare.com/de-de/privacypolicy/" target="_blank" rel="noopener">Datenschutzerklärung von Cloudflare</a>.
+        </p>
+
+        <h2>4. Schriftarten</h2>
+        <p>
+          Alle Schriftarten sind lokal auf diesem Server gespeichert. Beim Aufruf der Seite wird keine
+          Verbindung zu Google Fonts oder anderen Anbietern aufgebaut.
+        </p>
+
+        <h2>5. Lokale Speicherung im Browser</h2>
+        <p>
+          Wenn du zwischen hellem und dunklem Modus oder zwischen Deutsch und Englisch wechselst, speichert
+          dein Browser diese Auswahl lokal (Local Storage). Diese Angaben verlassen dein Gerät nicht und werden
+          nicht an mich übertragen. Die Speicherung ist für die von dir gewünschte Funktion unbedingt
+          erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG). Du kannst sie jederzeit in deinen Browsereinstellungen löschen.
+        </p>
+        <p>Es werden keine Cookies gesetzt und keine Analyse- oder Tracking-Werkzeuge verwendet.</p>
+
+        <h2>6. Kontakt per E-Mail oder Telefon</h2>
+        <p>
+          Wenn du mich per E-Mail oder Telefon kontaktierst, verarbeite ich deine Angaben (z. B. Name,
+          E-Mail-Adresse, Telefonnummer und Inhalt der Nachricht), um deine Anfrage zu beantworten.
+          Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn es um ein mögliches Arbeitsverhältnis geht,
+          ansonsten Art. 6 Abs. 1 lit. f DSGVO. Ich lösche die Daten, sobald sie nicht mehr benötigt werden
+          und keine gesetzlichen Aufbewahrungspflichten bestehen.
+        </p>
+
+        <h2>7. Demos</h2>
+        <p>
+          Die interaktiven Demos von Noxi und Xyntal laufen vollständig in deinem Browser. Eingaben werden
+          weder gespeichert noch übertragen und sind nach dem Neuladen der Seite verschwunden.
+        </p>
+
+        <h2>8. Deine Rechte</h2>
+        <p>
+          Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17),
+          Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch gegen
+          die Verarbeitung (Art. 21 DSGVO). Schreib mir dazu einfach eine E-Mail.
+        </p>
+        <p>
+          Außerdem kannst du dich bei einer Datenschutz-Aufsichtsbehörde beschweren. Zuständig ist zum
+          Beispiel das Bayerische Landesamt für Datenschutzaufsicht (BayLDA), Promenade 18, 91522 Ansbach.
+        </p>
+
+        <p class="legal__date">Stand: Oktober 2026</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html#top" class="nav__logo" aria-label="Zum Seitenanfang">
+            <span class="nav__logo-mark">N</span><span class="nav__logo-text">nico<span class="accent">.</span>scheibe</span>
+          </a>
+          <p>Ich baue mit KI aus Ideen funktionierende Apps. Ab Dezember 2027 in der KI-Entwicklung.</p>
+          <span class="footer__status"><span class="dot" aria-hidden="true"></span>Verfügbar ab Dezember 2027 · Regensburg</span>
+        </div>
+        <nav class="footer__col" aria-label="Seiten">
+          <h4>Seiten</h4>
+          <a href="index.html#about">Über mich</a>
+          <a href="index.html#projects">Projekte</a>
+          <a href="index.html#skills">Skills &amp; Tools</a>
+          <a href="index.html#timeline">Werdegang</a>
+        </nav>
+        <nav class="footer__col" aria-label="Projekte">
+          <h4>Projekte</h4>
+          <a href="noxi.html">Noxi</a>
+          <a href="noxi.html#demo">Noxi-Demo</a>
+          <a href="xyntal.html">Xyntal</a>
+          <a href="xyntal.html#demo">Xyntal-Demo</a>
+        </nav>
+        <div class="footer__col">
+          <h4>Kontakt</h4>
+          <a href="mailto:nico.scheibe18@gmail.com">nico.scheibe18@gmail.com</a>
+          <a href="index.html#contact" class="footer__cta">Lass uns sprechen <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="footer__word" aria-hidden="true">nico<span>.</span>scheibe</div>
+      <div class="footer__bottom">
+        <p>© <span id="year">2026</span> Nico Scheibe · Regensburg</p>
+        <nav class="footer__legal" aria-label="Rechtliches">
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="#top" class="footer__up">Nach oben <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

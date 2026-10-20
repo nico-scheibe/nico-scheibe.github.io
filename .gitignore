@@ -1,0 +1,4 @@
+# Lokale Hilfsdateien, nicht veröffentlichen
+.claude/
+.DS_Store
+NOXI_PROMPT.md

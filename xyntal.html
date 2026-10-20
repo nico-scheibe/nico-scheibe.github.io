@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Xyntal – Projekt von Nico Scheibe</title>
+  <meta name="description" content="Xyntal verbindet junge, ambitionierte Menschen mit Leuten, die schon weiter sind – für Mentoring, Austausch und Projektpartner. Ein Projekt von Nico Scheibe.">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#17181b">
+
+  <meta property="og:title" content="Xyntal – Projekt von Nico Scheibe">
+  <meta property="og:description" content="Networking-App für junge, ambitionierte Menschen. Aktuell in Entwicklung.">
+  <meta property="og:type" content="website">
+  <!-- Nach dem Online-Stellen [deine-domain.de] durch deine echte Adresse ersetzen (siehe README) -->
+  <meta property="og:url" content="https://[deine-domain.de]/xyntal.html">
+  <meta property="og:image" content="https://[deine-domain.de]/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nico Scheibe – Ich baue mit KI aus Ideen funktionierende Apps.">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/fonts/fonts.css">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Standard: dunkel. Die Wahl des Besuchers wird im Browser gespeichert.
+    (function () {
+      var root = document.documentElement, theme = "dark";
+      root.classList.add("js");
+      try { theme = localStorage.getItem("theme") || "dark"; } catch (e) {}
+      root.setAttribute("data-theme", theme);
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="Zur Startseite">
+        <span class="nav__logo-mark">N</span><span class="nav__logo-text">nico<span class="accent">.</span>scheibe</span>
+      </a>
+      <nav class="nav__menu" id="navMenu" aria-label="Hauptnavigation">
+        <a href="index.html#about">Über mich</a>
+        <a href="index.html#projects">Projekte</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#timeline">Werdegang</a>
+        <a href="index.html#contact" class="nav__cta">Kontakt</a>
+      </nav>
+      <div class="nav__actions">
+        <button class="lang-toggle" type="button" aria-pressed="false" aria-label="Auf Englisch umschalten"><span data-l="de" class="on">DE</span><span data-l="en">EN</span></button>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Zum hellen Modus wechseln">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8 6 18M18 6l1.8-1.8"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+        </button>
+        <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Menü öffnen">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ INTRO ============ -->
+    <section class="hero detail-hero" id="top">
+      <div class="hero__grid" aria-hidden="true"></div>
+      <div class="container hero__inner detail-hero__inner">
+        <a href="index.html#projects" class="back-link reveal"><span aria-hidden="true">←</span> Zurück zu den Projekten</a>
+
+        <div class="detail-hero__top">
+          <div class="detail-hero__text">
+            <div class="detail-hero__head reveal">
+              <span class="detail-hero__icon" aria-hidden="true">X</span>
+              <span class="badge">In Entwicklung</span>
+            </div>
+            <h1 class="detail-hero__title reveal">Xyntal</h1>
+            <p class="detail-hero__lead reveal">
+              Die Networking-App, die junge, ambitionierte Menschen mit Leuten verbindet,
+              die <span class="hl">schon einen Schritt weiter sind.</span>
+            </p>
+          </div>
+
+          <!-- Kurzinfos als animierter Code-Block: Werte in den "Anführungszeichen" einfach anpassen -->
+          <div class="codecard reveal" role="group" aria-label="Kurzinfos: Networking-App, in Entwicklung, Rolle: Idee, Konzept, Design und Entwicklung, Plattform: Windows, gebaut mit Qt 6, QML und C++">
+            <div class="term__bar"><i></i><i></i><i></i><span>xyntal.config.js</span><span class="codecard__status">✓ läuft</span></div>
+            <div class="term__body term__body--code"><code aria-hidden="true">
+              <span class="ln"><span class="tx" style="--i:0"><span class="tk-kw">const</span> <span class="tk-var">xyntal</span> <span class="tk-p">= {</span></span></span>
+              <span class="ln"><span class="tx" style="--i:1">  <span class="tk-prop">art</span><span class="tk-p">:</span>        <span class="tk-str">"Networking-App"</span><span class="tk-p">,</span></span></span>
+              <span class="ln"><span class="tx" style="--i:2">  <span class="tk-prop">status</span><span class="tk-p">:</span>     <span class="tk-str">"In Entwicklung"</span><span class="tk-p">,</span> <span class="tk-cmt">// Prototyp</span></span></span>
+              <span class="ln"><span class="tx" style="--i:3">  <span class="tk-prop">meineRolle</span><span class="tk-p">: [</span></span></span>
+              <span class="ln"><span class="tx" style="--i:4">    <span class="tk-str">"Idee"</span><span class="tk-p">,</span> <span class="tk-str">"Konzept"</span><span class="tk-p">,</span></span></span>
+              <span class="ln"><span class="tx" style="--i:5">    <span class="tk-str">"Design"</span><span class="tk-p">,</span> <span class="tk-str">"Entwicklung"</span><span class="tk-p">,</span></span></span>
+              <span class="ln"><span class="tx" style="--i:6">  <span class="tk-p">],</span></span></span>
+              <span class="ln"><span class="tx" style="--i:7">  <span class="tk-prop">plattform</span><span class="tk-p">:</span>  <span class="tk-str">"Windows"</span><span class="tk-p">,</span></span></span>
+              <span class="ln"><span class="tx" style="--i:8">  <span class="tk-prop">gebautMit</span><span class="tk-p">: [</span></span></span>
+              <span class="ln"><span class="tx" style="--i:9">    <span class="tk-str">"Qt 6"</span><span class="tk-p">,</span> <span class="tk-str">"QML"</span><span class="tk-p">,</span> <span class="tk-str">"C++"</span><span class="tk-p">,</span></span></span>
+              <span class="ln"><span class="tx" style="--i:10">  <span class="tk-p">],</span></span></span>
+              <span class="ln"><span class="tx" style="--i:11"><span class="tk-p">};</span><span class="cursor" aria-hidden="true">▌</span></span></span>
+            </code></div>
+          </div>
+        </div>
+
+        <!-- ============ LIVE-DEMO ============
+             data-src = Datei, die im Fenster startet.
+             Aktuell: die interaktive HTML-Demo (demo/xyntal-demo.html).
+             Später für den echten Qt-WebAssembly-Build z. B. "demo/xyntal.html" eintragen (siehe README). -->
+        <div class="demo reveal" id="demo" data-src="demo/xyntal-demo.html">
+          <div class="demo__bar">
+            <span class="demo__app"><span class="demo__app-icon" aria-hidden="true">X</span> Xyntal – Demo</span>
+            <div class="demo__controls">
+              <button class="demo__ctrl" type="button" data-demo="fullscreen" aria-label="Vollbild" title="Vollbild">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+              </button>
+              <button class="demo__ctrl" type="button" data-demo="reset" aria-label="Demo neu starten" title="Neu starten">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="demo__screen">
+            <!-- Optional: Screenshot als Hintergrund des Startbildschirms: style="--demo-bg: url('assets/xyntal.png')" am .demo__start ergänzen -->
+            <div class="demo__start">
+              <span class="project__placeholder-icon" aria-hidden="true">X</span>
+              <h2 class="demo__title">Xyntal interaktiv ausprobieren</h2>
+              <p class="demo__text">Klick dich durch alle Funktionen: Dashboard, Matching, KI-Center, Workspaces, Agents und mehr. Ohne Download und ohne Anmeldung.</p>
+              <button class="btn btn--primary" type="button" data-demo="start">Demo starten <span aria-hidden="true">▶</span></button>
+              <p class="demo__hint">Interaktive Vorschau mit Beispieldaten · am besten am Laptop oder im Vollbild</p>
+            </div>
+            <div class="demo__status" hidden></div>
+          </div>
+        </div>
+
+        <div class="download reveal">
+          <div class="download__info">
+            <span class="download__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M3 5.5 10.5 4.5v7H3zM12 4.3 21 3v8.5h-9zM3 12.5h7.5v7L3 18.5zM12 12.5h9V21l-9-1.3z"/></svg>
+            </span>
+            <div>
+              <h3>Xyntal für Windows</h3>
+              <p>Noch in Entwicklung – sobald es eine erste Version gibt, kannst du sie hier herunterladen.</p>
+            </div>
+          </div>
+          <!-- Download-Link: [eckige Klammern] durch den Link zu deinem GitHub-Release ersetzen (siehe README) -->
+          <a class="btn btn--ghost js-download" href="[https://github.com/dein-name/xyntal/releases/latest]">Herunterladen <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DIE IDEE ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__num">01</span>
+          <h2>Die Idee</h2>
+        </div>
+        <div class="detail-split">
+          <div class="detail-prose reveal">
+            <p class="about__intro">
+              Viele junge Menschen haben Ideen und Ehrgeiz, aber niemanden im Umfeld, der den Weg
+              schon gegangen ist.
+            </p>
+            <p>
+              Wer gründen, sich selbstständig machen oder ein eigenes Projekt starten will, steht oft
+              allein da. Es fehlt jemand, den man fragen kann, der ehrliches Feedback gibt oder einfach
+              zeigt, wie er es selbst geschafft hat.
+            </p>
+            <p>
+              Mit Xyntal möchte ich genau diese Verbindung schaffen. Die App bringt Menschen zusammen,
+              die eigene Projekte oder Unternehmen aufbauen wollen, von Einsteigern bis zu denen, die
+              schon weiter sind. Und sie gibt ihnen direkt die Werkzeuge, um gemeinsam loszulegen:
+              Workspaces, Dateien, KI-Unterstützung und Automatisierungen.
+            </p>
+          </div>
+          <aside class="detail-quote reveal">
+            <p>„Die richtigen Leute zur richtigen Zeit kennenzulernen, kann alles verändern.“</p>
+            <span>– Der Gedanke hinter Xyntal</span>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FÜR WEN ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__num">02</span>
+          <h2>Für wen?</h2>
+        </div>
+        <div class="audience">
+          <article class="audience__card reveal">
+            <span class="audience__label">Am Anfang</span>
+            <h3>Junge, ambitionierte Menschen</h3>
+            <p>Angehende Gründer, Selbstständige und alle, die etwas Eigenes aufbauen wollen
+              und dafür Rat, Austausch oder Mitstreiter suchen.</p>
+          </article>
+          <div class="audience__link" aria-hidden="true">
+            <span></span><b>⇄</b><span></span>
+          </div>
+          <article class="audience__card reveal">
+            <span class="audience__label">Schon weiter</span>
+            <h3>Erfahrene Macher</h3>
+            <p>Gründer, Selbstständige und Profis, die ihr Wissen weitergeben, junge Talente
+              unterstützen oder neue Leute für Projekte finden wollen.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FUNKTIONEN ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__num">03</span>
+          <h2>Funktionen</h2>
+          <p class="section__sub">Was Xyntal schon kann und was als Nächstes kommt.</p>
+        </div>
+
+        <h3 class="feature-group__title reveal"><span class="status-dot status-dot--done" aria-hidden="true"></span> Bereits umgesetzt</h3>
+        <div class="features">
+          <article class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">▦</span>
+            <h3>Persönliches Dashboard</h3>
+            <p>Widgets, anpassbare Anordnung und verschiedene Layouts.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">◉</span>
+            <h3>Profile, Communities, Projekte &amp; Workspaces</h3>
+            <p>Die Grundstruktur für Vernetzung und Zusammenarbeit.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">✦</span>
+            <h3>Matching &amp; Discover</h3>
+            <p>Menschen und Projekte nach Fähigkeiten, Interessen, Verfügbarkeit und passender Arbeitsweise entdecken.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">⌕</span>
+            <h3>Globale Suche &amp; Schnellaktionen</h3>
+            <p>Inhalte finden und Funktionen direkt aufrufen.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">◈</span>
+            <h3>KI-Center</h3>
+            <p>KI-Unterhaltungen mit Verlauf und Erinnerungsfunktion.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">⟳</span>
+            <h3>Agents &amp; Automatisierungen</h3>
+            <p>Die Grundlage für automatisierte Aufgaben und Abläufe.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">▤</span>
+            <h3>Dateiverwaltung</h3>
+            <p>Versionen, Kommentare, Freigaben und nachvollziehbare Änderungen.</p>
+          </article>
+          <article class="feature reveal">
+            <span class="feature__icon" aria-hidden="true">⚙</span>
+            <h3>Admin- &amp; Supportbereich</h3>
+            <p>Grundfunktionen für Verwaltung und Support.</p>
+          </article>
+        </div>
+
+        <h3 class="feature-group__title feature-group__title--planned reveal"><span class="status-dot" aria-hidden="true"></span> Geplant &amp; im Ausbau</h3>
+        <ul class="roadmap">
+          <li class="roadmap__item reveal">
+            <h3>Nachrichten</h3>
+            <p>Voll funktionsfähige Kommunikation zwischen Nutzern.</p>
+          </li>
+          <li class="roadmap__item reveal">
+            <h3>Intelligenteres Matching</h3>
+            <p>Empfehlungen lernen aus Feedback und abgelehnten Vorschlägen.</p>
+          </li>
+          <li class="roadmap__item reveal">
+            <h3>Benachrichtigungen</h3>
+            <p>Hinweise auf neue Matches und relevante Aktivitäten.</p>
+          </li>
+          <li class="roadmap__item reveal">
+            <h3>Fokus-Assistent</h3>
+            <p>Empfehlungen nach „Jetzt“, „Danach“ und „Gut zu wissen“, mit Aufgabenwarteschlange und Fokusblöcken.</p>
+          </li>
+          <li class="roadmap__item reveal">
+            <h3>Persönliche Einstellungen</h3>
+            <p>Arbeitszeiten und Anzahl der Empfehlungen selbst festlegen.</p>
+          </li>
+          <li class="roadmap__item reveal">
+            <h3>Support-Tickets &amp; Archiv</h3>
+            <p>Anfragen bearbeiten und archivierte Inhalte wiederherstellen.</p>
+          </li>
+          <li class="roadmap__item roadmap__item--wide reveal">
+            <h3>Abo-Modell</h3>
+            <p>Geplante Stufen für unterschiedliche Bedürfnisse:</p>
+            <ol class="tiers">
+              <li>Free</li>
+              <li>Pulse</li>
+              <li>Nexus</li>
+              <li>Ascend</li>
+            </ol>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ WIE ICH ES BAUE ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__num">04</span>
+          <h2>Wie ich es baue</h2>
+        </div>
+        <div class="detail-split">
+          <div class="detail-prose reveal">
+            <p class="about__intro">
+              Ich entwickle Xyntal selbst – von der Idee und Funktionsplanung über das Design bis zur
+              technischen Umsetzung mit Qt 6, QML und C++.
+            </p>
+            <p>
+              Dabei nutze ich ChatGPT sowie Claude als Unterstützung, um die Architektur auszuarbeiten,
+              Code zu schreiben und zu prüfen, Fehler zu beheben und Funktionen wie Profile, Matching,
+              gemeinsame Projektbereiche und KI-Assistenten Schritt für Schritt miteinander zu verbinden.
+            </p>
+          </div>
+          <div class="skill-group reveal">
+            <h3><span class="skill-group__icon" aria-hidden="true">{ }</span> Tools &amp; Technik</h3>
+            <p class="tool-label">Umsetzung</p>
+            <ul class="chips">
+              <li>Qt 6</li>
+              <li>QML</li>
+              <li>C++</li>
+            </ul>
+            <p class="tool-label">KI als Unterstützung</p>
+            <ul class="chips">
+              <li>ChatGPT</li>
+              <li>Claude</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STAND ============ -->
+    <section class="section">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__num">05</span>
+          <h2>Aktueller Stand</h2>
+        </div>
+        <ol class="stepper">
+          <li class="step step--done reveal">
+            <div class="step__marker"><span class="step__dot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><span class="step__line" aria-hidden="true"></span></div>
+            <div class="step__card">
+              <span class="step__badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg> Erledigt</span>
+              <h3>Idee &amp; Konzept</h3>
+              <p>Zielgruppe, Kernfunktionen und Aufbau der App festgelegt.</p>
+            </div>
+          </li>
+          <li class="step step--now reveal">
+            <div class="step__marker"><span class="step__dot">2</span><span class="step__line" aria-hidden="true"></span></div>
+            <div class="step__card">
+              <span class="step__badge">Gerade dabei</span>
+              <h3>Entwicklung des Prototyps</h3>
+              <p>Diese Bereiche sind bereits umgesetzt:</p>
+              <ul class="step__tags step__tags--done">
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Dashboard</li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Profile</li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Communities</li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Workspaces</li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Matching</li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Suche</li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>KI-Center</li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Agents</li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Dateiverwaltung</li>
+                <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Admin &amp; Support</li>
+              </ul>
+            </div>
+          </li>
+          <li class="step step--next reveal">
+            <div class="step__marker"><span class="step__dot">3</span></div>
+            <div class="step__card">
+              <span class="step__badge">Als Nächstes</span>
+              <h3>Ausbau &amp; Feinschliff</h3>
+              <p>Diese Funktionen kommen als Nächstes:</p>
+              <ul class="step__tags">
+                <li>Nachrichten</li>
+                <li>Intelligenteres Matching</li>
+                <li>Benachrichtigungen</li>
+                <li>Fokus-Assistent</li>
+                <li>Abo-Modell</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="section section--contact">
+      <div class="container">
+        <div class="detail-cta reveal">
+          <h2>Neugierig auf <span class="hl">Xyntal?</span></h2>
+          <p>Ich erzähle gern mehr über die Idee und zeige den aktuellen Stand.</p>
+          <div class="detail-cta__actions">
+            <a href="index.html#contact" class="btn btn--primary">Kontakt aufnehmen <span aria-hidden="true">→</span></a>
+            <a href="index.html#projects" class="btn btn--ghost">Alle Projekte</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__glow" aria-hidden="true"></div>
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html#top" class="nav__logo" aria-label="Zum Seitenanfang">
+            <span class="nav__logo-mark">N</span><span class="nav__logo-text">nico<span class="accent">.</span>scheibe</span>
+          </a>
+          <p>Ich baue mit KI aus Ideen funktionierende Apps. Ab Dezember 2027 in der KI-Entwicklung.</p>
+          <span class="footer__status"><span class="dot" aria-hidden="true"></span>Verfügbar ab Dezember 2027 · Regensburg</span>
+        </div>
+        <nav class="footer__col" aria-label="Seiten">
+          <h4>Seiten</h4>
+          <a href="index.html#about">Über mich</a>
+          <a href="index.html#projects">Projekte</a>
+          <a href="index.html#skills">Skills &amp; Tools</a>
+          <a href="index.html#timeline">Werdegang</a>
+        </nav>
+        <nav class="footer__col" aria-label="Projekte">
+          <h4>Projekte</h4>
+          <a href="noxi.html">Noxi</a>
+          <a href="noxi.html#demo">Noxi-Demo</a>
+          <a href="xyntal.html">Xyntal</a>
+          <a href="xyntal.html#demo">Xyntal-Demo</a>
+        </nav>
+        <div class="footer__col">
+          <h4>Kontakt</h4>
+          <a href="mailto:nico.scheibe18@gmail.com">nico.scheibe18@gmail.com</a>
+          <a href="index.html#contact" class="footer__cta">Lass uns sprechen <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <div class="footer__word" aria-hidden="true">nico<span>.</span>scheibe</div>
+      <div class="footer__bottom">
+        <p>© <span id="year">2026</span> Nico Scheibe · Regensburg</p>
+        <nav class="footer__legal" aria-label="Rechtliches">
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="#top" class="footer__up">Nach oben <span aria-hidden="true">↑</span></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
