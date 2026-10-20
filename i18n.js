@@ -453,7 +453,8 @@
   "Kreativität in Entwicklung & Design": "Creativity in development & design",
   "Als Nächstes möchte ich das Design und die Bedienung weiter überarbeiten. Zusätzlich plane ich Funktionen, die Noxi im Alltag schneller zugänglich machen und den Lernfortschritt besser zeigen:": "Next, I want to refine the design and usability. I also plan features that make Noxi quicker to access in everyday use and provide a clearer view of learning progress:",
   "Xyntal ist ein Prototyp in Entwicklung. Die folgenden Bereiche sind im bisherigen Projektstand angelegt; ich arbeite weiter an ihrer Ausgestaltung und dem Zusammenspiel. Die Browser-Demo zeigt ausgewählte Abläufe mit Beispieldaten.": "Xyntal is a prototype under development. The following areas are part of the current project; I continue to develop their details and how they work together. The browser demo shows selected workflows with sample data.",
-  "Als Nächstes möchte ich das Design und die Bedienung überarbeiten und die bestehenden Abläufe weiter verbessern. Für den weiteren Ausbau sind diese Funktionen geplant:": "Next, I want to revise the design and usability and improve existing workflows. These features are planned for further development:"
+  "Als Nächstes möchte ich das Design und die Bedienung überarbeiten und die bestehenden Abläufe weiter verbessern. Für den weiteren Ausbau sind diese Funktionen geplant:": "Next, I want to revise the design and usability and improve existing workflows. These features are planned for further development:",
+  "Lebenslauf herunterladen (PDF)": "Download CV (PDF, German)"
 };
 
   var ATTRS = ["aria-label", "placeholder", "title", "alt"];
