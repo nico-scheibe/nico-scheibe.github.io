@@ -686,6 +686,26 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
   border-radius: 12px; background: var(--bg); border: 1px solid var(--border); font-weight: 500; font-size: .93rem;
 }
 .roles__group li.top { border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); }
+.roles__group li { position: relative; cursor: help; transition: border-color .2s, background-color .2s; outline: none; }
+.roles__group li:hover, .roles__group li:focus-visible, .roles__group li.tip-open { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, var(--bg)); }
+.roles__name { text-decoration: underline dotted color-mix(in srgb, var(--text-3) 70%, transparent); text-underline-offset: 4px; }
+.roles__tip {
+  position: absolute; z-index: 20; left: 0; bottom: calc(100% + 10px); width: min(290px, 78vw);
+  padding: 12px 14px; border-radius: 12px; font-size: .86rem; font-weight: 400; line-height: 1.5;
+  background: var(--text); color: var(--bg); box-shadow: 0 18px 40px -12px rgba(0, 0, 0, .55);
+  opacity: 0; visibility: hidden; transform: translateY(6px); pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+}
+.roles__tip::after { content: ""; position: absolute; top: 100%; left: 22px; border: 7px solid transparent; border-top-color: var(--text); }
+.roles__group li:hover .roles__tip, .roles__group li:focus-visible .roles__tip, .roles__group li.tip-open .roles__tip { opacity: 1; visibility: visible; transform: none; }
+@media (min-width: 720px) and (max-width: 1099px) {
+  .roles__group:nth-child(even) .roles__tip { left: auto; right: 0; }
+  .roles__group:nth-child(even) .roles__tip::after { left: auto; right: 22px; }
+}
+@media (min-width: 1100px) {
+  .roles__group:nth-child(4) .roles__tip { left: auto; right: 0; }
+  .roles__group:nth-child(4) .roles__tip::after { left: auto; right: 22px; }
+}
 .roles__badge { margin-left: auto; font: 600 .66rem var(--font-mono); padding: 2px 8px; border-radius: 99px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: var(--on-accent); white-space: nowrap; }
 @media (min-width: 720px) { .roles__grid { grid-template-columns: 1fr 1fr; } }
 @media (min-width: 1100px) { .roles__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

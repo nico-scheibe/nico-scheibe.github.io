@@ -269,6 +269,18 @@
     });
   }
 
+  // ---------- Rollen: Erklärung beim Antippen (Handy) ----------
+  function initRoleTips() {
+    var items = document.querySelectorAll(".roles__group li");
+    if (!items.length) return;
+    function closeAll(except) { items.forEach(function (li) { if (li !== except) li.classList.remove("tip-open"); }); }
+    items.forEach(function (li) {
+      li.addEventListener("click", function (e) { e.stopPropagation(); var open = !li.classList.contains("tip-open"); closeAll(li); li.classList.toggle("tip-open", open); });
+      li.addEventListener("keydown", function (e) { if (e.key === "Escape") { li.classList.remove("tip-open"); li.blur(); } });
+    });
+    document.addEventListener("click", function () { closeAll(); });
+  }
+
   // ---------- „Wie ich mit KI arbeite“: Schritte durchschalten ----------
   function initFlow() {
     var root = document.querySelector("[data-flow-root]");
@@ -348,6 +360,7 @@
   initContact();
   initDemo();
   initFlow();
+  initRoleTips();
   initReveal();
   var year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
