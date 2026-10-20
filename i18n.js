@@ -327,7 +327,7 @@
   "Arbeitsmodell": "Work model",
   "Vor Ort oder hybrid": "On-site or hybrid",
   "Einstieg": "Entry level",
-  "Junior-Stelle, Trainee oder Ausbildung": "Junior position, trainee program or apprenticeship",
+  "Junior-Stelle oder Trainee": "Junior position or trainee program",
   "Wenn ich gerade nicht code": "When I'm not coding",
   "Kochen": "Cooking",
   "Neue Rezepte ausprobieren – am liebsten für andere.": "Trying new recipes – ideally for other people.",
