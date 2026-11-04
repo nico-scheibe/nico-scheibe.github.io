@@ -76,6 +76,13 @@ canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:
 .shop-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .item{display:flex;flex-direction:column;gap:6px;padding:11px;border-radius:14px;background:rgba(20,6,26,.6);border:1px solid var(--line);min-width:0}
 .item.on{border-color:var(--gold);box-shadow:0 0 16px rgba(255,211,110,.25)}
+.item.special{background:linear-gradient(160deg,rgba(255,122,163,.18),rgba(255,211,110,.12));border-color:rgba(255,211,110,.55)}
+.sp{display:inline-block;font-size:10px;padding:2px 7px;border-radius:99px;background:linear-gradient(90deg,#ffd36e,#ff7aa3);color:#2a0612;font-weight:600;letter-spacing:.04em;vertical-align:middle;white-space:nowrap}
+a.btn{text-decoration:none;display:block;text-align:center}
+.note-text{font:400 34px/1.25 var(--display);color:var(--blush);text-shadow:0 0 18px var(--rose);text-wrap:balance;margin:4px 0}
+.letters{display:flex;flex-direction:column;gap:8px;text-align:left}
+.letter{padding:12px 14px;border-radius:14px;background:rgba(20,6,26,.6);border:1px solid rgba(255,211,110,.35);font:400 22px/1.3 var(--display);color:var(--blush)}
+.letter.locked{font:500 13px var(--ui);color:var(--mist);border-color:var(--line);border-style:dashed}
 .item .pv{height:54px;display:grid;place-items:center}
 .item .pv svg{height:46px;width:auto;max-width:100%;overflow:visible}
 .item b{font-size:14px}
@@ -158,6 +165,7 @@ input{
 button{touch-action:manipulation}
 .badge{display:inline-block;min-width:20px;padding:1px 7px;margin-left:8px;border-radius:99px;background:var(--rose);color:#fff;font-size:12px;line-height:18px;box-shadow:0 0 10px var(--rose)}
 .pill.hot{color:#ffe0b0;border-color:#ff9a3c;box-shadow:0 0 14px rgba(255,140,60,.55)}
+#comboPill{background:linear-gradient(90deg,rgba(255,211,110,.32) calc(var(--ct,0) * 100%),rgba(20,6,26,.7) 0)}
 .near{color:var(--gold)!important;font-weight:600;opacity:1!important}
 .count-big{font:600 64px/1 var(--ui);color:var(--gold);text-shadow:0 0 20px rgba(255,211,110,.6);font-variant-numeric:tabular-nums}
 .miss{display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:14px;background:rgba(20,6,26,.6);border:1px solid var(--line);text-align:left}
@@ -297,6 +305,7 @@ button{touch-action:manipulation}
     </div>
     <button class="btn alt" id="shopBtn" type="button">Shop</button>
     <button class="btn alt" id="missBtn" type="button">Tagesaufgaben</button>
+    <button class="btn alt" id="albumBtn" type="button">Briefe von Nico</button>
     <button class="btn alt" id="fsMenu" type="button">Im Vollbild spielen</button>
     <span class="hint" id="hsLine" hidden></span>
     <span class="hint warn" id="storeWarn" hidden>Hier kann dein Browser nichts speichern. Punkte, Sterne und Käufe gehen beim Schließen verloren. Öffne das Spiel am besten direkt in Safari oder Chrome.</span>
@@ -314,6 +323,42 @@ button{touch-action:manipulation}
     <button class="btn alt" id="unlockAll" type="button" aria-pressed="false">Alle Challenges freischalten</button>
     <div id="worlds" style="display:flex;flex-direction:column;gap:18px"></div>
     <button class="btn alt" id="chBack" type="button">Zurück</button>
+  </div>
+</div>
+
+<div class="overlay solid" id="gift" hidden>
+  <div class="card">
+    <span class="eyebrow">Special Edition</span>
+    <h2 id="giftTitle">Ein Geschenk für dich</h2>
+    <div class="pv" id="giftPv" style="height:110px;display:grid;place-items:center"></div>
+    <p id="giftText"></p>
+    <div class="btns">
+      <button class="btn gold" id="giftYes" type="button">Jetzt ausrüsten</button>
+      <button class="btn alt" id="giftNo" type="button">Später</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay solid" id="note" hidden>
+  <div class="card">
+    <span class="eyebrow" id="noteFrom">Brief von Nico</span>
+    <div class="note-text" id="noteText"></div>
+    <span class="stats coinline" id="notePts" style="justify-content:center"></span>
+    <div class="btns">
+      <button class="btn" id="noteGo" type="button">Weiterspielen</button>
+      <a class="btn alt" id="noteReply" href="#" target="_blank" rel="noopener">Antworten</a>
+    </div>
+  </div>
+</div>
+
+<div class="overlay solid" id="album" hidden>
+  <div class="card">
+    <span class="eyebrow">Sammlung</span>
+    <h2 id="albumTitle">Briefe von Nico</h2>
+    <p id="albumInfo"></p>
+    <div class="letters" id="albumList"></div>
+    <a class="btn gold" id="albumWrite" href="#" target="_blank" rel="noopener">Nico schreiben</a>
+    <button class="btn alt" id="albumBack" type="button">Zurück</button>
   </div>
 </div>
 
@@ -421,7 +466,7 @@ button{touch-action:manipulation}
                accent: '#ff5c8a', light: '#ffb3cb', basket: ['#ffc2d6', '#ff2d5f'], floater: 'heart', fcol: '#6e1a45', star: '255,220,235', nameCol: '#ff7aa3' },
     sunset:  { name: 'Sonnenuntergang', bg: ['#7a2e34', '#3d1530', '#160818'], colors: ['#ffb347', '#ff7a59', '#ffd36e', '#ff9f80', '#ff6f91'],
                accent: '#ff8a3c', light: '#ffd0a0', basket: ['#ffe0a8', '#ff6a3d'], floater: 'orb', fcol: '#c0603a', star: '255,215,170', nameCol: '#ffa65c' },
-    blossom: { name: 'Kirschblüte', bg: ['#5a2448', '#2c1032', '#140818'], colors: ['#ffc0dc', '#ff9ec4', '#ffe1ee', '#f7a8d8', '#ff7fb0'],
+    blossom: { name: 'Kirschblüte', bg: ['#6a2a58', '#331238', '#160819'], colors: ['#ffc0dc', '#ff9ec4', '#ffe1ee', '#f7a8d8', '#ff7fb0'],
                accent: '#ff8fbf', light: '#ffd6e8', basket: ['#fff0f6', '#ff7fb0'], floater: 'petal', fcol: '#ffb7d5', star: '255,225,240', nameCol: '#ff9ec4' },
     ocean:   { name: 'Unterwasser', bg: ['#0f5468', '#0a2a3d', '#04121c'], colors: ['#7ff0e0', '#5cc8ff', '#a8fff0', '#4fe0c0', '#9fd8ff'],
                accent: '#3fd6c0', light: '#b0fff2', basket: ['#c8fff6', '#1fb8c8'], floater: 'bubble', fcol: '#7fe8ff', star: '170,240,255', nameCol: '#5ff0d8' },
@@ -452,6 +497,7 @@ button{touch-action:manipulation}
   // ---------- Shop ----------
   const SHOP = [
     { id: 'skin_classic', cat: 'skin', name: 'Klassisch', desc: 'Das Original in den Farben der Welt.', price: 0 },
+    { id: 'skin_nico', cat: 'skin', name: 'Nico-Herz', desc: 'Ein Geschenk von Nico. Gibt 50 % mehr Punkte, und es kommen doppelt so viele Briefe von ihm.', price: 0, special: true },
     { id: 'skin_gold', cat: 'skin', name: 'Gold-Herz', desc: 'Glänzt wie ein Pokal.', price: 2000 },
     { id: 'skin_neon', cat: 'skin', name: 'Neon-Herz', desc: 'Nur ein leuchtender Umriss.', price: 3000 },
     { id: 'skin_ice', cat: 'skin', name: 'Eis-Herz', desc: 'Frostig blau.', price: 4000 },
@@ -477,11 +523,34 @@ button{touch-action:manipulation}
     skin_rainbow: { rainbow: true },
     skin_fire: { c: ['#ffe08a', '#ff3d12'], glow: '#ff7a1a', fire: true },
     skin_galaxy: { c: ['#8a5cff', '#1a0b3d'], glow: '#b48cff', stars: true },
-    skin_diamond: { c: ['#ffffff', '#8fe6ff'], glow: '#ffffff', diamond: true }
+    skin_diamond: { c: ['#ffffff', '#8fe6ff'], glow: '#ffffff', diamond: true },
+    skin_nico: { c: ['#ffe6f2', '#ff3d8b'], glow: '#ffd36e', nico: true }
   };
   const coinSvg = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#ffc23d" stroke="#b07a10" stroke-width="2"/><path d="M12 17s-4-2.5-5-5c-.7-1.8.5-3.6 2.3-3.6 1.1 0 1.9.6 2.7 1.6.8-1 1.6-1.6 2.7-1.6 1.8 0 3 1.8 2.3 3.6-1 2.5-5 5-5 5z" fill="#b0521a"/></svg>';
   let shop = { coins: 0, owned: ['skin_classic', 'trail_none'], skin: 'skin_classic', trail: 'trail_none' };
   try { const sv = JSON.parse(localStorage.getItem('herzfaenger-shop')); if (sv && Array.isArray(sv.owned)) shop = Object.assign(shop, sv); } catch (e) {}
+  if (!shop.owned.includes('skin_nico')) shop.owned.push('skin_nico');   // Geschenk: gehört immer dazu
+  if (!Array.isArray(shop.notes)) shop.notes = [];
+
+  // ---------- Special Edition: Nico ----------
+  // Nico: Hier kannst du deine eigenen Briefe eintragen. Ein Brief pro Zeile, in Anführungszeichen, mit Komma dahinter.
+  const NICO_NAME = 'Nico';
+  const NICO_NOTES = [
+    'Du bist das Schönste, was mir je passiert ist.',
+    'Jedes Mal, wenn du lachst, verliebe ich mich neu in dich.',
+    'Ich denk gerade an dich. Eigentlich denk ich immer an dich.',
+    'Mit dir ist jeder Tag besser.',
+    'Du schaffst den Highscore. Ich glaub an dich!',
+    'Ich freu mich schon so auf unser nächstes Treffen.',
+    'Danke, dass es dich gibt.',
+    'Du bist mein Lieblingsmensch.',
+    'Egal wie weit weg, du bist immer in meinem Herzen.',
+    'Kleiner Tipp von mir: Halt die Combo am Leben, dann gibt es richtig viele Punkte!'
+  ];
+  const NICO_BONUS = 1.5;
+  const NICO_PHONE = '';   // optional: Nicos Handynummer mit Ländervorwahl ohne + (z. B. 4917612345678), dann geht „Antworten“ direkt an ihn
+  const nicoK = () => shop.skin === 'skin_nico' ? NICO_BONUS : 1;
+  const waLink = text => `https://wa.me/${NICO_PHONE}?text=${encodeURIComponent(text)}`;
   const saveShop = () => { try { localStorage.setItem('herzfaenger-shop', JSON.stringify(shop)); } catch (e) {} };
   let storageOk = true;
   try { localStorage.setItem('hf-test', '1'); storageOk = localStorage.getItem('hf-test') === '1'; localStorage.removeItem('hf-test'); } catch (e) { storageOk = false; }
@@ -853,6 +922,7 @@ button{touch-action:manipulation}
       const gk = ch?.gadgetK || 1;
       if (!ch?.noGadgets && !onScreen && gadgetCooldown <= 0 && Math.random() < 0.22 * gk * (has('u_luck') ? 1.5 : 1)) kind = 'gadget';
       else if (!fallers.some(f => f.kind === 'bonus') && Math.random() < (has('u_luck') ? 0.1 : 0.06)) kind = 'bonus';
+      else if (!fallers.some(f => f.kind === 'letter') && Math.random() < (shop.skin === 'skin_nico' ? 0.05 : 0.025)) kind = 'letter';
       else if (Math.random() < (ch ? (0.12 + progress * 0.12) * (ch.brokenK ?? 1) : 0.14 + R * 0.22)) kind = 'broken';
     }
     const f = {
@@ -868,6 +938,7 @@ button{touch-action:manipulation}
       gadgetCooldown = rand(5, 9) / (ch?.gadgetK || 1);
     }
     if (kind === 'bonus') { f.vy *= 0.95; f.sway = 40; }
+    if (kind === 'letter') { f.vy *= 0.8; f.sway = 34; }
     if (kind === 'broken' && !ch && state === 'play') {
       f.vy *= 1.1 + R * 0.5;
       if (Math.random() < R * 0.6) {
@@ -900,11 +971,12 @@ button{touch-action:manipulation}
   function catchLove(f, count = 1) {
     burst(f.x, basket.y - 10, theme.colors[f.c], 8, 110);
     run.combo++;
+    run.comboT = COMBO_TIME;
     if (boss) boss.hurt = 0.3;
     missionTrack('catch', count);
     missionTrack('combo', run.combo, true);
     if (!ch) {
-      const m = mult(), pts = 10 * m * count * (active.gold ? 3 : 1);
+      const m = mult(), pts = Math.round(10 * m * count * (active.gold ? 3 : 1) * nicoK());
       run.score += pts; popScore();
       say(`+${pts}`, f.x + 26, basket.y - 30, m > 1 ? '#ffd36e' : theme.light, 15);
       if (run.combo % 5 === 0) {
@@ -975,7 +1047,7 @@ button{touch-action:manipulation}
 
   function catchGadget(f) {
     const G = GADGETS[f.g];
-    if (!ch) { run.score += 20 * mult(); popScore(); }
+    if (!ch) { run.score += Math.round(20 * mult() * nicoK()); popScore(); }
     missionTrack('gadget', 1);
     burst(f.x, basket.y - 10, G.color, 16, 170);
     say(G.label + '!', f.x, basket.y - 50, G.color);
@@ -997,8 +1069,11 @@ button{touch-action:manipulation}
 
   function onMiss(f) {
     if (state !== 'play') return;
-    if (run.combo >= 3) say('Combo weg', W / 2, H * 0.83, '#c4abcd');
-    run.combo = 0;
+    // Nur in den Combo-Challenges („ohne eins zu verpassen“) kostet ein verpasstes I love you die Combo
+    if (ch?.comboGoal) {
+      if (run.combo >= 3) say('Combo weg', W / 2, H * 0.83, '#c4abcd');
+      run.combo = 0;
+    }
     if (ch?.lives) {
       run.lives--;
       say('Verpasst!', Math.min(W - 60, Math.max(60, f.x + (f.dx || 0))), H - 110 - safeBottom, '#ff8a8a', 20);
@@ -1008,7 +1083,69 @@ button{touch-action:manipulation}
     }
   }
 
-  function hideOverlays() { $('menu').hidden = true; $('chMenu').hidden = true; $('result').hidden = true; $('shop').hidden = true; $('pauseBox').hidden = true; $('missions').hidden = true; paused = false; }
+  function hideOverlays() { $('menu').hidden = true; $('chMenu').hidden = true; $('result').hidden = true; $('shop').hidden = true; $('pauseBox').hidden = true; $('missions').hidden = true; $('album').hidden = true; $('note').hidden = true; noteOpen = false; paused = false; }
+
+  // ---------- Briefe von Nico ----------
+  let noteOpen = false;
+  function catchLetter(f) {
+    burst(f.x, basket.y - 10, '#ffd36e', 18, 180);
+    burst(f.x, basket.y - 10, '#ff7aa3', 12, 140);
+    const unread = NICO_NOTES.map((_, i) => i).filter(i => !shop.notes.includes(i));
+    const idx = unread.length ? unread[Math.floor(Math.random() * unread.length)] : Math.floor(Math.random() * NICO_NOTES.length);
+    const isNew = !shop.notes.includes(idx);
+    if (isNew) shop.notes.push(idx);
+    const pts = Math.round(100 * nicoK());
+    if (!ch) { run.score += pts; popScore(); } else { shop.coins += pts; }
+    saveShop(); updateAlbumBtn();
+    [0, 0.1, 0.2, 0.3].forEach((d, i) => tone([659, 880, 1047, 1319][i], 0.3, 'sine', 0.08, d));
+    // Spiel anhalten und den Brief zeigen
+    noteOpen = true; paused = true; keys.left = keys.right = false;
+    $('noteFrom').textContent = `${isNew ? 'Neuer ' : ''}Brief von ${NICO_NAME}`;
+    $('noteText').textContent = NICO_NOTES[idx];
+    $('notePts').innerHTML = `${coinSvg} +${pts} Punkte · ${shop.notes.length} / ${NICO_NOTES.length} Briefe gesammelt`;
+    $('noteReply').textContent = `${NICO_NAME} antworten`;
+    $('noteReply').href = waLink(`Hey ${NICO_NAME}, ich hab im Herzfänger deinen Brief gefunden: "${NICO_NOTES[idx]}" <3`);
+    $('note').hidden = false;
+  }
+  function closeNote() {
+    if (!noteOpen) return;
+    noteOpen = false; paused = false;
+    $('note').hidden = true;
+    last = performance.now();
+  }
+  function updateAlbumBtn() {
+    $('albumBtn').textContent = `Briefe von ${NICO_NAME} ${shop.notes.length}/${NICO_NOTES.length}`;
+  }
+  function showAlbum() {
+    hideOverlays();
+    $('albumTitle').textContent = `Briefe von ${NICO_NAME}`;
+    $('albumInfo').textContent = shop.notes.length
+      ? `Du hast ${shop.notes.length} von ${NICO_NOTES.length} Briefen gefunden. Die restlichen fallen ab und zu im Spiel vom Himmel.`
+      : `${NICO_NAME} hat dir Briefe im Spiel versteckt. Sie fallen ab und zu als Umschlag vom Himmel. Fang sie!`;
+    $('albumList').innerHTML = NICO_NOTES.map((t, i) => shop.notes.includes(i)
+      ? `<div class="letter">${escapeHtml(t)}</div>`
+      : `<div class="letter locked">Brief ${i + 1}: noch nicht gefunden</div>`).join('');
+    $('albumWrite').textContent = `${NICO_NAME} schreiben`;
+    $('albumWrite').href = waLink(`Hey ${NICO_NAME}, ich spiel gerade Herzfänger und denk an dich <3`);
+    $('album').hidden = false;
+  }
+  function showGift(then) {
+    $('giftTitle').textContent = `Ein Geschenk von ${NICO_NAME}`;
+    $('giftPv').innerHTML = preview(SHOP.find(x => x.id === 'skin_nico'));
+    const svg = $('giftPv').querySelector('svg'); if (svg) { svg.style.height = '96px'; svg.style.width = 'auto'; }
+    $('giftText').textContent = `Das Nico-Herz, Special Edition. Damit bekommst du 50 % mehr Punkte, und es fallen doppelt so viele Briefe von ${NICO_NAME} vom Himmel.`;
+    $('gift').hidden = false;
+    const done = equip => {
+      shop.giftSeen = true;
+      if (equip) shop.skin = 'skin_nico';
+      saveShop(); $('gift').hidden = true;
+      initAudio();
+      if (equip) [0, 0.1, 0.2].forEach((d, i) => tone([784, 1047, 1568][i], 0.25, 'sine', 0.08, d));
+      if (then) then();
+    };
+    $('giftYes').onclick = () => done(true);
+    $('giftNo').onclick = () => done(false);
+  }
 
   // Punkte der laufenden Endlos-Runde aufs Konto buchen (nie doppelt)
   function bankRun() {
@@ -1117,7 +1254,7 @@ button{touch-action:manipulation}
       if (lk.neon) return `<svg viewBox="0 0 24 24" style="filter:drop-shadow(0 0 6px ${lk.glow})"><path d="${HEART_D}" fill="rgba(20,4,24,.6)" stroke="${lk.glow}" stroke-width="1.6"/></svg>`;
       const stops = lk.rainbow ? ['#ff5c5c', '#ffd36e', '#7fe08a', '#5cc8ff', '#c77dff'] : lk.c;
       const gid = 'pv_' + it.id;
-      return `<svg viewBox="0 0 24 24" style="filter:drop-shadow(0 0 6px ${lk.glow || '#ffd36e'})"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">${stops.map((c, i) => `<stop offset="${i / (stops.length - 1)}" stop-color="${c}"/>`).join('')}</linearGradient></defs><path d="${HEART_D}" fill="url(#${gid})"/>${lk.stars ? '<circle cx="9" cy="10" r=".7" fill="#fff"/><circle cx="14" cy="13" r=".6" fill="#fff"/><circle cx="12" cy="8.5" r=".5" fill="#fff"/><circle cx="16" cy="9" r=".5" fill="#fff"/>' : ''}${lk.fire ? '<path d="M9 5c0-2 2-3 2-4 1 2 3 2 3 5" stroke="#ffb347" fill="none" stroke-width="1.2" stroke-linecap="round"/>' : ''}${lk.diamond ? '<path d="M4 9h16M8 5l4 4 4-4M4 9l8 11 8-11" stroke="#7cc8e0" stroke-width=".7" fill="none"/>' : ''}</svg>`;
+      return `<svg viewBox="0 0 24 24" style="filter:drop-shadow(0 0 6px ${lk.glow || '#ffd36e'})"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">${stops.map((c, i) => `<stop offset="${i / (stops.length - 1)}" stop-color="${c}"/>`).join('')}</linearGradient></defs><path d="${HEART_D}" fill="url(#${gid})"/>${lk.stars ? '<circle cx="9" cy="10" r=".7" fill="#fff"/><circle cx="14" cy="13" r=".6" fill="#fff"/><circle cx="12" cy="8.5" r=".5" fill="#fff"/><circle cx="16" cy="9" r=".5" fill="#fff"/>' : ''}${lk.fire ? '<path d="M9 5c0-2 2-3 2-4 1 2 3 2 3 5" stroke="#ffb347" fill="none" stroke-width="1.2" stroke-linecap="round"/>' : ''}${lk.diamond ? '<path d="M4 9h16M8 5l4 4 4-4M4 9l8 11 8-11" stroke="#7cc8e0" stroke-width=".7" fill="none"/>' : ''}${lk.nico ? `<path d="M7.5 4.6l1.6 1.3L12 2.6l2.9 3.3 1.6-1.3V6.6h-9z" fill="#ffd36e"/><text x="12" y="15.6" text-anchor="middle" font-family="Parisienne, Snell Roundhand, cursive" font-size="9.5" fill="#fff">${NICO_NAME[0]}</text>` : ''}</svg>`;
     }
     if (it.cat === 'trail') {
       if (it.id === 'trail_none') return '<svg viewBox="0 0 40 24"><circle cx="20" cy="12" r="8" fill="none" stroke="#c4abcd" stroke-dasharray="3 3"/></svg>';
@@ -1142,7 +1279,7 @@ button{touch-action:manipulation}
       else if (eq) btn = '<button class="done" type="button" disabled>Ausgerüstet</button>';
       else if (own) btn = `<button class="eq" type="button" data-eq="${it.id}">Ausrüsten</button>`;
       else btn = `<button type="button" data-buy="${it.id}" ${shop.coins < it.price ? 'disabled' : ''}>${price}</button>`;
-      return `<div class="item ${eq ? 'on' : ''}"><div class="pv">${preview(it)}</div><b>${it.name}</b><span class="d">${it.desc}</span>${btn}</div>`;
+      return `<div class="item ${eq ? 'on' : ''} ${it.special ? 'special' : ''}"><div class="pv">${preview(it)}</div><b>${it.name}${it.special ? ' <span class="sp">Special Edition</span>' : ''}</b><span class="d">${it.desc}</span>${btn}</div>`;
     }).join('')}</div></section>`).join('');
   }
   function showShop() { hideOverlays(); renderShop(); $('shop').hidden = false; }
@@ -1279,7 +1416,8 @@ button{touch-action:manipulation}
       <div class="btns">
         <button class="btn" data-act="again" type="button">Nochmal</button>
         <button class="btn alt" data-act="menu" type="button">Menü</button>
-      </div>`;
+      </div>
+      <a class="btn alt" target="_blank" rel="noopener" href="${waLink(`${isNew ? 'Neuer Rekord! ' : ''}Ich hab im Herzfänger ${run.score.toLocaleString('de-DE')} Punkte geschafft. Schaffst du das auch, ${NICO_NAME}? <3`)}">Ergebnis an ${NICO_NAME} schicken</a>`;
     }
     setTimeout(() => {
       if (state !== 'fail') return;
@@ -1309,6 +1447,9 @@ button{touch-action:manipulation}
   $('pauseMenu').addEventListener('click', goMenu);
   $('missBtn').addEventListener('click', showMissions);
   $('missBack').addEventListener('click', goMenu);
+  $('albumBtn').addEventListener('click', showAlbum);
+  $('albumBack').addEventListener('click', goMenu);
+  $('noteGo').addEventListener('click', closeNote);
   document.addEventListener('visibilitychange', () => { if (document.hidden) { if (state === 'play') pause(); bankRun(); } });
   addEventListener('pagehide', bankRun);
   // Von der Android-App aufgerufen, wenn sie in den Hintergrund geht
@@ -1325,7 +1466,7 @@ button{touch-action:manipulation}
   cv.addEventListener('pointermove', pointer);
   addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT') return;
-    if (reviving) return;
+    if (reviving || noteOpen) return;
     if ((e.key === 'p' || e.key === 'P' || e.key === 'Escape') && state === 'play') { e.preventDefault(); paused ? resume() : pause(); return; }
     if (e.key === 'ArrowLeft' || e.key === 'a') { keys.left = true; e.preventDefault(); }
     if (e.key === 'ArrowRight' || e.key === 'd') { keys.right = true; e.preventDefault(); }
@@ -1347,6 +1488,15 @@ button{touch-action:manipulation}
     if (state === 'play') {
       updateChips();
       run.elapsed += dt;
+      // Combo-Timer: ohne neuen Fang innerhalb von COMBO_TIME Sekunden ist die Combo vorbei
+      if (run.combo > 0) {
+        run.comboT -= dt * (active.slow ? 0.45 : 1);
+        if (run.comboT <= 0) {
+          if (run.combo >= 5) say(`Combo ${run.combo} vorbei`, W / 2, H * 0.83, '#c4abcd');
+          run.combo = 0;
+        }
+      }
+      $('comboPill').style.setProperty('--ct', run.combo > 0 ? Math.max(0, run.comboT / COMBO_TIME).toFixed(3) : 0);
       if (ch?.time) {
         run.timeLeft -= dt;
         if (run.timeLeft <= 0) { run.timeLeft = 0; fail('Die Zeit ist abgelaufen.'); }
@@ -1432,6 +1582,7 @@ button{touch-action:manipulation}
           const hit = { ...f, x: fx };
           if (f.kind === 'love') catchLove(hit);
           else if (f.kind === 'bonus') catchBonus(hit);
+          else if (f.kind === 'letter') catchLetter(hit);
           else if (f.kind === 'broken') catchBroken(hit);
           else catchGadget(hit);
           if (state !== 'play') break;
@@ -1475,7 +1626,7 @@ button{touch-action:manipulation}
     // Hintergrund-Teilchen je nach Design
     const type = state === 'win' ? 'heart' : theme.floater;
     const falls = type === 'petal' || type === 'snow';
-    const rate = state === 'win' ? 0.4 : (type === 'snow' ? 0.25 : type === 'petal' ? 0.12 : 0.07);
+    const rate = state === 'win' ? 0.4 : (type === 'snow' ? 0.25 : type === 'petal' ? 0.22 : 0.07);
     if (!reduceMotion || Math.random() < 0.3) {
       if (Math.random() < rate) {
         const big = state === 'win';
@@ -1538,6 +1689,102 @@ button{touch-action:manipulation}
     }
     blossom(g, x1, y1, r * 1.1);
   }
+  // Kirschblüten-Welt: Mond, Nebelhügel, verzweigte Kirschbäume mit dichten Blütenwolken, Laternen, Blütenteppich
+  function blossom5(g, x, y, r, col, rot) {
+    g.fillStyle = col;
+    for (let i = 0; i < 5; i++) {
+      const a = rot + i / 5 * Math.PI * 2;
+      g.beginPath(); g.ellipse(x + Math.cos(a) * r * 0.6, y + Math.sin(a) * r * 0.6, r * 0.55, r * 0.4, a, 0, Math.PI * 2); g.fill();
+    }
+    g.fillStyle = '#fff3d0'; g.beginPath(); g.arc(x, y, r * 0.22, 0, Math.PI * 2); g.fill();
+  }
+  function sakura(g, m) {
+    let seed = 1234;
+    const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+    const cols = ['#ffc6dd', '#ffb0cf', '#ff9ec4', '#ffe1ee', '#f7a8d8', '#ffd0e4'];
+
+    // Mond mit sanftem Schein
+    const mx = W * 0.3, my = Math.max(110, H * 0.17), mr = m * 0.08 + 12;
+    const mg = g.createRadialGradient(mx, my, mr * 0.3, mx, my, mr * 3.4);
+    mg.addColorStop(0, 'rgba(255,215,232,.38)'); mg.addColorStop(1, 'rgba(255,215,232,0)');
+    g.fillStyle = mg; g.fillRect(0, 0, W, H);
+    g.fillStyle = 'rgba(255,238,245,.92)'; g.beginPath(); g.arc(mx, my, mr, 0, Math.PI * 2); g.fill();
+
+    // Ferne Hügel und Nebel
+    silhouette(g, H * 0.8, 26, 0.006, 'rgba(130,56,110,.35)', 1.3);
+    const mist = g.createLinearGradient(0, H * 0.62, 0, H * 0.92);
+    mist.addColorStop(0, 'rgba(255,190,220,0)'); mist.addColorStop(1, 'rgba(255,190,220,.14)');
+    g.fillStyle = mist; g.fillRect(0, H * 0.62, W, H * 0.38);
+    silhouette(g, H * 0.9, 16, 0.009, 'rgba(72,24,62,.78)', 2.1);
+
+    // Äste: rekursiv verzweigt, Blütenwolken an den Enden
+    const clusters = [];
+    function limb(x, y, ang, len, wid, depth) {
+      const bend = (rnd() - 0.5) * 0.5;
+      const ex = x + Math.cos(ang) * len, ey = y + Math.sin(ang) * len;
+      const qx = x + Math.cos(ang + bend) * len * 0.55, qy = y + Math.sin(ang + bend) * len * 0.55;
+      g.strokeStyle = '#3a1428'; g.lineCap = 'round'; g.lineWidth = wid;
+      g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(qx, qy, ex, ey); g.stroke();
+      g.strokeStyle = 'rgba(255,170,205,.2)'; g.lineWidth = Math.max(1, wid * 0.22);
+      g.beginPath(); g.moveTo(x - wid * 0.2, y); g.quadraticCurveTo(qx - wid * 0.2, qy, ex - wid * 0.2, ey); g.stroke();
+      if (depth <= 0 || len < m * 0.03) { clusters.push([ex, ey, len]); return; }
+      if (depth <= 2) clusters.push([ex, ey, len * 0.8]);
+      const n = depth > 3 ? 2 : 2 + (rnd() < 0.4 ? 1 : 0);
+      for (let i = 0; i < n; i++) {
+        const spread = 0.35 + rnd() * 0.45;
+        const a = ang + (i - (n - 1) / 2) * spread + (rnd() - 0.5) * 0.2;
+        limb(ex, ey, a, len * (0.68 + rnd() * 0.12), wid * 0.66, depth - 1);
+      }
+    }
+    limb(-m * 0.02, H * 1.0, -Math.PI / 2 + 0.42, H * 0.17, m * 0.05, 6);   // großer Baum links unten
+    limb(W + m * 0.02, H * 0.1, Math.PI + 0.28, W * 0.22, m * 0.03, 5);   // Ast von rechts oben
+    limb(-m * 0.02, H * 0.04, 0.22, W * 0.18, m * 0.024, 4);              // Ast von links oben
+
+    // weicher rosa Schein hinter den Blüten, dann die Blüten selbst
+    for (const [x0, y0, len] of clusters) {
+      const R = Math.min(m * 0.07, len * 0.7 + m * 0.02);
+      const cg = g.createRadialGradient(x0, y0, 0, x0, y0, R * 1.5);
+      cg.addColorStop(0, 'rgba(255,160,205,.28)'); cg.addColorStop(1, 'rgba(255,160,205,0)');
+      g.fillStyle = cg; g.fillRect(x0 - R * 1.5, y0 - R * 1.5, R * 3, R * 3);
+    }
+    for (const [x0, y0, len] of clusters) {
+      const R = Math.min(m * 0.07, len * 0.7 + m * 0.02);
+      const k = 6 + Math.floor(rnd() * 8);
+      for (let i = 0; i < k; i++) {
+        const a = rnd() * Math.PI * 2, d = Math.sqrt(rnd()) * R;
+        g.globalAlpha = 0.5 + rnd() * 0.3;
+        blossom5(g, x0 + Math.cos(a) * d, y0 + Math.sin(a) * d * 0.8, m * (0.008 + rnd() * 0.01), cols[Math.floor(rnd() * cols.length)], rnd() * 6.28);
+      }
+    }
+    g.globalAlpha = 1;
+
+    // Papierlaternen
+    for (const [lx, ly] of [[W * 0.64, H * 0.15], [W * 0.82, H * 0.23]]) {
+      const lr = m * 0.033 + 4;
+      g.strokeStyle = 'rgba(60,20,40,.8)'; g.lineWidth = 1.5;
+      g.beginPath(); g.moveTo(lx, 0); g.lineTo(lx, ly - lr * 1.3); g.stroke();
+      const lg = g.createRadialGradient(lx, ly, 0, lx, ly, lr * 4);
+      lg.addColorStop(0, 'rgba(255,170,90,.45)'); lg.addColorStop(1, 'rgba(255,170,90,0)');
+      g.fillStyle = lg; g.fillRect(lx - lr * 4, ly - lr * 4, lr * 8, lr * 8);
+      g.fillStyle = '#ff7a4a'; g.beginPath(); g.ellipse(lx, ly, lr, lr * 1.25, 0, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = 'rgba(120,30,20,.55)'; g.lineWidth = 1;
+      for (const k2 of [0.5, 0.01]) { g.beginPath(); g.ellipse(lx, ly, lr * k2, lr * 1.25, 0, 0, Math.PI * 2); g.stroke(); }
+      g.fillStyle = '#3a1428';
+      g.fillRect(lx - lr * 0.5, ly - lr * 1.38, lr, lr * 0.24);
+      g.fillRect(lx - lr * 0.5, ly + lr * 1.14, lr, lr * 0.24);
+      g.fillStyle = 'rgba(255,230,180,.55)'; g.beginPath(); g.ellipse(lx - lr * 0.32, ly - lr * 0.3, lr * 0.22, lr * 0.45, 0, 0, Math.PI * 2); g.fill();
+    }
+
+    // Boden mit Blütenteppich
+    silhouette(g, H * 0.965, 6, 0.012, 'rgba(40,12,32,.92)', 3);
+    for (let i = 0; i < Math.round(W / 5); i++) {
+      g.globalAlpha = 0.45 + rnd() * 0.55;
+      g.fillStyle = cols[Math.floor(rnd() * cols.length)];
+      g.beginPath(); g.ellipse(rnd() * W, H * 0.955 + rnd() * H * 0.045, m * 0.007, m * 0.0035, rnd() * 3, 0, Math.PI * 2); g.fill();
+    }
+    g.globalAlpha = 1;
+  }
+
   function planet(g, x, y, r, c1, c2, ring) {
     const pg = g.createRadialGradient(x - r * 0.4, y - r * 0.4, r * 0.1, x, y, r);
     pg.addColorStop(0, c1); pg.addColorStop(1, c2);
@@ -1582,9 +1829,7 @@ button{touch-action:manipulation}
         break;
       }
       case 'blossom': {
-        branch(g, -10, H * 0.08, 1);
-        branch(g, W + 10, H * 0.2, -1);
-        silhouette(g, H * 0.96, 8, 0.012, 'rgba(30,10,26,.85)', 3);
+        sakura(g, m);
         break;
       }
       case 'ocean': {
@@ -1844,6 +2089,7 @@ button{touch-action:manipulation}
 
   // ---------- Dranbleiben: Tagesbonus, Tagesaufgaben, Lob, Wiederbelebung ----------
   const REVIVE_COST = 500;
+  const COMBO_TIME = 4;
   let bigText = null, flash = 0;
   let reviveTimer = null, reviving = false;
   const todayKey = (d = new Date()) => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
@@ -2034,6 +2280,30 @@ button{touch-action:manipulation}
     }
   }
 
+  // ---------- Brief von Nico (fällt vom Himmel) ----------
+  function drawLetter(x, y) {
+    const r = Math.max(18, s * 1.35);
+    const w = r * 1.7, h = r * 1.15;
+    ctx.save();
+    const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 2.2);
+    glow.addColorStop(0, 'rgba(255,170,210,.5)'); glow.addColorStop(1, 'rgba(255,170,210,0)');
+    ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(x, y, r * 2.2, 0, Math.PI * 2); ctx.fill();
+    ctx.translate(x, y); ctx.rotate(Math.sin(time * 2.2) * 0.12);
+    ctx.shadowColor = '#ffd36e'; ctx.shadowBlur = 16;
+    ctx.fillStyle = '#fff4ea';
+    ctx.fillRect(-w / 2, -h / 2, w, h);
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(200,120,150,.7)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(-w / 2, -h / 2); ctx.lineTo(0, h * 0.08); ctx.lineTo(w / 2, -h / 2); ctx.stroke();
+    ctx.fillStyle = '#ff3d6e';
+    heartPath(ctx, 0, h * 0.1, r * 0.32); ctx.fill();
+    ctx.restore();
+    ctx.font = `600 ${Math.round(12 * U)}px Fredoka, "Arial Rounded MT Bold", sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    ctx.fillStyle = '#ffb3cb';
+    ctx.fillText(`Brief von ${NICO_NAME}`, x, y + h / 2 + 10);
+  }
+
   // ---------- Bonus-Objekt der Welt ----------
   function drawBonus(x, y) {
     const r = Math.max(17, s * 1.3);
@@ -2084,8 +2354,11 @@ button{touch-action:manipulation}
         ctx.fillStyle = state === 'win' ? theme.accent : theme.fcol; ctx.fill(); break;
       case 'petal':
         ctx.save(); ctx.translate(x, f.y); ctx.rotate(f.rot);
-        ctx.fillStyle = theme.fcol;
-        ctx.beginPath(); ctx.ellipse(0, 0, f.size * 0.9, f.size * 0.45, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = (f.ph % 1) < 0.5 ? '#ffb7d5' : '#ffe1ee';
+        ctx.beginPath(); ctx.moveTo(-f.size, 0);
+        ctx.quadraticCurveTo(-f.size * 0.2, -f.size * 0.7, f.size * 0.8, -f.size * 0.15);
+        ctx.lineTo(f.size * 0.55, 0); ctx.lineTo(f.size * 0.8, f.size * 0.15);
+        ctx.quadraticCurveTo(-f.size * 0.2, f.size * 0.7, -f.size, 0); ctx.fill();
         ctx.restore(); break;
       case 'bubble':
         ctx.strokeStyle = theme.fcol; ctx.lineWidth = 1.2;
@@ -2254,6 +2527,26 @@ button{touch-action:manipulation}
       ctx.fillStyle = g; ctx.fill();
     }
     ctx.shadowBlur = 0;
+    if (look.nico && !flash) {
+      ctx.save();
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.font = `${Math.round(size * 0.95)}px Parisienne, "Snell Roundhand", cursive`;
+      ctx.shadowColor = '#ffd36e'; ctx.shadowBlur = 8;
+      ctx.fillStyle = '#ffffff'; ctx.fillText(NICO_NAME[0], 0, -size * 0.02);
+      ctx.shadowBlur = 0;
+      const cy0 = -size * 1.02, cw = size * 0.42;
+      ctx.fillStyle = '#ffd36e';
+      ctx.beginPath();
+      ctx.moveTo(-cw, cy0 + cw * 0.5); ctx.lineTo(-cw, cy0 - cw * 0.2); ctx.lineTo(-cw * 0.5, cy0 + cw * 0.15);
+      ctx.lineTo(0, cy0 - cw * 0.5); ctx.lineTo(cw * 0.5, cy0 + cw * 0.15); ctx.lineTo(cw, cy0 - cw * 0.2); ctx.lineTo(cw, cy0 + cw * 0.5);
+      ctx.closePath(); ctx.fill();
+      for (let i = 0; i < 3; i++) {
+        const a = time * 2 + i * 2.1;
+        ctx.fillStyle = `rgba(255,236,170,${0.55 + 0.45 * Math.sin(time * 5 + i)})`;
+        star5(Math.cos(a) * size * 1.2, Math.sin(a) * size * 0.65, size * 0.13, a); ctx.fill();
+      }
+      ctx.restore();
+    }
     if (!flash && (look.stars || look.diamond)) {
       ctx.save(); heartPath(ctx, 0, 0, size); ctx.clip();
       if (look.stars) for (let i = 0; i < 9; i++) {
@@ -2412,6 +2705,7 @@ button{touch-action:manipulation}
       if (f.kind === 'love') drawSprite(fallSprites[f.c], x, f.y, state === 'menu' ? 0.55 : 1);
       else if (f.kind === 'broken') drawBroken(x, f.y, Math.max(14, s * 1.1));
       else if (f.kind === 'bonus') drawBonus(x, f.y);
+      else if (f.kind === 'letter') drawLetter(x, f.y);
       else drawGadget(f, x, f.y);
     }
 
@@ -2466,7 +2760,8 @@ button{touch-action:manipulation}
     renderGadgetList(); updateShopBtn();
     $('storeWarn').hidden = storageOk;
     updateMissBtn();
-    if (storageOk) setTimeout(checkDaily, 700);
+    updateAlbumBtn();
+    if (storageOk) setTimeout(() => { if (!shop.giftSeen) showGift(checkDaily); else checkDaily(); }, 700);
     for (let i = 0; i < 28; i++) slotState[i] = 2;
     requestAnimationFrame(t => { last = t; frame(t); });
   }

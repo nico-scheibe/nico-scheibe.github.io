@@ -1,6 +1,8 @@
 package de.nico.herzfaenger;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebViewClient;
 
 /**
@@ -55,7 +58,20 @@ public class MainActivity extends Activity {
         s.setTextZoom(100);                      // Systemschriftgröße soll das Layout nicht sprengen
         s.setUserAgentString(s.getUserAgentString() + " HerzfaengerApp");
 
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                // Links nach außen (z. B. WhatsApp-Antwort an Nico) in der passenden App öffnen
+                Uri uri = request.getUrl();
+                String scheme = uri.getScheme();
+                if ("file".equals(scheme) || "about".equals(scheme) || "data".equals(scheme)) return false;
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                } catch (Exception ignored) { }
+                return true;
+            }
+        });
+        webView.getSettings().setSupportMultipleWindows(false);
         webView.setWebChromeClient(new WebChromeClient());
 
         setContentView(webView);

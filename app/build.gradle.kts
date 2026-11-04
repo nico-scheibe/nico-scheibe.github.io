@@ -10,8 +10,10 @@ android {
         applicationId = "de.nico.herzfaenger"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        // Jede neue Version aus GitHub bekommt automatisch eine höhere Nummer, damit sie sich über die alte installieren lässt
+        val build = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInt()
+        versionCode = build
+        versionName = "1.$build"
     }
 
     buildTypes {
