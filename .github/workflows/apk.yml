@@ -26,8 +26,8 @@ jobs:
           HF_KEYSTORE_BASE64: ${{ secrets.HF_KEYSTORE_BASE64 }}
         run: |
           if [ -z "$HF_KEYSTORE_BASE64" ]; then
-            echo "::error::Das Secret HF_KEYSTORE_BASE64 fehlt. Ohne festen Schlüssel ließe sich die App nicht über die alte installieren. Bitte die Secrets anlegen (siehe ANLEITUNG.md)."
-            exit 1
+            echo "::warning::Kein fester Schlüssel hinterlegt. Die App wird mit einem einmaligen Schlüssel gebaut: vor einem Update den Spielstand über 'Spielstand sichern' kopieren."
+            exit 0
           fi
           echo "$HF_KEYSTORE_BASE64" | base64 -d > app/herzfaenger.keystore
 
