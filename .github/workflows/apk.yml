@@ -21,7 +21,19 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      - name: Festen Schlüssel aus den Secrets holen
+        env:
+          HF_KEYSTORE_BASE64: ${{ secrets.HF_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$HF_KEYSTORE_BASE64" ]; then
+            echo "::error::Das Secret HF_KEYSTORE_BASE64 fehlt. Ohne festen Schlüssel ließe sich die App nicht über die alte installieren. Bitte die Secrets anlegen (siehe ANLEITUNG.md)."
+            exit 1
+          fi
+          echo "$HF_KEYSTORE_BASE64" | base64 -d > app/herzfaenger.keystore
+
       - name: APK bauen
+        env:
+          HF_KEYSTORE_PASSWORD: ${{ secrets.HF_KEYSTORE_PASSWORD }}
         run: |
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon

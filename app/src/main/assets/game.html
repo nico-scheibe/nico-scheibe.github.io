@@ -82,6 +82,7 @@ a.btn{text-decoration:none;display:block;text-align:center}
 .note-text{font:400 34px/1.25 var(--display);color:var(--blush);text-shadow:0 0 18px var(--rose);text-wrap:balance;margin:4px 0}
 .letters{display:flex;flex-direction:column;gap:8px;text-align:left}
 .letter{padding:12px 14px;border-radius:14px;background:rgba(20,6,26,.6);border:1px solid rgba(255,211,110,.35);font:400 22px/1.3 var(--display);color:var(--blush)}
+textarea{width:100%;font:12px/1.4 ui-monospace,Menlo,monospace;color:var(--ink);background:rgba(20,6,26,.7);border:1px solid var(--line);border-radius:12px;padding:10px;-webkit-user-select:text;user-select:text;resize:vertical;word-break:break-all}
 .letter.locked{font:500 13px var(--ui);color:var(--mist);border-color:var(--line);border-style:dashed}
 .item .pv{height:54px;display:grid;place-items:center}
 .item .pv svg{height:46px;width:auto;max-width:100%;overflow:visible}
@@ -141,7 +142,7 @@ input{
   border:1px solid var(--line);border-radius:12px;padding:10px 14px;
   -webkit-user-select:text;user-select:text;
 }
-.swatches{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:6px}
 .sw{
   aspect-ratio:1;max-width:100%;border-radius:12px;border:2px solid transparent;cursor:pointer;padding:0;position:relative;
   background:var(--bgs);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
@@ -306,6 +307,7 @@ button{touch-action:manipulation}
     <button class="btn alt" id="shopBtn" type="button">Shop</button>
     <button class="btn alt" id="missBtn" type="button">Tagesaufgaben</button>
     <button class="btn alt" id="albumBtn" type="button">Briefe von Nico</button>
+    <button class="btn alt" id="saveBtn" type="button">Spielstand sichern</button>
     <button class="btn alt" id="fsMenu" type="button">Im Vollbild spielen</button>
     <span class="hint" id="hsLine" hidden></span>
     <span class="hint warn" id="storeWarn" hidden>Hier kann dein Browser nichts speichern. Punkte, Sterne und Käufe gehen beim Schließen verloren. Öffne das Spiel am besten direkt in Safari oder Chrome.</span>
@@ -319,10 +321,25 @@ button{touch-action:manipulation}
       <h2>Challenges</h2>
       <span class="total" id="total">★ 0 / 54</span>
     </div>
-    <p style="text-align:left;font-size:14px">6 Welten mit je 3 Challenges und am Ende ein Endboss. Jede gibt bis zu 3 Sterne: geschafft, ohne ein graues Herz zu treffen, und unter der Zielzeit. Mit einem Stern schaltest du die nächste frei, und jede neue Welt bringt ein neues Design. Du kannst aber auch alles sofort freischalten.</p>
+    <p style="text-align:left;font-size:14px">9 Welten mit je 3 Challenges und am Ende ein Endboss. Jede gibt bis zu 3 Sterne: geschafft, ohne ein graues Herz zu treffen, und unter der Zielzeit. Mit einem Stern schaltest du die nächste frei, und jede neue Welt bringt ein neues Design. Du kannst aber auch alles sofort freischalten.</p>
     <button class="btn alt" id="unlockAll" type="button" aria-pressed="false">Alle Challenges freischalten</button>
     <div id="worlds" style="display:flex;flex-direction:column;gap:18px"></div>
     <button class="btn alt" id="chBack" type="button">Zurück</button>
+  </div>
+</div>
+
+<div class="overlay solid" id="saveBox" hidden>
+  <div class="card">
+    <span class="eyebrow">Backup</span>
+    <h2>Spielstand sichern</h2>
+    <p>Kopier dir diesen Code, zum Beispiel in deine Notizen. Damit holst du deinen Spielstand zurück, auch auf einem anderen Gerät oder im Browser.</p>
+    <textarea id="saveCode" readonly rows="4" aria-label="Dein Spielstand-Code"></textarea>
+    <button class="btn gold" id="copySave" type="button">Code kopieren</button>
+    <h3>Spielstand laden</h3>
+    <textarea id="loadCode" rows="3" placeholder="Code hier einfügen (beginnt mit HF1:)" aria-label="Spielstand-Code einfügen"></textarea>
+    <button class="btn alt" id="loadSave" type="button">Laden</button>
+    <p id="saveMsg" class="near" style="min-height:1.2em"></p>
+    <button class="btn alt" id="saveBack" type="button">Zurück</button>
   </div>
 </div>
 
@@ -475,10 +492,16 @@ button{touch-action:manipulation}
     galaxy:  { name: 'Galaxie', bg: ['#40207a', '#1a0b3d', '#05020f'], colors: ['#c7a3ff', '#ff8ae2', '#7fd6ff', '#ffd36e', '#a0ffd8'],
                accent: '#b48cff', light: '#e6d6ff', basket: ['#f0d8ff', '#9a5cff'], floater: 'spark', fcol: '#e0ccff', star: '230,215,255', nameCol: '#d4b8ff' },
     boss:    { name: 'Herzensbrecher', bg: ['#4a0a16', '#22050c', '#0a0204'], colors: ['#ff5c7a', '#ff2d4a', '#ff9aa8', '#ffb347', '#ff7a9a'],
-               accent: '#ff3355', light: '#ffb3c0', basket: ['#ffd0d8', '#e0203c'], floater: 'orb', fcol: '#ff3355', star: '255,190,200', nameCol: '#ff6680' }
+               accent: '#ff3355', light: '#ffb3c0', basket: ['#ffd0d8', '#e0203c'], floater: 'orb', fcol: '#ff3355', star: '255,190,200', nameCol: '#ff6680' },
+    volcano: { name: 'Vulkan', bg: ['#6a1e0c', '#2c0a06', '#0c0302'], colors: ['#ffb347', '#ff7a3d', '#ffd36e', '#ff5c5c', '#ff9a6e'],
+               accent: '#ff6a2a', light: '#ffc49a', basket: ['#ffd9b0', '#ff4a1a'], floater: 'orb', fcol: '#ff7a1a', star: '255,200,160', nameCol: '#ffa65c' },
+    rainbow: { name: 'Regenbogen', bg: ['#3f3a9a', '#1f1e5a', '#0a0a28'], colors: ['#ff8ae2', '#7fd6ff', '#ffd36e', '#8ef5c4', '#c7a3ff'],
+               accent: '#a98cff', light: '#e6dcff', basket: ['#ffe6ff', '#a070ff'], floater: 'spark', fcol: '#ffffff', star: '230,225,255', nameCol: '#ffb8f0' },
+    shadow:  { name: 'Schattenreich', bg: ['#2a0610', '#0e0207', '#000000'], colors: ['#ff2d4a', '#ff5c7a', '#ff8a9a', '#ff3355', '#ffb0bc'],
+               accent: '#ff1a3c', light: '#ff9aa8', basket: ['#ffb0bc', '#c0102c'], floater: 'orb', fcol: '#ff1a3c', star: '255,110,130', nameCol: '#ff3355' }
   };
-  const THEME_ORDER = ['night', 'sunset', 'blossom', 'ocean', 'winter', 'galaxy', 'boss'];
-  const BONUS = { night: 'Sternschnuppe', sunset: 'Sonnenstrahl', blossom: 'Schmetterling', ocean: 'Goldfisch', winter: 'Eiskristall', galaxy: 'Ufo', boss: 'Herzstück' };
+  const THEME_ORDER = ['night', 'sunset', 'blossom', 'ocean', 'winter', 'galaxy', 'volcano', 'rainbow', 'shadow', 'boss'];
+  const BONUS = { night: 'Sternschnuppe', sunset: 'Sonnenstrahl', blossom: 'Schmetterling', ocean: 'Goldfisch', winter: 'Eiskristall', galaxy: 'Ufo', boss: 'Herzstück', volcano: 'Feuerstein', rainbow: 'Regenbogenstern', shadow: 'Seelenstein' };
   let theme = THEMES.night, themeId = 'night';
 
   const GADGETS = {
@@ -490,7 +513,10 @@ button{touch-action:manipulation}
     rain:   { label: 'Liebesregen',  info: 'Schauer aus Liebe',    dur: 0, color: '#ff7aa3' },
     fire:   { label: 'Feuerherz',    info: 'verbrennt graue Herzen', dur: 6, color: '#ff7a1a', shop: 'g_fire' },
     bomb:   { label: 'Herzbombe',    info: 'sprengt graue Herzen weg', dur: 0, color: '#ff4a6a', shop: 'g_bomb' },
-    gold:   { label: 'Goldrausch',   info: '3× Punkte (Endlos)',   dur: 8, color: '#ffc23d', shop: 'g_gold' }
+    gold:   { label: 'Goldrausch',   info: '3× Punkte (Endlos)',   dur: 8, color: '#ffc23d', shop: 'g_gold' },
+    freeze: { label: 'Zeitstopp',    info: 'alles bleibt stehen',  dur: 3, color: '#bfe9ff', shop: 'g_freeze' },
+    guard:  { label: 'Combo-Schutz', info: 'Combo l\u00e4uft nicht ab', dur: 10, color: '#ff9ad5', shop: 'g_guard' },
+    mini:   { label: 'Mini-B\u00f6se',   info: 'graue Herzen winzig',  dur: 8, color: '#b9bedc', shop: 'g_mini' }
   };
   const GKEYS = Object.keys(GADGETS);
 
@@ -505,15 +531,34 @@ button{touch-action:manipulation}
     { id: 'skin_fire', cat: 'skin', name: 'Brennendes Herz', desc: 'Lodert mit echten Flammen.', price: 9000 },
     { id: 'skin_galaxy', cat: 'skin', name: 'Galaxie-Herz', desc: 'Ein funkelnder Sternenhimmel im Herz.', price: 14000 },
     { id: 'skin_diamond', cat: 'skin', name: 'Diamant-Herz', desc: 'Geschliffen und funkelnd.', price: 25000 },
+    { id: 'skin_strawberry', cat: 'skin', name: 'Erdbeer-Herz', desc: 'Süß, saftig, mit Blättern obendrauf.', price: 3500 },
+    { id: 'skin_choco', cat: 'skin', name: 'Schoko-Herz', desc: 'Mit Schokoguss und bunten Streuseln.', price: 5000 },
+    { id: 'skin_ocean', cat: 'skin', name: 'Ozean-Herz', desc: 'Wellen ziehen durch das Herz.', price: 8000 },
+    { id: 'skin_candy', cat: 'skin', name: 'Zuckerwatte-Herz', desc: 'Pastell und glitzernd.', price: 0, unlock: { type: 'streak', need: 3, text: '3 Tage in Folge spielen' } },
+    { id: 'skin_rose', cat: 'skin', name: 'Rosen-Herz', desc: 'Eine Rose, nur für dich.', price: 0, unlock: { type: 'notes', need: 10, text: '10 Briefe sammeln' } },
+    { id: 'skin_pixel', cat: 'skin', name: 'Pixel-Herz', desc: 'Retro wie ein altes Videospiel.', price: 0, unlock: { type: 'hs', need: 5000, text: 'Highscore 5.000' } },
+    { id: 'skin_emerald', cat: 'skin', name: 'Smaragd-Herz', desc: 'Ein grüner Edelstein.', price: 0, unlock: { type: 'stars', need: 30, text: '30 Sterne sammeln' } },
+    { id: 'skin_sun', cat: 'skin', name: 'Sonnen-Herz', desc: 'Strahlt mit rotierenden Sonnenstrahlen.', price: 7000 },
+    { id: 'skin_moon', cat: 'skin', name: 'Mond-Herz', desc: 'Nachtblau mit Mondsichel und Sternen.', price: 6000 },
+    { id: 'skin_ghost', cat: 'skin', name: 'Geister-Herz', desc: 'Halb durchsichtig und ein bisschen gruselig.', price: 0, unlock: { type: 'shadow', need: 3, text: 'Schattenreich schaffen' } },
+    { id: 'skin_lava', cat: 'skin', name: 'Lava-Herz', desc: 'Glühende Risse, heiß wie ein Vulkan.', price: 0, unlock: { type: 'boss', need: 1, text: 'Endboss besiegen' } },
     { id: 'trail_none', cat: 'trail', name: 'Keine Spur', desc: 'Schlicht und clean.', price: 0 },
     { id: 'trail_spark', cat: 'trail', name: 'Funkenspur', desc: 'Goldene Funken, wenn du dich bewegst.', price: 1500 },
     { id: 'trail_hearts', cat: 'trail', name: 'Herzchenspur', desc: 'Kleine Herzen fliegen hinter dir her.', price: 3500 },
     { id: 'trail_rainbow', cat: 'trail', name: 'Regenbogenspur', desc: 'Ein bunter Streifen folgt dir.', price: 7000 },
+    { id: 'trail_stars', cat: 'trail', name: 'Sternenstaub', desc: 'Funkelnde Sterne hinter dir.', price: 5000 },
+    { id: 'trail_fire', cat: 'trail', name: 'Feuerspur', desc: 'Flammen lodern hinter dir.', price: 5000 },
+    { id: 'trail_confetti', cat: 'trail', name: 'Konfettispur', desc: 'Buntes Konfetti bei jeder Bewegung.', price: 4000 },
+    { id: 'trail_lightning', cat: 'trail', name: 'Blitzspur', desc: 'Ein knisternder Blitz folgt dir.', price: 9000 },
+    { id: 'trail_bubbles', cat: 'trail', name: 'Seifenblasen', desc: 'Blasen steigen auf, wenn du dich bewegst.', price: 0, unlock: { type: 'runs', need: 15, text: '15 Endlos-Runden spielen' } },
     { id: 'g_fire', cat: 'power', name: 'Gadget: Feuerherz', desc: 'Neues Gadget: 6 Sekunden lang verbrennst du graue Herzen und bekommst Punkte dafür.', price: 8000, color: '#ff7a1a', glyph: 'F' },
     { id: 'g_bomb', cat: 'power', name: 'Gadget: Herzbombe', desc: 'Neues Gadget: sprengt alle grauen Herzen auf dem Bildschirm weg.', price: 12000, color: '#ff4a6a', glyph: 'B' },
     { id: 'g_gold', cat: 'power', name: 'Gadget: Goldrausch', desc: 'Neues Gadget: 8 Sekunden lang dreifache Punkte im Endlos-Modus.', price: 15000, color: '#ffc23d', glyph: '×3' },
     { id: 'u_long', cat: 'power', name: 'Lange Gadgets', desc: 'Alle Gadgets halten 50 % länger.', price: 6000, color: '#c7a3ff', glyph: '+½' },
     { id: 'u_luck', cat: 'power', name: 'Glücksbringer', desc: 'Gadgets und Bonus-Objekte kommen öfter.', price: 10000, color: '#8ef5c4', glyph: '★' },
+    { id: 'g_freeze', cat: 'power', name: 'Gadget: Zeitstopp', desc: 'Neues Gadget: 3 Sekunden lang bleibt alles in der Luft stehen.', price: 9000, color: '#bfe9ff', glyph: 'II' },
+    { id: 'g_guard', cat: 'power', name: 'Gadget: Combo-Schutz', desc: 'Neues Gadget: 10 Sekunden lang l\u00e4uft deine Combo nicht ab.', price: 7000, color: '#ff9ad5', glyph: 'C' },
+    { id: 'g_mini', cat: 'power', name: 'Gadget: Mini-B\u00f6se', desc: 'Neues Gadget: 8 Sekunden lang sind graue Herzen winzig und schwer zu treffen.', price: 11000, color: '#b9bedc', glyph: 'M' },
     { id: 'u_life', cat: 'power', name: 'Extra Leben', desc: 'Im Endlos-Modus startest du mit 4 statt 3 Leben.', price: 20000, color: '#ff5c8a', glyph: '+1' }
   ];
   const SKIN_LOOK = {
@@ -524,13 +569,25 @@ button{touch-action:manipulation}
     skin_fire: { c: ['#ffe08a', '#ff3d12'], glow: '#ff7a1a', fire: true },
     skin_galaxy: { c: ['#8a5cff', '#1a0b3d'], glow: '#b48cff', stars: true },
     skin_diamond: { c: ['#ffffff', '#8fe6ff'], glow: '#ffffff', diamond: true },
-    skin_nico: { c: ['#ffe6f2', '#ff3d8b'], glow: '#ffd36e', nico: true }
+    skin_nico: { c: ['#ffe6f2', '#ff3d8b'], glow: '#ff4fd8', nico: true },
+    skin_strawberry: { c: ['#ff7a7a', '#d81e3a'], glow: '#ff6b6b', seeds: true, leaves: true },
+    skin_choco: { c: ['#b07444', '#4a2410'], glow: '#d9a066', drizzle: true },
+    skin_ocean: { c: ['#a8f0ff', '#1f6fd1'], glow: '#5cc8ff', waves: true },
+    skin_candy: { c: ['#ffd1f0', '#a8d8ff'], glow: '#ffc6ec', stars: true },
+    skin_rose: { c: ['#ff8fa8', '#9a0d2a'], glow: '#ff4d6d', rose: true },
+    skin_pixel: { c: ['#ff9ec4', '#ff3d6e'], glow: '#ff5c8a', pixel: true },
+    skin_emerald: { c: ['#d0ffe6', '#0f9a5a'], glow: '#5cffb0', diamond: true, diamondCol: 'rgba(20,110,60,.55)' },
+    skin_lava: { c: ['#4a0c08', '#140404'], glow: '#ff5a1a', cracks: true },
+    skin_sun: { c: ['#fff3a0', '#ff8a1a'], glow: '#ffc23d', rays: true },
+    skin_moon: { c: ['#5a6ac8', '#141a4a'], glow: '#9fb4ff', stars: true, moon: true },
+    skin_ghost: { c: ['rgba(255,255,255,.8)', 'rgba(190,210,255,.35)'], glow: '#e6f0ff', ghost: true }
   };
   const coinSvg = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#ffc23d" stroke="#b07a10" stroke-width="2"/><path d="M12 17s-4-2.5-5-5c-.7-1.8.5-3.6 2.3-3.6 1.1 0 1.9.6 2.7 1.6.8-1 1.6-1.6 2.7-1.6 1.8 0 3 1.8 2.3 3.6-1 2.5-5 5-5 5z" fill="#b0521a"/></svg>';
   let shop = { coins: 0, owned: ['skin_classic', 'trail_none'], skin: 'skin_classic', trail: 'trail_none' };
   try { const sv = JSON.parse(localStorage.getItem('herzfaenger-shop')); if (sv && Array.isArray(sv.owned)) shop = Object.assign(shop, sv); } catch (e) {}
   if (!shop.owned.includes('skin_nico')) shop.owned.push('skin_nico');   // Geschenk: gehört immer dazu
   if (!Array.isArray(shop.notes)) shop.notes = [];
+  if (!shop.stats || typeof shop.stats !== 'object') shop.stats = {};
 
   // ---------- Special Edition: Nico ----------
   // Nico: Hier kannst du deine eigenen Briefe eintragen. Ein Brief pro Zeile, in Anführungszeichen, mit Komma dahinter.
@@ -544,9 +601,52 @@ button{touch-action:manipulation}
     'Ich freu mich schon so auf unser nächstes Treffen.',
     'Danke, dass es dich gibt.',
     'Du bist mein Lieblingsmensch.',
-    'Egal wie weit weg, du bist immer in meinem Herzen.',
-    'Kleiner Tipp von mir: Halt die Combo am Leben, dann gibt es richtig viele Punkte!'
+    'Egla wie weit weg, du bist immer in meinem Herzen.',
+    'Kleiner Tipp von mir: Halt die Combo am Leben, dann gibt es richtig viele Punkte!',
+    'Ich bin so stolz auf dich.',
+    'Weißt du eigentlich, wie schön du bist?',
+    'Du machst mein Leben bunter.',
+    'Wenn ich an dich denke, muss ich lächeln.',
+    'Ich liebe dich mehr, als dieses Spiel Herzen hat.',
+    'Bei dir bin ich zu Hause.',
+    'Danke für jedes Lachen, das du mir schenkst.',
+    'Mit dir fühlt sich alles leichter an.',
+    'Du bist mein Highscore.',
+    'Ich vermisse dich jetzt schon.',
+    'Jeder Moment mit dir ist ein Geschenk.',
+    'Du hast das schönste Lächeln der Welt.',
+    'Ich würde dich jedes Mal wieder wählen.',
+    'Zusammen schaffen wir alles.',
+    'Du bist stärker als jeder Endboss. Ich liebe dich!',
+    // Special-Briefe mit euren Insider-Wörtern
+    'Egla was passiert, ich bin immer für dich da.',
+    'Egla wie lange es dauert, ich warte auf dich.',
+    'Egla wo du gerade bist, ich denk an dich.',
+    'Egla wie oft du verlierst, für mich bist du immer die Siegerin.',
+    'Egla was die anderen sagen, du bist die Beste.',
+    'Egla, egla, egla. Hauptsache du.',
+    'Alles wird okas, versprochen.',
+    'Okas, ich geb es zu: Ich bin total verliebt in dich.',
+    'Du verlierst eine Runde? Okas. Du bist trotzdem meine Nummer eins.',
+    'Heute ein bisschen müde? Okas, dann kuscheln wir einfach.',
+    'Okas, noch eine Runde, aber dann schreibst du mir!',
+    'Egla was kommt, mit dir ist alles okas.'
   ];
+  // Nico: Hier deine Insider-Wörter eintragen. Briefe damit werden als Special-Brief markiert und das Wort leuchtet golden.
+  const NICO_WORDS = ['Egla', 'Okas'];
+  const isSpecialNote = t => NICO_WORDS.some(w => t.toLowerCase().includes(w.toLowerCase()));
+  const noteHtml = t => { let h = escapeHtml(t); for (const w of NICO_WORDS) h = h.replace(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), m => `<span style="color:#ffd36e;text-shadow:0 0 12px #ffd36e">${m}</span>`); return h; };
+  // Dazu 975 Briefe aus Bausteinen (10 × 10 × 10 Kombinationen), damit es zusammen 1000 sind
+  (() => {
+    const A = ['Du bist', 'Für mich bist du', 'Ehrlich gesagt bist du', 'Jeden Tag aufs Neue bist du', 'Weißt du was? Du bist',
+      'Für immer bist du', 'Heute, morgen und übermorgen bist du', 'Egla was passiert, du bist', 'In meinem Herzen bist du', 'Ich sag es dir gern noch mal: Du bist'];
+    const B = ['mein Lieblingsmensch', 'mein ganzes Glück', 'das Beste in meinem Leben', 'mein Sonnenschein', 'mein Zuhause',
+      'mein schönster Gedanke', 'mein größter Gewinn', 'mein Herzschlag', 'mein Lichtblick', 'die tollste Person der Welt'];
+    const C = ['und das wird sich nie ändern.', 'und ich bin so dankbar dafür.', 'und ich liebe dich dafür.', 'und ich denk ständig an dich.',
+      'und mein Herz schlägt schneller.', 'und ich vermisse dich schon wieder.', 'und das sag ich dir viel zu selten.',
+      'und ich freu mich auf alles mit dir.', 'und ich bin verrückt nach dir.', 'und ich würde dich immer wieder wählen.'];
+    for (let i = 0; NICO_NOTES.length < 1000 && i < 1000; i++) NICO_NOTES.push(`${A[i % 10]} ${B[Math.floor(i / 10) % 10]} ${C[Math.floor(i / 100)]}`);
+  })();
   const NICO_BONUS = 1.5;
   const NICO_PHONE = '';   // optional: Nicos Handynummer mit Ländervorwahl ohne + (z. B. 4917612345678), dann geht „Antworten“ direkt an ihn
   const nicoK = () => shop.skin === 'skin_nico' ? NICO_BONUS : 1;
@@ -566,6 +666,9 @@ button{touch-action:manipulation}
     { theme: 'ocean',   sub: 'Dunkle Tiefen, starke Strömung' },
     { theme: 'winter',  sub: 'Rutschig und verdreht' },
     { theme: 'galaxy',  sub: 'Für echte Profis' },
+    { theme: 'volcano', sub: 'Heiß, schnell und gefährlich' },
+    { theme: 'rainbow', sub: 'Die letzten Prüfungen' },
+    { theme: 'shadow',  sub: 'Die böse Welt vor dem Endboss' },
     { theme: 'boss',    sub: 'Das große Finale', label: 'Endboss' }
   ];
   const CHALLENGES = [
@@ -593,7 +696,19 @@ button{touch-action:manipulation}
     { w: 5, id: 'combo20', title: 'Combo-König',      desc: 'Fang 20 hintereinander, und es geht schneller.', comboGoal: 20, speedK: 1.2, par: 50 },
     { w: 5, id: 'final',   title: 'Für immer',        desc: 'Sturm, Zeitdruck und drei Leben auf einmal.', speedK: 1.3, spawnK: 0.85, time: 95, lives: 3, par: 80 },
 
-    { w: 6, id: 'boss',    title: 'Der Herzensbrecher', desc: 'Fünf Leben gegen den Endboss. Er wirft graue Herzen nach dir. Füll das Herz, um ihn zu besiegen.', lives: 5, speedK: 1.2, spawnK: 0.9, brokenK: 0.5, boss: true, par: 110 }
+    { w: 6, id: 'meteor',  title: 'Meteoritenregen',  desc: 'Graue Herzen rasen schräg wie Meteore vom Himmel.', meteor: true, brokenK: 1.2, par: 95 },
+    { w: 6, id: 'shrink',  title: 'Schrumpfherz',     desc: 'Dein Herz schrumpft. Jedes I love you lässt es wieder wachsen.', shrink: true, par: 100 },
+    { w: 6, id: 'sprint',  title: 'Liebessprint',     desc: 'Fang 35 I love you in 45 Sekunden.', catchGoal: 35, time: 45, spawnK: 0.7, par: 35 },
+
+    { w: 7, id: 'zigzag',  title: 'Zickzack',         desc: 'Alles fällt im wilden Zickzack.', zigzag: true, par: 100 },
+    { w: 7, id: 'turbo',   title: 'Turbo',            desc: 'Es wird jede Sekunde schneller.', turbo: true, par: 80 },
+    { w: 7, id: 'master',  title: 'Meisterprüfung',   desc: 'Ein graues Herz und es ist vorbei. Dazu Wind und Tempo.', oneHit: true, wind: 0.7, speedK: 1.25, brokenK: 0.9, par: 95 },
+
+    { w: 8, id: 'thief',   title: 'Der Herzdieb',     desc: 'Ein Mini-Boss wirft graue Herzen nach dir. Füll das Herz, um ihn zu verjagen.', boss: true, bossName: 'HERZDIEB', lives: 4, speedK: 1.1, brokenK: 0.6, par: 110 },
+    { w: 8, id: 'thorns',  title: 'Dornenregen',      desc: 'Dornige graue Herzen rasen schräg von allen Seiten.', meteor: true, brokenK: 1.6, speedK: 1.15, par: 100 },
+    { w: 8, id: 'darkness', title: 'Ewige Finsternis', desc: 'Stockdunkel, und der Wind heult.', dark: true, wind: 0.9, speedK: 1.1, par: 110 },
+
+    { w: 9, id: 'boss',    title: 'Der Herzensbrecher', desc: 'Fünf Leben gegen den Endboss. Er klaut Herzen, verdreht dir die Steuerung und wird immer wütender. Füll das Herz, um ihn zu besiegen.', lives: 5, speedK: 1.2, spawnK: 0.9, brokenK: 0.5, boss: true, par: 110 }
   ];
   const STORE = 'herzfaenger-sterne-v2', THEME_STORE = 'herzfaenger-design';
   let best = {};
@@ -782,7 +897,7 @@ button{touch-action:manipulation}
     stars = Array.from({ length: Math.round(W * H / 6000) }, () =>
       ({ x: rand(0, W), y: rand(0, H), r: rand(0.5, 1.6), ph: rand(0, 6.28) }));
   }
-  const targetBasketW = () => basket.baseW * (ch?.basketK || 1) * (active.big ? 1.6 : 1);
+  const targetBasketW = () => basket.baseW * (ch?.basketK || 1) * (active.big ? 1.6 : 1) * (ch?.shrink ? (run.shrinkK || 1) : 1);
 
   // ---------- Ton ----------
   let audio = null, muted = true;
@@ -881,13 +996,14 @@ button{touch-action:manipulation}
   let lastStatus = '';
   function updateStatus() {
     const wdir = ch?.wind ? (wind > 25 ? '→' : wind < -25 ? '←' : '·') : '';
-    const key = [run.combo, ch?.time ? Math.ceil(run.timeLeft) : '', run.lives, wdir, run.score, run.level, !!ch].join('|');
+    const key = [run.combo, ch?.time ? Math.ceil(run.timeLeft) : '', run.lives, wdir, run.score, run.level, !!ch, run.catches].join('|');
     if (key === lastStatus) return;
     lastStatus = key;
     $('comboPill').textContent = ch ? `Combo ${run.combo}` : `Combo ${run.combo} · x${mult()}`;
     $('comboPill').classList.toggle('hot', run.combo >= 10);
-    $('goalPill').hidden = !ch?.comboGoal;
+    $('goalPill').hidden = !(ch?.comboGoal || ch?.catchGoal);
     if (ch?.comboGoal) $('goalPill').textContent = `Ziel ${Math.min(run.combo, ch.comboGoal)} / ${ch.comboGoal}`;
+    if (ch?.catchGoal) $('goalPill').textContent = `Gefangen ${Math.min(run.catches || 0, ch.catchGoal)} / ${ch.catchGoal}`;
     $('timePill').hidden = !ch?.time;
     if (ch?.time) {
       $('timePill').textContent = fmt(run.timeLeft);
@@ -915,14 +1031,14 @@ button{touch-action:manipulation}
     const progress = filled() / TOTAL;
     const margin = Math.min(60, W * 0.12);
     const R = state === 'play' ? ramp() : 0;
-    const speedK = Math.max(0.8, H / 800) * (state === 'play' ? (ch?.speedK || 1) : 1) * (1 + R * 0.6);
+    const speedK = Math.max(0.8, H / 800) * (state === 'play' ? (ch?.speedK || 1) : 1) * (1 + R * 0.6) * (state === 'play' && ch?.turbo ? 1 + Math.min(1.5, run.elapsed / 50) : 1);
     let kind = 'love';
     if (state === 'play') {
       const onScreen = fallers.some(f => f.kind === 'gadget');
       const gk = ch?.gadgetK || 1;
       if (!ch?.noGadgets && !onScreen && gadgetCooldown <= 0 && Math.random() < 0.22 * gk * (has('u_luck') ? 1.5 : 1)) kind = 'gadget';
       else if (!fallers.some(f => f.kind === 'bonus') && Math.random() < (has('u_luck') ? 0.1 : 0.06)) kind = 'bonus';
-      else if (!fallers.some(f => f.kind === 'letter') && Math.random() < (shop.skin === 'skin_nico' ? 0.05 : 0.025)) kind = 'letter';
+      else if (!(run.letterCd > 0) && !fallers.some(f => f.kind === 'letter') && Math.random() < (shop.skin === 'skin_nico' ? 0.012 : 0.006)) { kind = 'letter'; run.letterCd = 40; }
       else if (Math.random() < (ch ? (0.12 + progress * 0.12) * (ch.brokenK ?? 1) : 0.14 + R * 0.22)) kind = 'broken';
     }
     const f = {
@@ -939,6 +1055,8 @@ button{touch-action:manipulation}
     }
     if (kind === 'bonus') { f.vy *= 0.95; f.sway = 40; }
     if (kind === 'letter') { f.vy *= 0.8; f.sway = 34; }
+    if (kind === 'broken' && ch?.meteor && state === 'play') { f.vy *= 1.5; f.vx = rand(-1, 1) * 140 * speedK; f.sway = 0; f.meteor = true; }
+    if (ch?.zigzag && state === 'play' && kind !== 'gadget') { f.sway = rand(60, 110); f.zz = rand(2.5, 4); }
     if (kind === 'broken' && !ch && state === 'play') {
       f.vy *= 1.1 + R * 0.5;
       if (Math.random() < R * 0.6) {
@@ -971,7 +1089,11 @@ button{touch-action:manipulation}
   function catchLove(f, count = 1) {
     burst(f.x, basket.y - 10, theme.colors[f.c], 8, 110);
     run.combo++;
+    run.maxCombo = Math.max(run.maxCombo || 0, run.combo);
     run.comboT = COMBO_TIME;
+    run.catches = (run.catches || 0) + count;
+    shop.stats.catches = (shop.stats.catches || 0) + count;
+    if (ch?.shrink) run.shrinkK = Math.min(1.25, run.shrinkK + 0.09);
     if (boss) boss.hurt = 0.3;
     missionTrack('catch', count);
     missionTrack('combo', run.combo, true);
@@ -1004,6 +1126,7 @@ button{touch-action:manipulation}
     if (n === 2 && got === 2) say('×2', f.x, basket.y - 40, GADGETS.double.color);
     if (got) tone(SCALE[Math.min(SCALE.length - 1, Math.floor(filled() / TOTAL * SCALE.length))], 0.25, 'sine', 0.1);
     if (ch?.comboGoal && run.combo >= ch.comboGoal) win();
+    if (ch?.catchGoal && run.catches >= ch.catchGoal) win();
   }
 
   function catchBroken(f) {
@@ -1083,7 +1206,7 @@ button{touch-action:manipulation}
     }
   }
 
-  function hideOverlays() { $('menu').hidden = true; $('chMenu').hidden = true; $('result').hidden = true; $('shop').hidden = true; $('pauseBox').hidden = true; $('missions').hidden = true; $('album').hidden = true; $('note').hidden = true; noteOpen = false; paused = false; }
+  function hideOverlays() { $('menu').hidden = true; $('chMenu').hidden = true; $('result').hidden = true; $('shop').hidden = true; $('pauseBox').hidden = true; $('missions').hidden = true; $('album').hidden = true; $('note').hidden = true; $('saveBox').hidden = true; noteOpen = false; paused = false; }
 
   // ---------- Briefe von Nico ----------
   let noteOpen = false;
@@ -1100,8 +1223,9 @@ button{touch-action:manipulation}
     [0, 0.1, 0.2, 0.3].forEach((d, i) => tone([659, 880, 1047, 1319][i], 0.3, 'sine', 0.08, d));
     // Spiel anhalten und den Brief zeigen
     noteOpen = true; paused = true; keys.left = keys.right = false;
-    $('noteFrom').textContent = `${isNew ? 'Neuer ' : ''}Brief von ${NICO_NAME}`;
-    $('noteText').textContent = NICO_NOTES[idx];
+    const sp = isSpecialNote(NICO_NOTES[idx]);
+    $('noteFrom').textContent = `${isNew ? 'Neuer ' : ''}${sp ? 'Special-Brief' : 'Brief'} von ${NICO_NAME}`;
+    $('noteText').innerHTML = noteHtml(NICO_NOTES[idx]);
     $('notePts').innerHTML = `${coinSvg} +${pts} Punkte · ${shop.notes.length} / ${NICO_NOTES.length} Briefe gesammelt`;
     $('noteReply').textContent = `${NICO_NAME} antworten`;
     $('noteReply').href = waLink(`Hey ${NICO_NAME}, ich hab im Herzfänger deinen Brief gefunden: "${NICO_NOTES[idx]}" <3`);
@@ -1122,12 +1246,48 @@ button{touch-action:manipulation}
     $('albumInfo').textContent = shop.notes.length
       ? `Du hast ${shop.notes.length} von ${NICO_NOTES.length} Briefen gefunden. Die restlichen fallen ab und zu im Spiel vom Himmel.`
       : `${NICO_NAME} hat dir Briefe im Spiel versteckt. Sie fallen ab und zu als Umschlag vom Himmel. Fang sie!`;
-    $('albumList').innerHTML = NICO_NOTES.map((t, i) => shop.notes.includes(i)
-      ? `<div class="letter">${escapeHtml(t)}</div>`
-      : `<div class="letter locked">Brief ${i + 1}: noch nicht gefunden</div>`).join('');
+    const left = NICO_NOTES.length - shop.notes.length;
+    $('albumList').innerHTML = shop.notes.slice().reverse().map(i => `<div class="letter"${isSpecialNote(NICO_NOTES[i] || '') ? ' style="border-color:#ffd36e;box-shadow:0 0 14px rgba(255,211,110,.3)"' : ''}>${noteHtml(NICO_NOTES[i] || '')}</div>`).join('')
+      + (left > 0 ? `<div class="letter locked">Noch ${left.toLocaleString('de-DE')} Briefe warten darauf, gefunden zu werden.</div>` : '');
     $('albumWrite').textContent = `${NICO_NAME} schreiben`;
     $('albumWrite').href = waLink(`Hey ${NICO_NAME}, ich spiel gerade Herzfänger und denk an dich <3`);
     $('album').hidden = false;
+  }
+  function showStartBonus(then) {
+    shop.bonus20k = true; shop.coins += 20000; saveShop(); updateShopBtn();
+    $('giftTitle').textContent = 'Ein Startguthaben f\u00fcr dich';
+    $('giftPv').innerHTML = `<div class="count-big coinline">${coinSvg.replace('width="16" height="16"', 'width="56" height="56"')}20.000</div>`;
+    $('giftText').textContent = `${NICO_NAME} schenkt dir 20.000 Punkte f\u00fcr den Shop, weil beim Update dein alter Spielstand verloren ging. Ab jetzt bleibt er bei Updates erhalten, und unter \u201eSpielstand sichern\u201c kannst du ihn zus\u00e4tzlich sichern.`;
+    $('giftYes').textContent = 'Danke!'; $('giftNo').hidden = true;
+    $('gift').hidden = false;
+    initAudio();
+    $('giftYes').onclick = () => {
+      $('gift').hidden = true; $('giftYes').textContent = 'Jetzt ausr\u00fcsten'; $('giftNo').hidden = false;
+      [0, 0.08, 0.16, 0.24].forEach((d, i) => tone([784, 988, 1175, 1568][i], 0.22, 'sine', 0.08, d));
+      if (then) then();
+    };
+  }
+  function exportSave() {
+    bankRun(); saveShop();
+    const o = {};
+    try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith('herzfaenger')) o[k] = localStorage.getItem(k); } } catch (e) {}
+    return 'HF1:' + btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+  }
+  function importSave(code) {
+    try {
+      code = (code || '').trim();
+      if (!code.startsWith('HF1:')) return false;
+      const o = JSON.parse(decodeURIComponent(escape(atob(code.slice(4)))));
+      let n = 0;
+      for (const k in o) if (k.startsWith('herzfaenger') && typeof o[k] === 'string') { localStorage.setItem(k, o[k]); n++; }
+      return n > 0;
+    } catch (e) { return false; }
+  }
+  function showSave() {
+    hideOverlays();
+    $('saveCode').value = exportSave();
+    $('loadCode').value = ''; $('saveMsg').textContent = '';
+    $('saveBox').hidden = false;
   }
   function showGift(then) {
     $('giftTitle').textContent = `Ein Geschenk von ${NICO_NAME}`;
@@ -1178,11 +1338,12 @@ button{touch-action:manipulation}
     if (audio && audio.state === 'suspended') audio.resume();
     slotState.fill(0);
     fallers = []; flyers = []; sparks = []; texts = []; active = {};
-    run = { elapsed: 0, hits: 0, combo: 0, maxCombo: 0, lives: ch ? (ch.lives || 0) : (has('u_life') ? 4 : 3), timeLeft: ch?.time || 0, score: 0, level: 1 };
+    run = { elapsed: 0, hits: 0, combo: 0, maxCombo: 0, lives: ch ? (ch.lives || 0) : (has('u_life') ? 4 : 3), timeLeft: ch?.time || 0, score: 0, level: 1, letterCd: 20, catches: 0, shrinkK: 1 };
     levelFlash = 0;
     state = 'play'; spawnT = 0.8; winT = 0; gadgetCooldown = ch?.gadgetK ? 1 : 3; lastStatus = ''; wind = 0;
     basket.v = 0; basket.w = targetBasketW();
-    boss = ch?.boss ? { x: W / 2, y: Math.max(150, H * 0.17), throwT: 3, hurt: 0, dead: 0, mouth: 0 } : null;
+    boss = ch?.boss ? { x: W / 2, y: Math.max(150, H * 0.17), throwT: 3, hurt: 0, dead: 0, mouth: 0, mean: !ch.bossName, stealT: 14, confT: 18, tauntT: 4, taunt: null, beatT: 1, dark: 0, phase: 1 } : null;
+    run.confused = 0;
     keys.left = keys.right = false;
     const i = CHALLENGES.indexOf(ch);
     banner = ch
@@ -1247,17 +1408,53 @@ button{touch-action:manipulation}
     renderSwatches();
     showChallenges();
   });
+  // Freischalt-Fortschritt für Belohnungs-Herzen: [aktuell, nötig]
+  function unlockProgress(it) {
+    const u = it.unlock;
+    if (!u) return null;
+    let cur = 0;
+    if (u.type === 'notes') cur = shop.notes.length;
+    else if (u.type === 'hs') cur = highscore;
+    else if (u.type === 'boss') cur = (best.boss || 0) >= 1 ? 1 : 0;
+    else if (u.type === 'streak') cur = Math.max(daily.streak || 0, shop.stats.bestStreak || 0);
+    else if (u.type === 'stars') cur = CHALLENGES.reduce((n, c) => n + (best[c.id] || 0), 0);
+    else if (u.type === 'runs') cur = shop.stats.runs || 0;
+    else if (u.type === 'shadow') cur = ['thief', 'thorns', 'darkness'].filter(id => (best[id] || 0) >= 1).length;
+    return [Math.min(cur, u.need), u.need];
+  }
+  function skinExtra(lk) {
+    let e = '';
+    if (lk.seeds) e += '<g fill="#ffe27a"><ellipse cx="8" cy="10" rx=".5" ry=".8"/><ellipse cx="12" cy="12" rx=".5" ry=".8"/><ellipse cx="16" cy="10" rx=".5" ry=".8"/><ellipse cx="10" cy="15" rx=".5" ry=".8"/><ellipse cx="14" cy="15" rx=".5" ry=".8"/></g><path d="M8.5 5.2c1.2-2 2.3-1.2 3.5 0 1.2-1.2 2.3-2 3.5 0-1.2.9-2.3 1.4-3.5.6-1.2.8-2.3.3-3.5-.6z" fill="#3fbf5a"/>';
+    if (lk.waves) e += '<path d="M4 10q2-1.5 4 0t4 0 4 0 4 0M5 14q2-1.5 4 0t4 0 4 0" stroke="#fff" stroke-width=".8" fill="none" opacity=".75"/>';
+    if (lk.drizzle) e += '<path d="M4 10l2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5 2 1.5 2-1.5" stroke="#f3d2a8" stroke-width=".9" fill="none"/><rect x="8" y="14" width="1.6" height=".6" fill="#7fd6ff"/><rect x="13" y="13" width="1.6" height=".6" fill="#ff7aa3"/><rect x="11" y="16.5" width="1.6" height=".6" fill="#ffe27a"/>';
+    if (lk.rose) e += '<path d="M12 11.5a1 1 0 1 1-1 1 2 2 0 1 1 3-1.5 3 3 0 1 1-4.5 3.5" stroke="#6a0018" stroke-width=".8" fill="none" opacity=".75"/>';
+    if (lk.rays) e += '<g stroke="#ffc23d" stroke-width="1" stroke-linecap="round"><path d="M12 1v2M3 6l1.5 1M21 6l-1.5 1M1 13h2M21 13h2M5 20l1.3-1.2M19 20l-1.3-1.2"/></g>';
+    if (lk.moon) e += '<circle cx="13" cy="11" r="3.4" fill="#f4f0d8"/><circle cx="14.6" cy="10" r="3" fill="#2a347a"/>';
+    if (lk.ghost) e += '<ellipse cx="9.5" cy="11" rx="1" ry="1.5" fill="#1e1e3c"/><ellipse cx="14.5" cy="11" rx="1" ry="1.5" fill="#1e1e3c"/><ellipse cx="12" cy="15" rx="1" ry=".8" fill="#1e1e3c"/>';
+    if (lk.cracks) e += '<path d="M12 7l-1.5 3 2 2-1.5 3 1 3M10.5 10l-3 1M13 12l3 .5" stroke="#ff7a1a" stroke-width=".9" fill="none"/>';
+    return e;
+  }
   const HEART_D = 'M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3.2 4.5 6.8 4.5c2.1 0 3.6 1.2 5.2 3 1.6-1.8 3.1-3 5.2-3 3.6 0 5.9 3.7 4.4 7.2C19.5 16.4 12 21 12 21z';
   function preview(it) {
     if (it.cat === 'skin') {
       const lk = SKIN_LOOK[it.id] || { c: THEMES.night.basket, glow: '#ff5c8a' };
+      if (lk.nico) return `<svg viewBox="0 -3 24 27" style="filter:drop-shadow(0 0 5px #ff4fd8) drop-shadow(0 0 3px #ffd36e)"><path d="${HEART_D}" fill="rgba(30,4,30,.6)" stroke="#ff4fd8" stroke-width="1.6"/><path d="${HEART_D}" fill="none" stroke="#fff" stroke-width=".4"/><path d="${HEART_D}" transform="translate(2.4 2.8) scale(.8)" fill="none" stroke="#ffd36e" stroke-width="1.1"/><path d="M7.4 4.2l1.7 1.4L12-.6l2.9 6.2 1.7-1.4.1 2.6H7.3z" fill="none" stroke="#ffd36e" stroke-width=".8" stroke-linejoin="round"/><circle cx="12" cy="-.4" r=".7" fill="#ff4fd8"/><circle cx="7.4" cy="4.2" r=".6" fill="#7fd6ff"/><circle cx="16.6" cy="4.2" r=".6" fill="#8ef5c4"/><text x="12" y="16" text-anchor="middle" font-family="Parisienne, Snell Roundhand, cursive" font-size="10" fill="none" stroke="#ff4fd8" stroke-width=".7">${NICO_NAME[0]}</text></svg>`;
+      if (lk.pixel) {
+        const rows = ['0110110', '1111111', '1111111', '0111110', '0011100', '0001000'];
+        let r = '';
+        rows.forEach((row, y) => [...row].forEach((v, x) => { if (v === '1') r += `<rect x="${1.5 + x * 3}" y="${4 + y * 3}" width="2.7" height="2.7" fill="${y < 2 ? lk.c[0] : lk.c[1]}"/>`; }));
+        return `<svg viewBox="0 0 24 24" style="filter:drop-shadow(0 0 6px ${lk.glow})">${r}<rect x="4.5" y="7" width="2.7" height="2.7" fill="#fff" opacity=".6"/></svg>`;
+      }
       if (lk.neon) return `<svg viewBox="0 0 24 24" style="filter:drop-shadow(0 0 6px ${lk.glow})"><path d="${HEART_D}" fill="rgba(20,4,24,.6)" stroke="${lk.glow}" stroke-width="1.6"/></svg>`;
       const stops = lk.rainbow ? ['#ff5c5c', '#ffd36e', '#7fe08a', '#5cc8ff', '#c77dff'] : lk.c;
       const gid = 'pv_' + it.id;
-      return `<svg viewBox="0 0 24 24" style="filter:drop-shadow(0 0 6px ${lk.glow || '#ffd36e'})"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">${stops.map((c, i) => `<stop offset="${i / (stops.length - 1)}" stop-color="${c}"/>`).join('')}</linearGradient></defs><path d="${HEART_D}" fill="url(#${gid})"/>${lk.stars ? '<circle cx="9" cy="10" r=".7" fill="#fff"/><circle cx="14" cy="13" r=".6" fill="#fff"/><circle cx="12" cy="8.5" r=".5" fill="#fff"/><circle cx="16" cy="9" r=".5" fill="#fff"/>' : ''}${lk.fire ? '<path d="M9 5c0-2 2-3 2-4 1 2 3 2 3 5" stroke="#ffb347" fill="none" stroke-width="1.2" stroke-linecap="round"/>' : ''}${lk.diamond ? '<path d="M4 9h16M8 5l4 4 4-4M4 9l8 11 8-11" stroke="#7cc8e0" stroke-width=".7" fill="none"/>' : ''}${lk.nico ? `<path d="M7.5 4.6l1.6 1.3L12 2.6l2.9 3.3 1.6-1.3V6.6h-9z" fill="#ffd36e"/><text x="12" y="15.6" text-anchor="middle" font-family="Parisienne, Snell Roundhand, cursive" font-size="9.5" fill="#fff">${NICO_NAME[0]}</text>` : ''}</svg>`;
+      return `<svg viewBox="0 0 24 24" style="filter:drop-shadow(0 0 6px ${lk.glow || '#ffd36e'})"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">${stops.map((c, i) => `<stop offset="${i / (stops.length - 1)}" stop-color="${c}"/>`).join('')}</linearGradient></defs><path d="${HEART_D}" fill="url(#${gid})"/>${lk.stars ? '<circle cx="9" cy="10" r=".7" fill="#fff"/><circle cx="14" cy="13" r=".6" fill="#fff"/><circle cx="12" cy="8.5" r=".5" fill="#fff"/><circle cx="16" cy="9" r=".5" fill="#fff"/>' : ''}${lk.fire ? '<path d="M9 5c0-2 2-3 2-4 1 2 3 2 3 5" stroke="#ffb347" fill="none" stroke-width="1.2" stroke-linecap="round"/>' : ''}${lk.diamond ? `<path d="M4 9h16M8 5l4 4 4-4M4 9l8 11 8-11" stroke="${lk.diamondCol || '#7cc8e0'}" stroke-width=".7" fill="none"/>` : ''}${skinExtra(lk)}${lk.nico ? `<path d="M7.5 4.6l1.6 1.3L12 2.6l2.9 3.3 1.6-1.3V6.6h-9z" fill="#ffd36e"/><text x="12" y="15.6" text-anchor="middle" font-family="Parisienne, Snell Roundhand, cursive" font-size="9.5" fill="#fff">${NICO_NAME[0]}</text>` : ''}</svg>`;
     }
     if (it.cat === 'trail') {
       if (it.id === 'trail_none') return '<svg viewBox="0 0 40 24"><circle cx="20" cy="12" r="8" fill="none" stroke="#c4abcd" stroke-dasharray="3 3"/></svg>';
+      if (it.id === 'trail_fire') return '<svg viewBox="0 0 40 24"><circle cx="8" cy="15" r="2" fill="#ff4a1a" opacity=".5"/><circle cx="17" cy="13" r="3" fill="#ff7a1a" opacity=".7"/><path d="M29 20c-4 0-6-3-5-6 1-2 2-3 2-6 3 2 4 4 4 6 1-1 1-2 1-3 2 2 3 4 3 6 0 2-2 3-5 3z" fill="#ffb347"/></svg>';
+      if (it.id === 'trail_confetti') return '<svg viewBox="0 0 40 24"><rect x="6" y="12" width="4" height="2" fill="#ff7aa3" transform="rotate(20 8 13)"/><rect x="14" y="8" width="4" height="2" fill="#7fd6ff" transform="rotate(-30 16 9)"/><rect x="22" y="14" width="4" height="2" fill="#ffd36e"/><rect x="30" y="9" width="4" height="2" fill="#8ef5c4" transform="rotate(40 32 10)"/></svg>';
+      if (it.id === 'trail_lightning') return '<svg viewBox="0 0 40 24" style="filter:drop-shadow(0 0 3px #7fd6ff)"><path d="M3 14l7-4 5 6 6-8 6 7 5-5 5 4" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="round"/></svg>';
       if (it.id === 'trail_rainbow') return '<svg viewBox="0 0 40 24"><defs><linearGradient id="rbpv"><stop offset="0" stop-color="#ff5c5c"/><stop offset=".5" stop-color="#7fe08a"/><stop offset="1" stop-color="#c77dff"/></linearGradient></defs><path d="M4 16 Q20 4 36 12" stroke="url(#rbpv)" stroke-width="5" fill="none" stroke-linecap="round"/></svg>';
       const hearts = it.id === 'trail_hearts';
       return `<svg viewBox="0 0 40 24">${[0, 1, 2].map(i => hearts ? `<path d="${HEART_D}" transform="translate(${3 + i * 12} ${7 - i * 2}) scale(${0.4 + i * 0.12})" fill="#ff7aa3" opacity="${0.4 + i * 0.3}"/>` : `<circle cx="${8 + i * 11}" cy="${14 - i * 2}" r="${1.5 + i}" fill="#ffd36e" opacity="${0.4 + i * 0.3}"/>`).join('')}</svg>`;
@@ -1271,6 +1468,8 @@ button{touch-action:manipulation}
     $('coins').innerHTML = `${coinSvg} ${shop.coins.toLocaleString('de-DE')}`;
     const cats = [['skin', 'Herz-Skins'], ['trail', 'Spuren'], ['power', 'Gadgets & Upgrades']];
     $('shopBody').innerHTML = cats.map(([cat, title]) => `<section class="shop-sec"><h3>${title}</h3><div class="shop-list">${SHOP.filter(it => it.cat === cat).map(it => {
+      const up = unlockProgress(it);
+      if (up && !has(it.id) && up[0] >= up[1]) { shop.owned.push(it.id); saveShop(); }
       const own = has(it.id);
       const eq = (cat === 'skin' && shop.skin === it.id) || (cat === 'trail' && shop.trail === it.id);
       const price = `Kaufen · ${it.price.toLocaleString('de-DE')}`;
@@ -1278,6 +1477,7 @@ button{touch-action:manipulation}
       if (cat === 'power') btn = own ? '<button class="done" type="button" disabled>Gekauft</button>' : `<button type="button" data-buy="${it.id}" ${shop.coins < it.price ? 'disabled' : ''}>${price}</button>`;
       else if (eq) btn = '<button class="done" type="button" disabled>Ausgerüstet</button>';
       else if (own) btn = `<button class="eq" type="button" data-eq="${it.id}">Ausrüsten</button>`;
+      else if (up) btn = `<button type="button" disabled>${it.unlock.text} · ${up[0].toLocaleString('de-DE')}/${up[1].toLocaleString('de-DE')}</button>`;
       else btn = `<button type="button" data-buy="${it.id}" ${shop.coins < it.price ? 'disabled' : ''}>${price}</button>`;
       return `<div class="item ${eq ? 'on' : ''} ${it.special ? 'special' : ''}"><div class="pv">${preview(it)}</div><b>${it.name}${it.special ? ' <span class="sp">Special Edition</span>' : ''}</b><span class="d">${it.desc}</span>${btn}</div>`;
     }).join('')}</div></section>`).join('');
@@ -1406,6 +1606,7 @@ button{touch-action:manipulation}
       }
       bankRun();
       missionTrack('runs', 1);
+      shop.stats.runs = (shop.stats.runs || 0) + 1; saveShop();
       html = `
       <span class="eyebrow">Endlos-Modus</span>
       <h2>${isNew ? 'Neuer Highscore!' : 'Game over'}</h2>
@@ -1450,6 +1651,18 @@ button{touch-action:manipulation}
   $('albumBtn').addEventListener('click', showAlbum);
   $('albumBack').addEventListener('click', goMenu);
   $('noteGo').addEventListener('click', closeNote);
+  $('saveBtn').addEventListener('click', showSave);
+  $('saveBack').addEventListener('click', goMenu);
+  $('copySave').addEventListener('click', () => {
+    const t = $('saveCode').value;
+    const ok = () => { $('saveMsg').textContent = 'Code kopiert. Heb ihn gut auf, zum Beispiel in deinen Notizen.'; };
+    try { navigator.clipboard.writeText(t).then(ok, () => { $('saveCode').select(); $('saveMsg').textContent = 'Code markiert. Halte ihn gedr\u00fcckt und tipp auf Kopieren.'; }); }
+    catch (e) { $('saveCode').select(); $('saveMsg').textContent = 'Code markiert. Halte ihn gedr\u00fcckt und tipp auf Kopieren.'; }
+  });
+  $('loadSave').addEventListener('click', () => {
+    if (importSave($('loadCode').value)) { $('saveMsg').textContent = 'Spielstand geladen. Das Spiel startet neu ...'; setTimeout(() => location.reload(), 700); }
+    else $('saveMsg').textContent = 'Der Code passt nicht. Kopier ihn bitte komplett, er beginnt mit HF1:';
+  });
   document.addEventListener('visibilitychange', () => { if (document.hidden) { if (state === 'play') pause(); bankRun(); } });
   addEventListener('pagehide', bankRun);
   // Von der Android-App aufgerufen, wenn sie in den Hintergrund geht
@@ -1460,7 +1673,7 @@ button{touch-action:manipulation}
   // ---------- Steuerung ----------
   function pointer(e) {
     if (state !== 'play') return;
-    basket.tx = ch?.mirror ? W - e.clientX : e.clientX;
+    basket.tx = (ch?.mirror || run.confused > 0) ? W - e.clientX : e.clientX;
   }
   cv.addEventListener('pointerdown', pointer);
   cv.addEventListener('pointermove', pointer);
@@ -1488,9 +1701,11 @@ button{touch-action:manipulation}
     if (state === 'play') {
       updateChips();
       run.elapsed += dt;
+      if (run.letterCd > 0) run.letterCd -= dt;
+      if (ch?.shrink) run.shrinkK = Math.max(0.4, run.shrinkK - dt * 0.045);
       // Combo-Timer: ohne neuen Fang innerhalb von COMBO_TIME Sekunden ist die Combo vorbei
       if (run.combo > 0) {
-        run.comboT -= dt * (active.slow ? 0.45 : 1);
+        if (!active.guard && !active.freeze) run.comboT -= dt * (active.slow ? 0.45 : 1);
         if (run.comboT <= 0) {
           if (run.combo >= 5) say(`Combo ${run.combo} vorbei`, W / 2, H * 0.83, '#c4abcd');
           run.combo = 0;
@@ -1512,7 +1727,7 @@ button{touch-action:manipulation}
     if (state === 'play') {
       const kspeed = Math.max(420, W * 0.9);
       const dir = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
-      basket.tx += dir * (ch?.mirror ? -1 : 1) * kspeed * dt;
+      basket.tx += dir * ((ch?.mirror || run.confused > 0) ? -1 : 1) * kspeed * dt;
       basket.tx = Math.min(Math.max(basket.tx, basket.w / 2), W - basket.w / 2);
       const prev = basket.x;
       if (ch?.ice) {
@@ -1531,12 +1746,16 @@ button{touch-action:manipulation}
       const lk = SKIN_LOOK[shop.skin] || {};
       if ((lk.fire || active.fire) && Math.random() < 0.7) sparks.push({ x: basket.x + rand(-basket.w * 0.3, basket.w * 0.3), y: basket.y - basket.w * 0.15, vx: rand(-15, 15), vy: rand(-110, -50), life: 0.8, size: rand(7, 13), color: ['#ffb347', '#ff7a1a', '#ffd36e'][Math.floor(rand(0, 3))], float: true });
       if (shop.trail === 'trail_spark' && moving && Math.random() < 0.7) sparks.push({ x: basket.x - Math.sign(basket.vx) * basket.w * 0.3, y: basket.y + rand(-8, 8), vx: rand(-20, 20), vy: rand(-20, 20), life: 0.6, size: rand(5, 9), color: '#ffd36e', float: true });
+      if (shop.trail === 'trail_fire' && moving && Math.random() < 0.8) sparks.push({ x: basket.x - Math.sign(basket.vx) * basket.w * 0.3 + rand(-6, 6), y: basket.y + rand(-6, 10), vx: rand(-15, 15), vy: rand(-90, -40), life: 0.7, size: rand(7, 12), color: ['#ffb347', '#ff7a1a', '#ffd36e', '#ff4a1a'][Math.floor(rand(0, 4))], float: true });
+      if (shop.trail === 'trail_confetti' && moving && Math.random() < 0.6) sparks.push({ x: basket.x - Math.sign(basket.vx) * basket.w * 0.3, y: basket.y + rand(-10, 10), vx: rand(-60, 60), vy: rand(-120, -40), life: 1.2, size: rand(5, 9), color: ['#ff7aa3', '#7fd6ff', '#ffd36e', '#8ef5c4', '#c7a3ff'][Math.floor(rand(0, 5))], rect: true });
+      if (shop.trail === 'trail_stars' && moving && Math.random() < 0.6) sparks.push({ x: basket.x - Math.sign(basket.vx) * basket.w * 0.3, y: basket.y + rand(-10, 10), vx: rand(-25, 25), vy: rand(-25, 25), life: 0.9, size: rand(6, 10), color: ['#ffffff', '#bfe9ff', '#ffe9a8'][Math.floor(rand(0, 3))], star: true, float: true });
+      if (shop.trail === 'trail_bubbles' && moving && Math.random() < 0.3) sparks.push({ x: basket.x - Math.sign(basket.vx) * basket.w * 0.3, y: basket.y + rand(-8, 8), vx: rand(-15, 15), vy: rand(-60, -20), life: 1.1, size: rand(6, 12), color: 'rgba(200,240,255,.9)', ring: true, float: true });
       if (shop.trail === 'trail_hearts' && moving && Math.random() < 0.3) sparks.push({ x: basket.x - Math.sign(basket.vx) * basket.w * 0.35, y: basket.y + rand(-6, 6), vx: rand(-15, 15), vy: rand(-40, -10), life: 0.9, size: rand(5, 8), color: theme.accent, heart: true, float: true });
       trailPts.push([basket.x, basket.y]);
       if (trailPts.length > 16) trailPts.shift();
     }
 
-    const slowK = active.slow ? 0.45 : 1;
+    const slowK = active.freeze ? 0 : active.slow ? 0.45 : 1;
 
     if (boss) {
       boss.y = Math.max(150, H * 0.17);
@@ -1548,9 +1767,51 @@ button{touch-action:manipulation}
           boss.throwT = rand(1.4, 2.2) - p * 0.6;
           const vy = rand(170, 220) * Math.max(0.8, H / 800);
           const tFall = Math.max(0.5, (basket.y - boss.y) / vy);
-          fallers.push({ x: boss.x, y: boss.y + 30, vy, vx: (basket.x - boss.x) / tFall * rand(0.75, 1.05), kind: 'broken', c: 0, ph: 0, sway: 0 });
+          const aim = (basket.x - boss.x) / tFall * rand(0.75, 1.05);
+          fallers.push({ x: boss.x, y: boss.y + 30, vy, vx: aim, kind: 'broken', c: 0, ph: 0, sway: 0 });
+          // gemein: ab Phase 2 wirft er fächerförmig drei auf einmal
+          if (boss.mean && boss.phase >= 2) for (const d of [-1, 1]) fallers.push({ x: boss.x, y: boss.y + 30, vy: vy * 0.95, vx: aim + d * rand(70, 120), kind: 'broken', c: 0, ph: 0, sway: 0 });
+          if (boss.mean && boss.phase >= 3) boss.throwT *= 0.7;
           boss.mouth = 0.4;
           tone(140, 0.2, 'sawtooth', 0.04);
+        }
+        if (boss.mean) {
+          const fp = filled() / TOTAL;
+          const ph = fp < 0.35 ? 1 : fp < 0.7 ? 2 : 3;
+          if (ph > boss.phase) {
+            boss.phase = ph;
+            celebrate(ph === 2 ? 'Er wird wütend!' : 'RASEREI!', ph === 2 ? 'Jetzt wirft er drei auf einmal' : 'Schneller, gemeiner, verdrehte Steuerung', '#ff1a3c', false);
+            shake = reduceMotion ? 0 : 0.6; tone(70, 0.8, 'sawtooth', 0.12);
+          }
+          // Herzen klauen
+          boss.stealT -= dt;
+          if (boss.stealT <= 0) {
+            boss.stealT = boss.phase >= 3 ? rand(7, 9) : rand(10, 13);
+            if (!active.shield) {
+              let n = 0;
+              for (let i = TOTAL - 1; i >= 0 && n < 2; i--) if (slotState[i] === 2) { slotState[i] = 0; n++; burst(slots[i].x, slots[i].y, '#ff1a3c', 8, 90); }
+              if (n) { boss.taunt = { t: 2, text: 'Meins! Hahaha!' }; updateHud(); tone(110, 0.5, 'square', 0.06); }
+            } else boss.taunt = { t: 2, text: 'Dein Schild nervt!' };
+          }
+          // Verwirrung in Phase 3
+          if (boss.phase >= 3) {
+            boss.confT -= dt;
+            if (boss.confT <= 0) { boss.confT = rand(8, 11); run.confused = 2.2; boss.taunt = { t: 2, text: 'Links ist rechts!' }; tone(200, 0.4, 'sawtooth', 0.06); }
+          }
+          run.confused = Math.max(0, (run.confused || 0) - dt);
+          // Spott
+          boss.tauntT -= dt;
+          if (boss.tauntT <= 0 && !boss.taunt) {
+            boss.tauntT = rand(5, 8);
+            const T = ['Du schaffst das nie!', 'Hahaha!', 'Dein Herz gehört mir!', 'Gib doch auf!', 'Ich sehe dich ...', 'Zu langsam!', 'Das wird nichts!', 'Lauf, solange du kannst!'];
+            boss.taunt = { t: 2.2, text: T[Math.floor(Math.random() * T.length)] };
+          }
+          if (boss.taunt) { boss.taunt.t -= dt; if (boss.taunt.t <= 0) boss.taunt = null; }
+          // Herzschlag und flackerndes Licht
+          boss.beatT -= dt;
+          if (boss.beatT <= 0) { boss.beatT = boss.phase >= 3 ? 0.6 : boss.phase === 2 ? 0.85 : 1.1; tone(55, 0.18, 'sine', 0.16); tone(48, 0.16, 'sine', 0.12, 0.14); }
+          if (Math.random() < (boss.phase >= 3 ? 0.012 : 0.005)) boss.dark = rand(0.08, 0.22);
+          boss.dark = Math.max(0, boss.dark - dt);
         }
       }
       boss.hurt = Math.max(0, boss.hurt - dt);
@@ -1563,7 +1824,10 @@ button{touch-action:manipulation}
       if (spawnT <= 0) {
         spawn();
         const p = filled() / TOTAL;
-        spawnT = state === 'play' ? (rand(0.5, 0.85) - p * 0.25) * (ch?.spawnK || 1) : rand(0.35, 0.6);
+        spawnT = state === 'play'
+          ? (ch ? (rand(0.5, 0.85) - p * 0.25) * (ch.spawnK || 1) * (ch.turbo ? 1 / (1 + Math.min(1, run.elapsed / 60)) : 1)
+                : rand(0.5, 0.8) / (1 + ramp() * 0.7))
+          : rand(0.35, 0.6);
       }
     }
 
@@ -1571,13 +1835,13 @@ button{touch-action:manipulation}
       f.y += f.vy * dt * slowK;
       if (f.vx) f.x += f.vx * dt * slowK;
       if (state === 'play' && ch?.wind) f.x = Math.min(W - 24, Math.max(24, f.x + wind * dt * slowK));
-      f.dx = Math.sin(time * 1.6 + f.ph) * f.sway;
+      f.dx = Math.sin(time * (f.zz || 1.6) + f.ph) * f.sway;
       if (state === 'play' && active.magnet && f.kind === 'love' && f.y > H * 0.3 && f.y < basket.y) {
         f.x += (basket.x - (f.x + f.dx)) * Math.min(1, dt * 3.2);
       }
       if (state === 'play' && !f.done) {
         const fx = f.x + f.dx;
-        if (Math.abs(fx - basket.x) < basket.w * 0.58 && f.y > basket.y - basket.w * 0.4 && f.y < basket.y + basket.w * 0.25) {
+        if (Math.abs(fx - basket.x) < basket.w * (f.kind === 'broken' && active.mini ? 0.2 : 0.58) && f.y > basket.y - basket.w * 0.4 && f.y < basket.y + basket.w * 0.25) {
           f.done = true;
           const hit = { ...f, x: fx };
           if (f.kind === 'love') catchLove(hit);
@@ -1877,6 +2141,67 @@ button{touch-action:manipulation}
         g.lineTo(W, H); g.closePath(); g.fill();
         break;
       }
+      case 'volcano': {
+        const vg = g.createRadialGradient(W * 0.5, H * 0.62, 0, W * 0.5, H * 0.62, m * 0.7);
+        vg.addColorStop(0, 'rgba(255,110,40,.35)'); vg.addColorStop(1, 'rgba(255,110,40,0)');
+        g.fillStyle = vg; g.fillRect(0, 0, W, H);
+        const vol = (x0, base, wTop, wBase, h, col) => {
+          g.fillStyle = col; g.beginPath();
+          g.moveTo(x0 - wBase, base); g.lineTo(x0 - wTop, base - h); g.lineTo(x0 + wTop, base - h); g.lineTo(x0 + wBase, base);
+          g.closePath(); g.fill(); return base - h;
+        };
+        vol(W * 0.15, H * 0.95, m * 0.05, W * 0.35, H * 0.28, 'rgba(40,10,6,.9)');
+        const top = vol(W * 0.62, H * 0.97, m * 0.07, W * 0.5, H * 0.42, 'rgba(28,6,4,.95)');
+        for (let i = 0; i < 6; i++) {
+          g.fillStyle = `rgba(70,45,45,${0.26 - i * 0.035})`;
+          g.beginPath(); g.arc(W * 0.62 + Math.sin(i * 1.7) * m * 0.06, top - i * m * 0.07 - m * 0.04, m * (0.05 + i * 0.015), 0, Math.PI * 2); g.fill();
+        }
+        g.save();
+        g.fillStyle = '#ff7a1a'; g.shadowColor = '#ff5a1a'; g.shadowBlur = 20;
+        g.beginPath(); g.ellipse(W * 0.62, top + 3, m * 0.07, m * 0.018, 0, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = 'rgba(255,120,30,.85)'; g.lineCap = 'round';
+        g.lineWidth = m * 0.014; g.beginPath(); g.moveTo(W * 0.62 - m * 0.02, top + 4); g.quadraticCurveTo(W * 0.56, H * 0.75, W * 0.5, H * 0.97); g.stroke();
+        g.lineWidth = m * 0.008; g.beginPath(); g.moveTo(W * 0.62 + m * 0.03, top + 4); g.quadraticCurveTo(W * 0.7, H * 0.8, W * 0.78, H * 0.97); g.stroke();
+        g.restore();
+        silhouette(g, H * 0.975, 6, 0.01, 'rgba(15,3,2,.95)', 4);
+        break;
+      }
+      case 'shadow': {
+        // roter Mond, Dornenberge, tote Bäume, leuchtende Augen kommen dynamisch dazu
+        const rx = W * 0.72, ry = Math.max(120, H * 0.18), rr = m * 0.08 + 10;
+        const rg = g.createRadialGradient(rx, ry, rr * 0.3, rx, ry, rr * 3.5);
+        rg.addColorStop(0, 'rgba(255,40,60,.35)'); rg.addColorStop(1, 'rgba(255,40,60,0)');
+        g.fillStyle = rg; g.fillRect(0, 0, W, H);
+        g.fillStyle = '#c0102c'; g.beginPath(); g.arc(rx, ry, rr, 0, Math.PI * 2); g.fill();
+        g.fillStyle = 'rgba(0,0,0,.35)'; g.beginPath(); g.arc(rx - rr * 0.3, ry - rr * 0.2, rr * 0.25, 0, Math.PI * 2); g.fill();
+        let sd = 77; const rr2 = () => { sd = (sd * 9301 + 49297) % 233280; return sd / 233280; };
+        g.fillStyle = 'rgba(8,0,3,.95)'; g.beginPath(); g.moveTo(0, H);
+        for (let x = 0; x <= W + 30; x += 30) g.lineTo(x, H * (0.7 + rr2() * 0.12) - ((x / 30) % 2 ? m * 0.05 : 0));
+        g.lineTo(W, H); g.closePath(); g.fill();
+        g.strokeStyle = 'rgba(8,0,3,.95)'; g.lineCap = 'round';
+        const tree = (x, y, a, len, wd, d) => {
+          const ex = x + Math.cos(a) * len, ey = y + Math.sin(a) * len;
+          g.lineWidth = wd; g.beginPath(); g.moveTo(x, y); g.lineTo(ex, ey); g.stroke();
+          if (d > 0) { tree(ex, ey, a - 0.5 - rr2() * 0.3, len * 0.7, wd * 0.65, d - 1); tree(ex, ey, a + 0.4 + rr2() * 0.3, len * 0.65, wd * 0.65, d - 1); }
+        };
+        tree(W * 0.1, H * 0.82, -Math.PI / 2 - 0.1, H * 0.12, m * 0.025, 5);
+        tree(W * 0.9, H * 0.8, -Math.PI / 2 + 0.15, H * 0.1, m * 0.02, 5);
+        g.fillStyle = 'rgba(8,0,3,.95)';
+        for (let x = 0; x < W; x += m * 0.03) { g.beginPath(); g.moveTo(x, H); g.lineTo(x + m * 0.012, H * 0.94 - rr2() * m * 0.05); g.lineTo(x + m * 0.024, H); g.closePath(); g.fill(); }
+        break;
+      }
+      case 'rainbow': {
+        const rc = ['#ff5c5c', '#ffa64d', '#ffe14d', '#6fe08a', '#5cc8ff', '#b48cff'];
+        const R0 = Math.max(W, H) * 0.62;
+        g.lineWidth = m * 0.035;
+        rc.forEach((c, i) => { g.strokeStyle = c; g.globalAlpha = 0.28; g.beginPath(); g.arc(W * 0.5, H * 1.02, R0 - i * m * 0.035, Math.PI, 0); g.stroke(); });
+        g.globalAlpha = 1;
+        cloud(g, W * 0.12, H * 0.86, m * 0.5, 'rgba(255,255,255,.16)');
+        cloud(g, W * 0.88, H * 0.89, m * 0.55, 'rgba(255,255,255,.16)');
+        cloud(g, W * 0.72, H * 0.2, m * 0.35, 'rgba(255,255,255,.1)');
+        cloud(g, W * 0.25, H * 0.3, m * 0.3, 'rgba(255,255,255,.08)');
+        break;
+      }
       case 'galaxy': {
         for (const [nx, ny, nr, c] of [[0.25, 0.3, 0.45, '255,138,226'], [0.75, 0.6, 0.5, '127,214,255'], [0.5, 0.15, 0.35, '199,163,255']]) {
           const ng = g.createRadialGradient(W * nx, H * ny, 0, W * nx, H * ny, m * nr);
@@ -1921,6 +2246,9 @@ button{touch-action:manipulation}
         if (Math.random() < 0.5) actors.push({ type: 'ufo', x: sx, y: rand(H * 0.1, H * 0.38), vx: dir * rand(70, 110), ph: rand(0, 6), size: rand(13, 18) });
         else actors.push({ type: 'comet', x: rand(W * 0.2, W * 1.1), y: -20, vx: -rand(120, 200), vy: rand(80, 140), ph: 0, size: rand(3, 5) });
         actorT = rand(3, 6); break;
+      case 'shadow':
+        actors.push({ type: 'bolt', x: rand(W * 0.1, W * 0.9), y: 0, vx: 0, life: 0.35, seed: Math.random() * 1000, ph: 0 });
+        actorT = rand(3, 7); break;
       default:
         actorT = 5;
     }
@@ -2017,6 +2345,33 @@ button{touch-action:manipulation}
         ctx.stroke();
       }
     }
+    if (themeId === 'boss' && boss && boss.mean && state !== 'menu') {
+      const ph = boss.phase, pulse = 0.5 + 0.5 * Math.sin(time * (2 + ph));
+      const ey = H * 0.4, look = (basket.x - W / 2) / W;
+      for (const d of [-1, 1]) {
+        const ex = W / 2 + d * Math.min(W * 0.26, H * 0.18);
+        const rw = Math.min(W, H) * 0.12, rh = rw * 0.45;
+        const eg = ctx.createRadialGradient(ex, ey, 0, ex, ey, rw * 1.8);
+        eg.addColorStop(0, `rgba(255,20,40,${0.1 + 0.08 * ph * pulse})`); eg.addColorStop(1, 'rgba(255,20,40,0)');
+        ctx.fillStyle = eg; ctx.fillRect(ex - rw * 2, ey - rw * 2, rw * 4, rw * 4);
+        ctx.fillStyle = `rgba(120,0,15,${0.18 + 0.06 * ph})`;
+        ctx.beginPath(); ctx.ellipse(ex, ey, rw, rh, d * -0.15, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = `rgba(255,40,60,${0.25 + 0.1 * ph * pulse})`;
+        ctx.beginPath(); ctx.ellipse(ex + look * rw * 0.9, ey + rh * 0.1, rw * 0.12, rh * 0.8, 0, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    if (themeId === 'shadow') {
+      // leuchtende Augen in der Dunkelheit, die ab und zu blinzeln
+      for (let i = 0; i < 6; i++) {
+        const ex = W * (0.08 + ((i * 0.37) % 1) * 0.84), ey = H * (0.74 + (i % 3) * 0.06);
+        const blink = Math.sin(time * 0.8 + i * 2.3) > 0.93;
+        if (blink) continue;
+        ctx.fillStyle = `rgba(255,30,50,${0.55 + 0.3 * Math.sin(time * 2 + i)})`;
+        ctx.shadowColor = '#ff1a3c'; ctx.shadowBlur = 10;
+        for (const d of [-1, 1]) { ctx.beginPath(); ctx.ellipse(ex + d * 7, ey, 3.2, 1.6, d * 0.25, 0, Math.PI * 2); ctx.fill(); }
+        ctx.shadowBlur = 0;
+      }
+    }
     for (const a of actors) {
       ctx.globalAlpha = 0.75;
       switch (a.type) {
@@ -2072,6 +2427,16 @@ button{touch-action:manipulation}
         case 'ufo':
           ctx.globalAlpha = 0.7;
           ufo(a.x, a.y, a.size, a.ph, '#ffd36e'); break;
+        case 'bolt': {
+          ctx.globalAlpha = Math.max(0, a.life / 0.35);
+          ctx.fillStyle = 'rgba(255,220,230,.12)'; ctx.fillRect(0, 0, W, H);
+          ctx.strokeStyle = '#ffe6ee'; ctx.lineWidth = 2.5; ctx.shadowColor = '#ff5c7a'; ctx.shadowBlur = 16;
+          let bx = a.x, by = 0; ctx.beginPath(); ctx.moveTo(bx, by);
+          let sd2 = a.seed;
+          while (by < H * 0.55) { sd2 = (sd2 * 9301 + 49297) % 233280; bx += (sd2 / 233280 - 0.5) * 50; by += 22 + (sd2 % 20); ctx.lineTo(bx, by); }
+          ctx.stroke(); ctx.shadowBlur = 0;
+          break;
+        }
         case 'comet': {
           ctx.globalAlpha = 0.8;
           const tx = a.x - a.vx * 0.35, ty = a.y - a.vy * 0.35;
@@ -2111,6 +2476,7 @@ button{touch-action:manipulation}
     $('daily').hidden = false;
     $('dailyBtn').onclick = () => {
       daily.last = t; daily.streak = streak; saveDaily();
+      shop.stats.bestStreak = Math.max(shop.stats.bestStreak || 0, streak);
       shop.coins += reward; saveShop(); updateShopBtn();
       $('daily').hidden = true;
       initAudio();
@@ -2245,12 +2611,32 @@ button{touch-action:manipulation}
   }
 
   // ---------- Endboss ----------
+  function drawBossOverlay() {
+    if (!boss || !boss.mean || state !== 'play') return;
+    const ph = boss.phase, beat = Math.pow(Math.max(0, Math.sin(time * Math.PI / (ph >= 3 ? 0.6 : ph === 2 ? 0.85 : 1.1))), 6);
+    const vg = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.3, W / 2, H / 2, Math.max(W, H) * 0.75);
+    vg.addColorStop(0, 'rgba(120,0,15,0)'); vg.addColorStop(1, `rgba(150,0,20,${0.35 + 0.25 * beat + 0.08 * ph})`);
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+    if (run.confused > 0) { ctx.fillStyle = `rgba(160,0,60,${0.12 + 0.08 * Math.sin(time * 20)})`; ctx.fillRect(0, 0, W, H); }
+    if (boss.dark > 0) { ctx.fillStyle = 'rgba(0,0,0,.82)'; ctx.fillRect(0, 0, W, H); }
+    if (boss.taunt) {
+      const a = Math.min(1, boss.taunt.t * 2);
+      ctx.save(); ctx.globalAlpha = a;
+      ctx.font = `600 ${Math.round(17 * U)}px Fredoka, "Arial Rounded MT Bold", sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      const tx = Math.min(W - 90, Math.max(90, boss.x)) + (Math.random() - 0.5) * 2, ty = boss.y + Math.max(34, s * 2.6) * 1.25 + 34 * U;
+      ctx.lineWidth = 5; ctx.strokeStyle = 'rgba(0,0,0,.85)'; ctx.strokeText(boss.taunt.text, tx, ty);
+      ctx.shadowColor = '#ff1a3c'; ctx.shadowBlur = 12; ctx.fillStyle = '#ff4d63'; ctx.fillText(boss.taunt.text, tx, ty);
+      ctx.restore();
+    }
+  }
   function drawBoss() {
-    const r = Math.max(34, s * 2.6);
+    const r = Math.max(34, s * 2.6) * (boss.mean ? 1 + 0.12 * (boss.phase - 1) : 1);
     let x = boss.x, a = 1, sc = 1;
     const y = boss.y;
     if (state === 'win') { a = Math.max(0, 1 - boss.dead * 1.5); sc = 1 + boss.dead * 0.8; if (a <= 0) return; }
     if (boss.hurt > 0) x += Math.sin(time * 80) * 4;
+    if (boss.mean && boss.phase >= 3) x += (Math.random() - 0.5) * 4;
     ctx.save();
     ctx.globalAlpha = a;
     ctx.translate(x, y + Math.sin(time * 2) * 6); ctx.scale(sc, sc);
@@ -2276,7 +2662,7 @@ button{touch-action:manipulation}
       ctx.fillStyle = '#ff3355'; ctx.fillRect(x - bw / 2, by, bw * hp, 7);
       ctx.font = '600 11px Fredoka, "Arial Rounded MT Bold", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       ctx.fillStyle = '#ffb3c0';
-      ctx.fillText('HERZENSBRECHER', x, by + 11);
+      ctx.fillText(ch?.bossName || 'HERZENSBRECHER', x, by + 11);
     }
   }
 
@@ -2458,6 +2844,17 @@ button{touch-action:manipulation}
         ctx.lineWidth = r * 0.1; ctx.beginPath(); ctx.moveTo(u * 0.4, -u * 0.4); ctx.quadraticCurveTo(u * 0.7, -u * 0.9, u * 0.95, -u * 0.8); ctx.stroke();
         ctx.fillStyle = '#ffd36e'; ctx.beginPath(); ctx.arc(u * 0.95, -u * 0.8, u * 0.18, 0, Math.PI * 2); ctx.fill();
         break;
+      case 'freeze':
+        ctx.restore(); ctx.save(); ctx.translate(x, y);
+        snowflake(0, 0, u * 0.95, time, G.color);
+        break;
+      case 'guard':
+        ctx.font = `600 ${r * 0.9}px Fredoka, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('\u221e', 0, r * 0.05);
+        break;
+      case 'mini':
+        drawBroken(0, 0, u * 0.7);
+        break;
       case 'gold':
         ctx.font = `600 ${r * 0.85}px Fredoka, "Arial Rounded MT Bold", sans-serif`;
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -2482,6 +2879,16 @@ button{touch-action:manipulation}
     const size = w * 0.5;
     const tilt = Math.max(-0.25, Math.min(0.25, basket.vx / 3000));
 
+    if (shop.trail === 'trail_lightning' && trailPts.length > 2 && state === 'play') {
+      ctx.save(); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.shadowColor = '#7fd6ff'; ctx.shadowBlur = 14;
+      for (const [lw, col] of [[4, 'rgba(127,214,255,.7)'], [1.6, '#ffffff']]) {
+        ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.beginPath();
+        trailPts.forEach(([px, py], i) => { const jx = px + (Math.random() - 0.5) * 10, jy = py + (Math.random() - 0.5) * 10; i ? ctx.lineTo(jx, jy) : ctx.moveTo(jx, jy); });
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
     if (shop.trail === 'trail_rainbow' && trailPts.length > 2 && state === 'play') {
       ctx.save(); ctx.lineCap = 'round';
       for (let i = 1; i < trailPts.length; i++) {
@@ -2505,6 +2912,7 @@ button{touch-action:manipulation}
 
     ctx.save();
     ctx.translate(x, y); ctx.rotate(tilt);
+    if ((SKIN_LOOK[shop.skin] || {}).ghost) { ctx.globalAlpha = 0.75 + 0.2 * Math.sin(time * 2.5); ctx.translate(0, Math.sin(time * 2) * 3); }
     const flash = grey || (basketFlash > 0 && Math.floor(basketFlash * 16) % 2 === 0);
     const look = SKIN_LOOK[shop.skin] || {};
     let c0 = theme.basket[0], c1 = theme.basket[1], skinGlow = theme.accent;
@@ -2520,6 +2928,20 @@ button{touch-action:manipulation}
       ctx.fillStyle = 'rgba(20,4,24,.55)'; ctx.fill();
       ctx.strokeStyle = look.glow; ctx.lineWidth = 3.5; ctx.stroke();
       ctx.shadowBlur = 0; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.2; ctx.stroke();
+    } else if (look.nico && !flash) {
+      ctx.fillStyle = 'rgba(30,4,30,.6)'; ctx.fill();
+    } else if (look.pixel && !flash) {
+      ctx.shadowBlur = 0;
+      const g = ctx.createLinearGradient(0, -size, 0, size);
+      g.addColorStop(0, c0); g.addColorStop(1, c1);
+      ctx.fillStyle = g;
+      const st = size * 0.22;
+      for (let gy = -size; gy < size * 1.2; gy += st) for (let gx = -size * 1.15; gx < size * 1.15; gx += st) {
+        const X = (gx + st / 2) / size * 1.1, Y = -((gy + st / 2) / size) * 1.12 + 0.12;
+        if (Math.pow(X * X + Y * Y - 1, 3) - X * X * Y * Y * Y <= 0) ctx.fillRect(gx, gy, st - 1, st - 1);
+      }
+      ctx.fillStyle = 'rgba(255,255,255,.6)';
+      ctx.fillRect(-size * 0.62, -size * 0.55, st - 1, st - 1); ctx.fillRect(-size * 0.4, -size * 0.55, st - 1, st - 1); ctx.fillRect(-size * 0.62, -size * 0.33, st - 1, st - 1);
     } else {
       const g = ctx.createLinearGradient(0, -size, 0, size);
       g.addColorStop(0, flash ? '#b9bedc' : c0);
@@ -2528,34 +2950,128 @@ button{touch-action:manipulation}
     }
     ctx.shadowBlur = 0;
     if (look.nico && !flash) {
+      // Special Edition im Neon-Stil: pink-violett schimmernder Doppel-Umriss, Neon-Monogramm, Neon-Krone
       ctx.save();
+      const hue = 315 + 20 * Math.sin(time * 1.5);
+      const neon = `hsl(${hue},100%,65%)`;
+      ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      heartPath(ctx, 0, 0, size);
+      ctx.shadowColor = neon; ctx.shadowBlur = 22;
+      ctx.strokeStyle = neon; ctx.lineWidth = Math.max(3, size * 0.1); ctx.stroke();
+      ctx.shadowBlur = 0; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = Math.max(1, size * 0.03); ctx.stroke();
+      heartPath(ctx, 0, size * 0.05, size * 0.8);
+      ctx.shadowColor = '#ffd36e'; ctx.shadowBlur = 14;
+      ctx.strokeStyle = '#ffd36e'; ctx.lineWidth = Math.max(2, size * 0.055); ctx.stroke();
+      ctx.shadowBlur = 0; ctx.strokeStyle = '#fff6d8'; ctx.lineWidth = Math.max(0.8, size * 0.02); ctx.stroke();
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.font = `${Math.round(size * 0.95)}px Parisienne, "Snell Roundhand", cursive`;
-      ctx.shadowColor = '#ffd36e'; ctx.shadowBlur = 8;
-      ctx.fillStyle = '#ffffff'; ctx.fillText(NICO_NAME[0], 0, -size * 0.02);
-      ctx.shadowBlur = 0;
-      const cy0 = -size * 1.02, cw = size * 0.42;
-      ctx.fillStyle = '#ffd36e';
+      ctx.shadowColor = neon; ctx.shadowBlur = 16;
+      ctx.strokeStyle = neon; ctx.lineWidth = Math.max(2, size * 0.06); ctx.strokeText(NICO_NAME[0], 0, size * 0.04);
+      ctx.shadowBlur = 0; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = Math.max(0.8, size * 0.02); ctx.strokeText(NICO_NAME[0], 0, size * 0.04);
+      const cy0 = -size * 1.0, cw = size * 0.44;
       ctx.beginPath();
-      ctx.moveTo(-cw, cy0 + cw * 0.5); ctx.lineTo(-cw, cy0 - cw * 0.2); ctx.lineTo(-cw * 0.5, cy0 + cw * 0.15);
-      ctx.lineTo(0, cy0 - cw * 0.5); ctx.lineTo(cw * 0.5, cy0 + cw * 0.15); ctx.lineTo(cw, cy0 - cw * 0.2); ctx.lineTo(cw, cy0 + cw * 0.5);
-      ctx.closePath(); ctx.fill();
-      for (let i = 0; i < 3; i++) {
-        const a = time * 2 + i * 2.1;
-        ctx.fillStyle = `rgba(255,236,170,${0.55 + 0.45 * Math.sin(time * 5 + i)})`;
-        star5(Math.cos(a) * size * 1.2, Math.sin(a) * size * 0.65, size * 0.13, a); ctx.fill();
+      ctx.moveTo(-cw, cy0 + cw * 0.45); ctx.lineTo(-cw * 1.05, cy0 - cw * 0.3); ctx.lineTo(-cw * 0.5, cy0 + cw * 0.08);
+      ctx.lineTo(0, cy0 - cw * 0.6); ctx.lineTo(cw * 0.5, cy0 + cw * 0.08); ctx.lineTo(cw * 1.05, cy0 - cw * 0.3); ctx.lineTo(cw, cy0 + cw * 0.45);
+      ctx.closePath();
+      ctx.shadowColor = '#ffd36e'; ctx.shadowBlur = 14;
+      ctx.strokeStyle = '#ffd36e'; ctx.lineWidth = Math.max(2, size * 0.05); ctx.stroke();
+      [[-cw * 1.05, cy0 - cw * 0.3, '#7fd6ff'], [0, cy0 - cw * 0.6, neon], [cw * 1.05, cy0 - cw * 0.3, '#8ef5c4']].forEach(([gx, gy, gc]) => {
+        ctx.shadowColor = gc; ctx.fillStyle = gc; ctx.beginPath(); ctx.arc(gx, gy, cw * 0.14, 0, Math.PI * 2); ctx.fill();
+      });
+      ctx.shadowBlur = 0;
+      for (let i = 0; i < 4; i++) {
+        const a = time * 1.8 + i * Math.PI / 2;
+        const c = i % 2 ? '#ffd36e' : neon;
+        heartPath(ctx, Math.cos(a) * size * 1.35, size * 0.1 + Math.sin(a) * size * 1.05, size * 0.14);
+        ctx.shadowColor = c; ctx.shadowBlur = 10; ctx.strokeStyle = c; ctx.lineWidth = 1.6; ctx.stroke();
       }
       ctx.restore();
     }
-    if (!flash && (look.stars || look.diamond)) {
+    if (look.rays && !flash) {
+      ctx.save(); ctx.rotate(time * 0.8);
+      ctx.strokeStyle = 'rgba(255,200,60,.8)'; ctx.lineWidth = Math.max(2, size * 0.07); ctx.lineCap = 'round';
+      for (let i = 0; i < 10; i++) {
+        const a = i / 10 * Math.PI * 2;
+        ctx.beginPath(); ctx.moveTo(Math.cos(a) * size * 1.15, Math.sin(a) * size * 1.0 + size * 0.1); ctx.lineTo(Math.cos(a) * size * 1.4, Math.sin(a) * size * 1.25 + size * 0.1); ctx.stroke();
+      }
+      ctx.restore();
+    }
+    if (look.ghost && !flash) {
+      ctx.fillStyle = 'rgba(30,30,60,.75)';
+      for (const d of [-1, 1]) { ctx.beginPath(); ctx.ellipse(d * size * 0.3, -size * 0.1, size * 0.1, size * 0.16, 0, 0, Math.PI * 2); ctx.fill(); }
+      ctx.beginPath(); ctx.ellipse(0, size * 0.25, size * 0.1, size * 0.07 + Math.abs(Math.sin(time * 3)) * size * 0.05, 0, 0, Math.PI * 2); ctx.fill();
+    }
+    if (look.leaves && !flash) {
+      ctx.fillStyle = '#3fbf5a';
+      for (const a of [-0.7, 0, 0.7]) {
+        ctx.save(); ctx.translate(0, -size * 0.62); ctx.rotate(a);
+        ctx.beginPath(); ctx.ellipse(0, -size * 0.16, size * 0.1, size * 0.22, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+    }
+    if (!flash && (look.stars || look.diamond || look.seeds || look.waves || look.drizzle || look.rose || look.cracks || look.moon)) {
       ctx.save(); heartPath(ctx, 0, 0, size); ctx.clip();
+      if (look.seeds) {
+        ctx.fillStyle = '#ffe27a';
+        for (let j = -3; j <= 4; j++) for (let i = -4; i <= 4; i++) {
+          ctx.beginPath(); ctx.ellipse(i * size * 0.26 + (j % 2 ? size * 0.13 : 0), j * size * 0.26, size * 0.035, size * 0.06, 0, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+      if (look.waves) {
+        ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = Math.max(1.5, size * 0.05);
+        for (let k = 0; k < 3; k++) {
+          const y0 = -size * 0.25 + k * size * 0.38;
+          ctx.beginPath();
+          for (let x = -size * 1.2; x <= size * 1.2; x += 3) {
+            const y = y0 + Math.sin(x / size * 5 + time * 3 + k) * size * 0.07;
+            x === -size * 1.2 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+        }
+      }
+      if (look.drizzle) {
+        ctx.strokeStyle = '#f3d2a8'; ctx.lineWidth = Math.max(1.5, size * 0.06);
+        for (const y0 of [-size * 0.3, size * 0.2]) {
+          ctx.beginPath();
+          for (let i = 0; i <= 10; i++) { const x = -size * 1.1 + i * size * 0.22, y = y0 + (i % 2 ? size * 0.12 : 0); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+          ctx.stroke();
+        }
+        ['#ff7aa3', '#7fd6ff', '#ffe27a', '#8ef5c4'].forEach((c, i) => {
+          ctx.fillStyle = c;
+          for (let k = 0; k < 3; k++) ctx.fillRect(Math.sin(i * 3 + k * 5) * size * 0.6, Math.cos(i * 7 + k) * size * 0.5, size * 0.12, size * 0.05);
+        });
+      }
+      if (look.rose) {
+        ctx.strokeStyle = 'rgba(90,0,24,.55)'; ctx.lineWidth = Math.max(1.2, size * 0.045);
+        ctx.beginPath();
+        for (let t = 0; t < Math.PI * 6; t += 0.15) {
+          const r = size * 0.045 * t;
+          const x = Math.cos(t + time * 0.5) * r, y = -size * 0.05 + Math.sin(t + time * 0.5) * r * 0.85;
+          t ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+        }
+        ctx.stroke();
+      }
+      if (look.moon) {
+        ctx.fillStyle = '#f4f0d8'; ctx.beginPath(); ctx.arc(size * 0.15, -size * 0.1, size * 0.38, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#2a347a'; ctx.beginPath(); ctx.arc(size * 0.32, -size * 0.2, size * 0.34, 0, Math.PI * 2); ctx.fill();
+      }
+      if (look.cracks) {
+        const p2 = 0.6 + 0.4 * Math.sin(time * 4);
+        ctx.strokeStyle = `rgba(255,${Math.round(110 + 80 * p2)},30,${0.7 + 0.3 * p2})`; ctx.lineWidth = Math.max(1.5, size * 0.06);
+        ctx.shadowColor = '#ff5a1a'; ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.moveTo(0, -size * 0.55); ctx.lineTo(-size * 0.15, -size * 0.2); ctx.lineTo(size * 0.12, size * 0.1); ctx.lineTo(-size * 0.08, size * 0.45); ctx.lineTo(0, size * 0.8);
+        ctx.moveTo(-size * 0.15, -size * 0.2); ctx.lineTo(-size * 0.6, -size * 0.1);
+        ctx.moveTo(size * 0.12, size * 0.1); ctx.lineTo(size * 0.55, -size * 0.05);
+        ctx.stroke(); ctx.shadowBlur = 0;
+      }
       if (look.stars) for (let i = 0; i < 9; i++) {
         const sx = Math.sin(i * 12.9) * size * 0.7, sy = Math.cos(i * 7.3) * size * 0.6;
         ctx.fillStyle = `rgba(255,255,255,${0.4 + 0.6 * Math.abs(Math.sin(time * 2 + i))})`;
         ctx.beginPath(); ctx.arc(sx, sy, 1.5, 0, Math.PI * 2); ctx.fill();
       }
       if (look.diamond) {
-        ctx.strokeStyle = 'rgba(110,190,220,.6)'; ctx.lineWidth = 1.2;
+        ctx.strokeStyle = look.diamondCol || 'rgba(110,190,220,.6)'; ctx.lineWidth = 1.2;
         ctx.beginPath();
         ctx.moveTo(-size, -size * 0.2); ctx.lineTo(size, -size * 0.2);
         ctx.moveTo(-size, -size * 0.2); ctx.lineTo(0, size); ctx.lineTo(size, -size * 0.2);
@@ -2655,6 +3171,7 @@ button{touch-action:manipulation}
 
   function draw() {
     ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, W, H);
+    if (active.freeze) { ctx.fillStyle = 'rgba(190,233,255,.1)'; ctx.fillRect(0, 0, W, H); }
     if (active.slow) { ctx.fillStyle = 'rgba(120,80,200,.08)'; ctx.fillRect(0, 0, W, H); }
     if (ch?.time && state === 'play' && run.timeLeft <= 10) {
       ctx.fillStyle = `rgba(255,60,60,${0.05 + 0.05 * Math.sin(time * 8)})`; ctx.fillRect(0, 0, W, H);
@@ -2703,7 +3220,16 @@ button{touch-action:manipulation}
     for (const f of fallers) {
       const x = f.x + (f.dx || 0);
       if (f.kind === 'love') drawSprite(fallSprites[f.c], x, f.y, state === 'menu' ? 0.55 : 1);
-      else if (f.kind === 'broken') drawBroken(x, f.y, Math.max(14, s * 1.1));
+      else if (f.kind === 'broken') {
+        if (f.meteor) {
+          const tx = x - (f.vx || 0) * 0.18, ty = f.y - f.vy * 0.18;
+          const mg = ctx.createLinearGradient(x, f.y, tx, ty);
+          mg.addColorStop(0, 'rgba(255,140,40,.9)'); mg.addColorStop(1, 'rgba(255,140,40,0)');
+          ctx.strokeStyle = mg; ctx.lineWidth = Math.max(8, s * 0.8); ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(x, f.y); ctx.lineTo(tx, ty); ctx.stroke();
+        }
+        drawBroken(x, f.y, Math.max(14, s * 1.1) * (active.mini ? 0.45 : 1));
+      }
       else if (f.kind === 'bonus') drawBonus(x, f.y);
       else if (f.kind === 'letter') drawLetter(x, f.y);
       else drawGadget(f, x, f.y);
@@ -2719,6 +3245,9 @@ button{touch-action:manipulation}
       ctx.globalAlpha = Math.max(0, p.life);
       ctx.fillStyle = p.color;
       if (p.heart) { heartPath(ctx, p.x, p.y, p.size); ctx.fill(); }
+      else if (p.rect) { ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.life * 8); ctx.fillRect(-p.size * 0.4, -p.size * 0.2, p.size * 0.8, p.size * 0.4); ctx.restore(); }
+      else if (p.star) { star5(p.x, p.y, p.size * 0.5, p.life * 4); ctx.fill(); }
+      else if (p.ring) { ctx.strokeStyle = p.color; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.6, 0, Math.PI * 2); ctx.stroke(); }
       else { ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.35, 0, Math.PI * 2); ctx.fill(); }
     }
     ctx.globalAlpha = 1;
@@ -2733,6 +3262,7 @@ button{touch-action:manipulation}
     }
     ctx.globalAlpha = 1;
     ctx.restore();
+    drawBossOverlay();
     drawBigText();
     if (flash > 0) { ctx.fillStyle = `rgba(255,255,255,${flash})`; ctx.fillRect(0, 0, W, H); }
   }
@@ -2761,7 +3291,10 @@ button{touch-action:manipulation}
     $('storeWarn').hidden = storageOk;
     updateMissBtn();
     updateAlbumBtn();
-    if (storageOk) setTimeout(() => { if (!shop.giftSeen) showGift(checkDaily); else checkDaily(); }, 700);
+    if (storageOk) setTimeout(() => {
+      const next = () => { if (!shop.giftSeen) showGift(checkDaily); else checkDaily(); };
+      if (!shop.bonus20k) showStartBonus(next); else next();
+    }, 700);
     for (let i = 0; i < 28; i++) slotState[i] = 2;
     requestAnimationFrame(t => { last = t; frame(t); });
   }

@@ -16,11 +16,24 @@ android {
         versionName = "1.$build"
     }
 
+    // Fester Schlüssel aus den GitHub-Secrets: Jede neue Version installiert sich über die alte, der Spielstand bleibt.
+    val keyPass = System.getenv("HF_KEYSTORE_PASSWORD")
+    val keyFile = rootProject.file("app/herzfaenger.keystore")
+    signingConfigs {
+        if (keyPass != null && keyFile.exists()) {
+            create("herz") {
+                storeFile = keyFile
+                storePassword = keyPass
+                keyAlias = "herzfaenger"
+                keyPassword = keyPass
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
-            // Zum einfachen Installieren wird auch die Release-Version mit dem Debug-Schlüssel signiert.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("herz") ?: signingConfigs.getByName("debug")
         }
     }
 
