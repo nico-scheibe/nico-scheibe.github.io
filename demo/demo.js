@@ -237,7 +237,7 @@
       settings: { start: "09:00", end: "17:00", days: [true, true, true, true, true, false, false], rec: 6, notif: { matches: true, messages: true, community: false, agents: true }, focusLen: 25 },
       tickets: [
         { id: "t1042", no: 1042, subject: "Datei-Upload bleibt bei 90 % hängen", cat: "Technik", status: "open", when: "heute", msgs: [{ from: "me", text: "Beim Hochladen größerer PDFs bleibt der Fortschritt bei 90 % stehen." }, { from: "support", text: "Danke für die Meldung! Wir schauen uns das an. Tritt das bei allen Dateien auf oder nur über 10 MB?" }] },
-        { id: "t1038", no: 1038, subject: "Frage zum Pulse-Plan", cat: "Abo & Zahlung", status: "done", when: "vor 3 Tagen", msgs: [{ from: "me", text: "Was ist im Pulse-Plan alles enthalten?" }, { from: "support", text: "Pulse enthält unbegrenzte Matches, mehr Workspaces und mehr KI-Nachrichten. Alle Details findest du unter Abo." }] },
+        { id: "t1038", no: 1038, subject: "Frage zum Plus-Tarif", cat: "Abo & Zahlung", status: "done", when: "vor 3 Tagen", msgs: [{ from: "me", text: "Was ist im Plus-Tarif alles enthalten?" }, { from: "support", text: "Plus enthält unbegrenzt viele Arbeitsbereiche, 5 GB Speicher und 2 € KI-Budget pro Monat. Alle Details findest du unter Abo." }] },
         { id: "t1031", no: 1031, subject: "Profil-Verifizierung", cat: "Konto", status: "prog", when: "vor 1 Woche", msgs: [{ from: "me", text: "Wie kann ich mein Profil als Mentor verifizieren?" }, { from: "support", text: "Wir prüfen gerade deine Angaben und melden uns in den nächsten Tagen." }] }
       ],
       ticket: "t1042",
@@ -297,10 +297,10 @@
   var ACTIONS = ["Benachrichtigung senden", "Aufgabe im Workspace erstellen", "Erinnerung im Fokus-Assistenten", "KI-Zusammenfassung erstellen", "E-Mail-Report senden"];
   var DAYS = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
   var PLANS = [
-    { name: "Free", icon: "user", color: "var(--text-2)", tag: "Zum Start", feats: ["Profil & Discover", "5 Matches pro Woche", "1 Workspace", "KI-Center Basis"] },
-    { name: "Pulse", icon: "zap", color: "var(--cyan)", tag: "Für Macher", feats: ["Unbegrenzte Matches", "3 Workspaces", "Mehr KI-Nachrichten", "Nachrichten & Benachrichtigungen"] },
-    { name: "Nexus", icon: "share", color: "var(--accent)", tag: "Beliebt", feats: ["Alles aus Pulse", "Agents & Automationen", "Fokus-Assistent", "10 GB Dateien mit Versionen"] },
-    { name: "Ascend", icon: "rocket", color: "var(--accent-2)", tag: "Für Teams", feats: ["Alles aus Nexus", "Unbegrenzte Workspaces", "Hervorgehobenes Mentor-Profil", "Priorisierter Support"] }
+    { name: "Free", icon: "user", color: "var(--text-2)", tag: "Zum Start", feats: ["3 Arbeitsbereiche", "5 Mitglieder je Arbeitsbereich", "250 MB Dateispeicher", "KI nach Verbrauch mit Guthaben"] },
+    { name: "Plus", icon: "zap", color: "var(--cyan)", tag: "Für Macher", feats: ["Unbegrenzt viele Arbeitsbereiche", "15 Mitglieder je Arbeitsbereich", "5 GB Dateispeicher", "2 € KI-Budget pro Monat"] },
+    { name: "Pro", icon: "share", color: "var(--accent)", tag: "Für Teams", feats: ["Alles aus Plus", "50 Mitglieder je Arbeitsbereich", "25 GB Dateispeicher", "10 € KI-Budget pro Monat"] },
+    { name: "Ultra", icon: "rocket", color: "var(--accent-2)", tag: "Für Firmen", feats: ["Alles aus Pro", "Unbegrenzt viele Mitglieder", "100 GB Dateispeicher", "40 € KI-Budget pro Monat"] }
   ];
 
   /* ---------- Navigation ---------- */
